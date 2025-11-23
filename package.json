@@ -1,0 +1,51 @@
+{
+  "name": "ultimate-sports-ai",
+  "version": "2.0.0",
+  "description": "Sports Analytics Education Platform with AI Coaching",
+  "type": "module",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "npx serve",
+    "dev": "npx http-server -p 8000",
+    "capacitor:install": "npm install @capacitor/core @capacitor/cli @capacitor/ios @capacitor/android",
+    "capacitor:init": "npx cap init --web-dir web",
+    "capacitor:add:ios": "npx cap add ios",
+    "capacitor:add:android": "npx cap add android",
+    "capacitor:sync": "npx cap sync",
+    "capacitor:update": "npx cap update",
+    "capacitor:build:ios": "npx cap build ios",
+    "capacitor:build:android": "npx cap build android",
+    "capacitor:open:ios": "npx cap open ios",
+    "capacitor:open:android": "npx cap open android",
+    "build:android": "cd android && ./gradlew assembleRelease && cd ..",
+    "build:android:debug": "cd android && ./gradlew assembleDebug && cd ..",
+    "build:ios": "cd ios/App && xcodebuild -workspace App.xcworkspace -scheme App -configuration Release -derivedDataPath build",
+    "copy:web": "mkdir -p web && cp -r . web/ && rm -rf web/node_modules web/android web/ios web/.git",
+    "clean": "rm -rf node_modules android ios web",
+    "clean:android": "cd android && ./gradlew clean && cd ..",
+    "clean:ios": "cd ios/App && xcodebuild clean && cd ../..",
+    "test": "echo 'No tests configured'",
+    "lint": "echo 'No linting configured'"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/ios": "^6.0.0",
+    "@capacitor/android": "^6.0.0"
+  },
+  "keywords": [
+    "sports",
+    "analytics",
+    "ai-coaching",
+    "education",
+    "betting-education"
+  ],
+  "author": "PredictMaster Studios",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

@@ -1,0 +1,740 @@
+/**
+ * Lucky Wheel Styles
+ * Beautiful wheel interface with animations
+ */
+
+/* ============================
+   HEADER BUTTON
+   ============================ */
+
+.lucky-wheel-header-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+}
+
+.lucky-wheel-header-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+}
+
+.lucky-wheel-header-btn .wheel-icon {
+    font-size: 18px;
+}
+
+.lucky-wheel-header-btn .wheel-icon.has-free-spin {
+    animation: wheelPulse 2s ease-in-out infinite;
+}
+
+@keyframes wheelPulse {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(180deg); }
+}
+
+.lucky-wheel-header-btn .free-spin-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #e74c3c;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 3px 6px;
+    border-radius: 10px;
+    animation: badgeBounce 1s ease-in-out infinite;
+}
+
+@keyframes badgeBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* ============================
+   MODAL
+   ============================ */
+
+.lucky-wheel-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.lucky-wheel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.lucky-wheel-content {
+    position: relative;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    border-radius: 20px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.4s ease;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.lucky-wheel-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.lucky-wheel-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+/* ============================
+   HEADER
+   ============================ */
+
+.lucky-wheel-header {
+    text-align: center;
+    padding: 40px 30px 20px;
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    border-radius: 20px 20px 0 0;
+}
+
+.lucky-wheel-header h2 {
+    margin: 0;
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.lucky-wheel-header h2 i {
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.wheel-subtitle {
+    margin: 10px 0 0;
+    opacity: 0.9;
+    font-size: 16px;
+}
+
+.wheel-sound-toggle {
+    position: absolute;
+    top: 20px;
+    right: 70px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.wheel-sound-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.wheel-sound-toggle:active {
+    transform: scale(0.95);
+}
+
+/* ============================
+   WHEEL CONTAINER
+   ============================ */
+
+.lucky-wheel-main {
+    padding: 30px;
+}
+
+.wheel-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wheel-pointer {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 40px;
+    color: #f39c12;
+    z-index: 10;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    animation: pointerBounce 1s ease-in-out infinite;
+}
+
+@keyframes pointerBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+#wheel-canvas {
+    width: 100%;
+    height: auto;
+    transition: transform 0.1s ease-out;
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.4));
+}
+
+.wheel-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 4px solid #fff;
+}
+
+/* ============================
+   SPIN BUTTON
+   ============================ */
+
+.wheel-spin-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.wheel-spin-btn {
+    padding: 20px 60px;
+    font-size: 24px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.wheel-spin-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.wheel-spin-btn:hover::before {
+    left: 100%;
+}
+
+.wheel-spin-btn.free-spin {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    color: white;
+    animation: buttonPulse 2s ease-in-out infinite;
+}
+
+.wheel-spin-btn.bonus-spin {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+}
+
+.wheel-spin-btn.paid-spin {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+}
+
+.wheel-spin-btn.disabled-spin {
+    background: #7f8c8d;
+    color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+@keyframes buttonPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3); }
+    50% { transform: scale(1.05); box-shadow: 0 12px 35px rgba(39, 174, 96, 0.5); }
+}
+
+.wheel-spin-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+}
+
+.wheel-spin-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.spin-text {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.spin-cost {
+    display: block;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.wheel-cooldown-timer {
+    margin-top: 15px;
+    font-size: 18px;
+    color: #f39c12;
+    font-weight: bold;
+}
+
+/* ============================
+   STATS
+   ============================ */
+
+.wheel-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.wheel-stat {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wheel-stat i {
+    font-size: 24px;
+    color: #f39c12;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    opacity: 0.7;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    color: #f39c12;
+}
+
+/* ============================
+   HISTORY
+   ============================ */
+
+.wheel-history-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+}
+
+.wheel-history-section h3 {
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wheel-history-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.no-history {
+    text-align: center;
+    opacity: 0.5;
+    padding: 40px 20px;
+}
+
+.history-entry {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    border-left: 4px solid;
+    transition: all 0.3s ease;
+}
+
+.history-entry:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.history-entry.common { border-color: #95a5a6; }
+.history-entry.uncommon { border-color: #27ae60; }
+.history-entry.rare { border-color: #3498db; }
+.history-entry.epic { border-color: #9b59b6; }
+.history-entry.legendary { border-color: #f39c12; }
+
+.history-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+}
+
+.history-details {
+    flex: 1;
+}
+
+.history-prize {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.history-time {
+    font-size: 12px;
+    opacity: 0.6;
+}
+
+.history-rarity {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ============================
+   PRIZE REVEAL OVERLAY
+   ============================ */
+
+.prize-reveal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    animation: fadeIn 0.3s ease;
+}
+
+.prize-reveal-content {
+    text-align: center;
+    animation: prizeReveal 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes prizeReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) rotate(-180deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.prize-reveal-icon {
+    margin-bottom: 30px;
+}
+
+.prize-icon {
+    font-size: 120px;
+    animation: iconFloat 2s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.prize-icon.common { filter: drop-shadow(0 0 30px #95a5a6); }
+.prize-icon.uncommon { filter: drop-shadow(0 0 30px #27ae60); }
+.prize-icon.rare { filter: drop-shadow(0 0 30px #3498db); }
+.prize-icon.epic { filter: drop-shadow(0 0 30px #9b59b6); }
+.prize-icon.legendary {
+    filter: drop-shadow(0 0 50px #f39c12);
+    animation: iconFloat 2s ease-in-out infinite, legendaryGlow 1s ease-in-out infinite;
+}
+
+@keyframes legendaryGlow {
+    0%, 100% { filter: drop-shadow(0 0 30px #f39c12); }
+    50% { filter: drop-shadow(0 0 60px #f39c12); }
+}
+
+.prize-reveal-label h2 {
+    font-size: 48px;
+    margin: 0 0 20px;
+    color: white;
+}
+
+.prize-name {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0 0 15px;
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.prize-rarity {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0 0 30px;
+}
+
+.prize-rarity.common { color: #95a5a6; }
+.prize-rarity.uncommon { color: #27ae60; }
+.prize-rarity.rare { color: #3498db; }
+.prize-rarity.epic { color: #9b59b6; }
+.prize-rarity.legendary { color: #f39c12; }
+
+.prize-reveal-close {
+    padding: 15px 50px;
+    font-size: 18px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+}
+
+.prize-reveal-close:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 35px rgba(243, 156, 18, 0.6);
+}
+
+/* ============================
+   PROFILE WIDGET
+   ============================ */
+
+.wheel-profile-widget {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    border-radius: 12px;
+    padding: 20px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+}
+
+.wheel-widget-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.wheel-widget-header i {
+    font-size: 24px;
+}
+
+.wheel-widget-header h3 {
+    margin: 0;
+    flex: 1;
+}
+
+.wheel-widget-header .free-badge {
+    background: #e74c3c;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    animation: badgeBounce 1s ease-in-out infinite;
+}
+
+.wheel-widget-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.widget-stat {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.widget-stat .stat-label {
+    display: block;
+    font-size: 11px;
+    opacity: 0.8;
+    margin-bottom: 5px;
+}
+
+.widget-stat .stat-value {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.wheel-widget-btn {
+    width: 100%;
+    padding: 12px;
+    background: white;
+    color: #f39c12;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wheel-widget-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================
+   RESPONSIVE
+   ============================ */
+
+@media (max-width: 768px) {
+    .lucky-wheel-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .lucky-wheel-header {
+        padding: 30px 20px 15px;
+    }
+    
+    .lucky-wheel-header h2 {
+        font-size: 24px;
+    }
+    
+    .lucky-wheel-main {
+        padding: 20px;
+    }
+    
+    .wheel-spin-btn {
+        padding: 15px 40px;
+        font-size: 20px;
+    }
+    
+    .wheel-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .wheel-history-section {
+        padding: 20px;
+    }
+    
+    .prize-reveal-label h2 {
+        font-size: 32px;
+    }
+    
+    .prize-name {
+        font-size: 24px;
+    }
+    
+    .prize-icon {
+        font-size: 80px;
+    }
+}
+
+/* ============================
+   SCROLLBAR
+   ============================ */
+
+.wheel-history-list::-webkit-scrollbar,
+.lucky-wheel-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.wheel-history-list::-webkit-scrollbar-track,
+.lucky-wheel-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.wheel-history-list::-webkit-scrollbar-thumb,
+.lucky-wheel-content::-webkit-scrollbar-thumb {
+    background: rgba(243, 156, 18, 0.5);
+    border-radius: 4px;
+}
+
+.wheel-history-list::-webkit-scrollbar-thumb:hover,
+.lucky-wheel-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(243, 156, 18, 0.7);
+}

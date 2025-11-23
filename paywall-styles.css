@@ -1,0 +1,594 @@
+/* ============================================
+   PAYWALL STYLES
+   Locked content and upgrade prompts
+   ============================================ */
+
+/* ============================================
+   PAYWALL MODAL
+   ============================================ */
+
+.paywall-overlay {
+    backdrop-filter: blur(8px);
+}
+
+.paywall-modal {
+    max-width: 550px;
+    text-align: center;
+}
+
+.paywall-content {
+    padding: 2rem;
+}
+
+.paywall-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 1.5rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    position: relative;
+}
+
+.lock-badge {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #374151, #1f2937);
+    border: 3px solid #111827;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.paywall-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.paywall-description {
+    color: #9ca3af;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.paywall-features {
+    text-align: left;
+    background: #1f2937;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.paywall-features h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #d1d5db;
+}
+
+.paywall-features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.paywall-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.paywall-features li:last-child {
+    margin-bottom: 0;
+}
+
+.paywall-features svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.paywall-features span {
+    color: #d1d5db;
+    line-height: 1.6;
+}
+
+.paywall-pricing {
+    margin-bottom: 2rem;
+}
+
+.paywall-price {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+.price-label {
+    color: #9ca3af;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+}
+
+.price-amount {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+}
+
+.price-interval {
+    color: #9ca3af;
+    font-size: 1rem;
+}
+
+.paywall-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.paywall-upgrade-btn {
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.paywall-upgrade-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.paywall-plans-btn {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #374151;
+    background: transparent;
+    color: #d1d5db;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.paywall-plans-btn:hover {
+    background: #374151;
+    border-color: #4b5563;
+}
+
+.paywall-guarantee {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+/* ============================================
+   COACH PAYWALL
+   ============================================ */
+
+.coach-paywall .coach-preview {
+    text-align: left;
+    background: #1f2937;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.coach-preview h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.coach-preview ul {
+    list-style: none;
+    padding: 0;
+}
+
+.coach-preview li {
+    padding: 0.5rem 0;
+    color: #d1d5db;
+}
+
+.paywall-tier-unlock {
+    background: #1f2937;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.tier-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.tier-badge {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.tier-info {
+    flex: 1;
+    text-align: left;
+}
+
+.tier-info h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.tier-info p {
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+.tier-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #10b981;
+    white-space: nowrap;
+}
+
+/* ============================================
+   LOCKED OVERLAY
+   ============================================ */
+
+.locked-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(17, 24, 39, 0.95);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+    z-index: 10;
+}
+
+.locked-content {
+    text-align: center;
+    padding: 2rem;
+}
+
+.locked-content.small {
+    padding: 1rem;
+}
+
+.locked-icon {
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.locked-content h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.locked-content p {
+    color: #9ca3af;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.unlock-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.unlock-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   LOCKED COACH CARD
+   ============================================ */
+
+.coach-card.locked {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.coach-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(17, 24, 39, 0.95);
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+    padding: 1rem;
+    pointer-events: all;
+}
+
+.lock-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    color: #9ca3af;
+}
+
+.lock-text {
+    color: #d1d5db;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.unlock-coach-btn {
+    padding: 0.5rem 1.25rem;
+    border: none;
+    border-radius: 6px;
+    background: #10b981;
+    color: white;
+    font-weight: 700;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.unlock-coach-btn:hover {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   FEATURE LOCK BADGE
+   ============================================ */
+
+.feature-locked {
+    position: relative;
+    opacity: 0.6;
+    cursor: not-allowed !important;
+}
+
+.feature-lock-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #374151, #1f2937);
+    border: 2px solid #111827;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 5;
+}
+
+/* ============================================
+   SUBSCRIPTION BANNER
+   ============================================ */
+
+.subscription-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.subscription-banner.free {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+    border: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+.subscription-banner.warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1));
+    border: 2px solid rgba(245, 158, 11, 0.3);
+}
+
+.subscription-banner.active {
+    background: rgba(16, 185, 129, 0.1);
+    border: 2px solid;
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.banner-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.banner-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.banner-text strong {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.banner-text span {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.banner-cta {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background: #10b981;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.banner-cta:hover {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+.banner-cta.secondary {
+    background: #374151;
+}
+
+.banner-cta.secondary:hover {
+    background: #4b5563;
+}
+
+/* ============================================
+   TIER INDICATORS
+   ============================================ */
+
+.tier-badge-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tier-badge-inline.starter {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.tier-badge-inline.pro {
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+.tier-badge-inline.vip {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .paywall-modal {
+        max-width: 90%;
+        margin: 1rem;
+    }
+
+    .paywall-content {
+        padding: 1.5rem;
+    }
+
+    .paywall-icon {
+        width: 80px;
+        height: 80px;
+        font-size: 2.5rem;
+    }
+
+    .paywall-title {
+        font-size: 1.5rem;
+    }
+
+    .paywall-description {
+        font-size: 1rem;
+    }
+
+    .price-amount {
+        font-size: 2rem;
+    }
+
+    .subscription-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .banner-cta {
+        width: 100%;
+    }
+
+    .tier-option {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .tier-info {
+        text-align: center;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes lockShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+.feature-locked:active .feature-lock-badge {
+    animation: lockShake 0.3s ease;
+}
+
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+.locked-overlay {
+    background-image: linear-gradient(
+        90deg,
+        rgba(17, 24, 39, 0.95) 0%,
+        rgba(17, 24, 39, 0.98) 50%,
+        rgba(17, 24, 39, 0.95) 100%
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 3s infinite linear;
+}

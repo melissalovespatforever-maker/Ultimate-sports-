@@ -1,0 +1,1057 @@
+/* ============================================
+   PAYPAL PAYMENT STYLES
+   Beautiful PayPal integration UI
+   ============================================ */
+
+/* Pricing Modal */
+.pricing-modal {
+    max-width: 900px;
+}
+
+.pricing-plans {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.pricing-plan {
+    background: var(--background);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    padding: 32px 24px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.pricing-plan:hover {
+    border-color: #0070ba;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 112, 186, 0.2);
+}
+
+.pricing-plan.featured {
+    border-color: #0070ba;
+    background: linear-gradient(135deg, rgba(0, 112, 186, 0.05) 0%, rgba(21, 70, 160, 0.05) 100%);
+}
+
+.featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.plan-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.plan-header h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.plan-price {
+    font-size: 48px;
+    font-weight: 800;
+    color: #0070ba;
+    line-height: 1;
+}
+
+.plan-price span {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+}
+
+.plan-features li {
+    padding: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-secondary);
+    font-size: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.plan-features li:last-child {
+    border-bottom: none;
+}
+
+.plan-features i {
+    color: var(--success);
+    font-size: 16px;
+}
+
+.pricing-select-btn {
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pricing-select-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 112, 186, 0.4);
+}
+
+.pricing-select-btn i {
+    font-size: 20px;
+}
+
+/* PayPal Upgrade Button */
+.paypal-upgrade-button {
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 112, 186, 0.3);
+}
+
+.paypal-upgrade-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 112, 186, 0.4);
+    background: linear-gradient(135deg, #0070ba 0%, #003087 100%);
+}
+
+.paypal-upgrade-button:active {
+    transform: translateY(0);
+}
+
+.paypal-button-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.paypal-button-content i {
+    font-size: 24px;
+}
+
+.paypal-price {
+    margin-left: auto;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+/* PayPal Modal */
+.paypal-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.paypal-modal {
+    background: var(--card-background);
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease-out;
+}
+
+.payment-check-modal {
+    max-width: 450px;
+}
+
+.paypal-modal-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.paypal-modal-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.paypal-modal-header i {
+    color: #0070ba;
+}
+
+.paypal-modal-close {
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.paypal-modal-close:hover {
+    background: var(--hover-background);
+    color: var(--text-primary);
+}
+
+.paypal-modal-body {
+    padding: 24px;
+}
+
+/* Plan Summary */
+.plan-summary {
+    text-align: center;
+    padding: 24px;
+    background: linear-gradient(135deg, #0070ba15 0%, #1546a015 100%);
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.plan-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.plan-price {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.plan-price span {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+/* Plan Features */
+.plan-features {
+    margin-bottom: 24px;
+}
+
+.plan-features h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.plan-features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.plan-features li {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-secondary);
+    font-size: 15px;
+}
+
+.plan-features li i {
+    color: var(--success);
+    font-size: 16px;
+}
+
+/* Payment Instructions */
+.payment-instructions {
+    background: var(--background);
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid #0070ba;
+}
+
+.payment-instructions p {
+    margin: 0 0 12px 0;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.payment-instructions ol {
+    margin: 0 0 16px 0;
+    padding-left: 20px;
+    color: var(--text-secondary);
+}
+
+.payment-instructions li {
+    margin: 8px 0;
+    font-size: 15px;
+}
+
+.payment-note {
+    background: rgba(0, 112, 186, 0.1);
+    padding: 12px 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.payment-note i {
+    color: #0070ba;
+    margin-top: 2px;
+}
+
+/* Payment Check Options */
+.payment-check-message {
+    text-align: center;
+    font-size: 18px;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+}
+
+.payment-check-options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.payment-option {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: var(--background);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.payment-option i {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.payment-option p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Modal Footer */
+.paypal-modal-footer {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.paypal-modal-cancel,
+.paypal-modal-confirm {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.paypal-modal-cancel {
+    background: var(--background);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.paypal-modal-cancel:hover {
+    background: var(--hover-background);
+}
+
+.paypal-modal-confirm {
+    background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.paypal-modal-confirm:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 112, 186, 0.3);
+}
+
+.payment-confirm-yes {
+    background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Pending Payment Reminder */
+.pending-payment-reminder {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    animation: slideUpBounce 0.5s ease-out;
+}
+
+.reminder-content {
+    background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%);
+    color: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 8px 24px rgba(0, 112, 186, 0.4);
+    min-width: 320px;
+    max-width: 90vw;
+}
+
+.reminder-content i {
+    font-size: 24px;
+}
+
+.reminder-text {
+    flex: 1;
+}
+
+.reminder-text strong {
+    display: block;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.reminder-text p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.reminder-complete {
+    background: white;
+    color: #0070ba;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reminder-complete:hover {
+    transform: scale(1.05);
+}
+
+.reminder-dismiss {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.reminder-dismiss:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Subscription Details */
+.subscription-details {
+    background: var(--background);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.detail-value {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-active {
+    color: var(--success);
+}
+
+.status-cancelled {
+    color: var(--warning);
+}
+
+.status-expired {
+    color: var(--danger);
+}
+
+/* Subscription Actions */
+.subscription-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.action-button {
+    padding: 14px 20px;
+    border: 1px solid var(--border-color);
+    background: var(--background);
+    color: var(--text-primary);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
+
+.action-button:hover {
+    background: var(--hover-background);
+    transform: translateY(-1px);
+}
+
+.action-button.cancel-subscription {
+    color: var(--danger);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.action-button.cancel-subscription:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+@keyframes slideUpBounce {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(30px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-5px);
+    }
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Receipt Manager Styles */
+.receipt-manager-modal {
+    max-width: 700px;
+}
+
+.receipt-manager-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.receipt-empty-state {
+    text-align: center;
+    padding: 60px 30px;
+    color: var(--text-secondary);
+}
+
+.receipt-empty-state i {
+    font-size: 48px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+.receipt-empty-state h3 {
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.receipt-filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.receipt-search,
+.receipt-filter-tier {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    background: var(--background);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.receipt-search:focus,
+.receipt-filter-tier:focus {
+    outline: none;
+    border-color: #0070ba;
+    background: var(--card-background);
+}
+
+.receipt-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.receipt-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: var(--background);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.receipt-item:hover {
+    border-color: #0070ba;
+    background: var(--card-background);
+    transform: translateX(4px);
+}
+
+.receipt-icon {
+    font-size: 24px;
+    color: #0070ba;
+}
+
+.receipt-info {
+    flex: 1;
+}
+
+.receipt-info h4 {
+    margin: 0 0 4px 0;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.receipt-date {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.receipt-email {
+    margin: 4px 0 0 0;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.receipt-amount {
+    text-align: right;
+}
+
+.amount {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.frequency {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.receipt-item > i:last-child {
+    color: var(--text-secondary);
+}
+
+/* Receipt Detail Modal */
+.receipt-detail-modal {
+    max-width: 500px;
+}
+
+.receipt-id {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.receipt-preview {
+    background: linear-gradient(135deg, #0070ba 0%, #1546a0 100%);
+    color: white;
+    padding: 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.receipt-preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.receipt-preview-header h3 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.receipt-preview-header .receipt-date {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.receipt-preview-amount {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.receipt-preview-amount span {
+    display: block;
+}
+
+.receipt-preview-amount span:last-child {
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.receipt-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.receipt-action-btn {
+    padding: 14px 20px;
+    border: 1px solid var(--border-color);
+    background: var(--background);
+    color: var(--text-primary);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
+
+.receipt-action-btn:hover {
+    background: var(--card-background);
+    border-color: #0070ba;
+    transform: translateY(-2px);
+}
+
+.receipt-action-btn.view-btn:hover {
+    color: #0070ba;
+}
+
+/* Receipt Preview Window */
+.receipt-preview-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    padding: 20px;
+}
+
+.receipt-preview-container {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    height: 90vh;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.receipt-preview-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 28px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10002;
+    transition: all 0.2s ease;
+}
+
+.receipt-preview-close:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.receipt-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Resend Email Modal */
+.resend-email-modal {
+    max-width: 450px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.email-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    background: var(--background);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.email-input:focus {
+    outline: none;
+    border-color: #0070ba;
+    background: var(--card-background);
+    box-shadow: 0 0 0 3px rgba(0, 112, 186, 0.1);
+}
+
+/* Receipt Toast */
+.receipt-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #1f2937;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    z-index: 10003;
+}
+
+.receipt-toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .paypal-modal {
+        border-radius: 20px 20px 0 0;
+        max-height: 85vh;
+    }
+
+    .pricing-modal {
+        max-width: 100%;
+    }
+
+    .pricing-plans {
+        grid-template-columns: 1fr;
+    }
+
+    .paypal-modal-header h2 {
+        font-size: 20px;
+    }
+
+    .plan-price {
+        font-size: 36px;
+    }
+
+    .plan-header h3 {
+        font-size: 20px;
+    }
+
+    .paypal-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .paypal-modal-cancel,
+    .paypal-modal-confirm {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pending-payment-reminder {
+        bottom: 70px;
+        left: 10px;
+        right: 10px;
+        transform: none;
+    }
+
+    .reminder-content {
+        min-width: auto;
+        flex-wrap: wrap;
+    }
+
+    .reminder-complete {
+        flex: 1 1 100%;
+        margin-top: 8px;
+    }
+
+    .receipt-manager-modal {
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .receipt-manager-body {
+        max-height: 60vh;
+    }
+
+    .receipt-filters {
+        flex-direction: column;
+    }
+
+    .receipt-search,
+    .receipt-filter-tier {
+        flex: none;
+        width: 100%;
+    }
+
+    .receipt-item {
+        flex-wrap: wrap;
+    }
+
+    .receipt-info {
+        flex: 1 1 100%;
+        order: 2;
+    }
+
+    .receipt-amount {
+        order: 3;
+        width: 100%;
+        text-align: left;
+        margin-top: 8px;
+    }
+
+    .receipt-preview-window {
+        padding: 10px;
+    }
+
+    .receipt-preview-container {
+        height: 100vh;
+    }
+
+    .receipt-detail-modal {
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .receipt-preview-close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 24px;
+    }
+}
