@@ -1,0 +1,936 @@
+/* ============================================
+   COACH PERFORMANCE HISTORY STYLES
+   ============================================ */
+
+.coach-performance-history {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.performance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.performance-title-section {
+    flex: 1;
+}
+
+.performance-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.performance-title i {
+    color: #00d4ff;
+    font-size: 32px;
+}
+
+.performance-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    font-size: 16px;
+}
+
+.performance-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.export-btn {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.export-btn i {
+    font-size: 16px;
+}
+
+/* ============================================
+   PERIOD SELECTOR
+   ============================================ */
+
+.period-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.period-btn {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.period-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 212, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.period-btn.active {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(123, 44, 191, 0.2) 100%);
+    border-color: #00d4ff;
+    box-shadow: 0 4px 16px rgba(0, 212, 255, 0.3);
+}
+
+.period-btn i {
+    font-size: 24px;
+    color: #00d4ff;
+}
+
+.period-btn span {
+    display: block;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.period-btn small {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+}
+
+/* ============================================
+   METRIC SELECTOR
+   ============================================ */
+
+.metric-selector {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+.metric-selector label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+    min-width: 120px;
+}
+
+.metric-selector i {
+    color: #00d4ff;
+    font-size: 18px;
+}
+
+.metric-buttons {
+    display: flex;
+    gap: 12px;
+    flex: 1;
+}
+
+.metric-btn {
+    flex: 1;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.metric-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 212, 255, 0.3);
+}
+
+.metric-btn.active {
+    background: linear-gradient(135deg, #00d4ff 0%, #7b2cbf 100%);
+    border-color: #00d4ff;
+    color: #fff;
+}
+
+/* ============================================
+   CHART CONTAINER
+   ============================================ */
+
+.chart-container {
+    margin-bottom: 32px;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chart-wrapper {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.chart-y-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 0;
+    min-width: 50px;
+}
+
+.y-axis-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    text-align: right;
+    font-weight: 600;
+}
+
+.chart-area {
+    flex: 1;
+    position: relative;
+    height: 400px;
+}
+
+.chart-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.grid-line {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    width: 100%;
+}
+
+.chart-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.chart-line {
+    stroke-width: 3;
+    fill: none;
+    transition: stroke-width 0.3s ease;
+}
+
+.chart-line:hover {
+    stroke-width: 4;
+    filter: drop-shadow(0 0 8px currentColor);
+}
+
+.chart-points {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.chart-point {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 10;
+}
+
+.point-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+.chart-point:hover .point-dot {
+    width: 14px;
+    height: 14px;
+    box-shadow: 0 0 16px currentColor;
+}
+
+.no-data-text {
+    fill: rgba(255, 255, 255, 0.6);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* ============================================
+   X-AXIS LABELS
+   ============================================ */
+
+.chart-x-axis {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding: 0 66px 0 66px;
+}
+
+.x-axis-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* ============================================
+   LEGEND
+   ============================================ */
+
+.chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.legend-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.legend-item.locked {
+    opacity: 0.6;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.legend-name {
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.legend-lock {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+}
+
+/* ============================================
+   COACH SELECTOR PANEL
+   ============================================ */
+
+.coach-selector-panel {
+    margin-bottom: 32px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.coach-selector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.coach-selector-header span {
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.select-all-btn {
+    padding: 8px 16px;
+    background: rgba(0, 212, 255, 0.2);
+    border: 1px solid #00d4ff;
+    border-radius: 6px;
+    color: #00d4ff;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.select-all-btn:hover {
+    background: rgba(0, 212, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.coach-checkboxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.coach-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.coach-checkbox:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.coach-checkbox.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.coach-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.checkbox-custom {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.coach-checkbox input[type="checkbox"]:checked + .checkbox-custom {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: currentColor;
+}
+
+.checkbox-custom i {
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.coach-checkbox input[type="checkbox"]:checked + .checkbox-custom i {
+    opacity: 1;
+}
+
+.coach-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.coach-name {
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.coach-tier {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+}
+
+/* ============================================
+   STATS GRID
+   ============================================ */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid #00d4ff;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.stat-card.locked {
+    opacity: 0.7;
+}
+
+.stat-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-coach-avatar {
+    font-size: 36px;
+}
+
+.stat-coach-avatar.blurred {
+    filter: blur(4px);
+}
+
+.stat-coach-info h4 {
+    margin: 0 0 4px 0;
+    color: #fff;
+    font-size: 18px;
+}
+
+.stat-tier {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.stat-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.stat-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.metric-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.metric-value {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.metric-value.positive {
+    color: #00c853;
+}
+
+.metric-value.negative {
+    color: #ff5252;
+}
+
+.metric-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.metric-trend.positive {
+    color: #00c853;
+}
+
+.metric-trend.negative {
+    color: #ff5252;
+}
+
+.metric-trend i {
+    font-size: 12px;
+}
+
+.stat-card-footer {
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.view-details-btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(123, 44, 191, 0.2) 100%);
+    border: 1px solid rgba(0, 212, 255, 0.5);
+    border-radius: 8px;
+    color: #00d4ff;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.view-details-btn:hover {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.3) 0%, rgba(123, 44, 191, 0.3) 100%);
+    transform: translateX(2px);
+}
+
+.locked-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    backdrop-filter: blur(4px);
+}
+
+.locked-overlay i {
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.locked-overlay p {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    font-weight: 600;
+}
+
+.unlock-btn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.unlock-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.5);
+}
+
+/* ============================================
+   PERFORMANCE TABLE
+   ============================================ */
+
+.performance-table-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.performance-table-container h3 {
+    margin: 0 0 16px 0;
+    color: #fff;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+.performance-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #fff;
+}
+
+.performance-table th {
+    background: rgba(0, 212, 255, 0.1);
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #00d4ff;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+}
+
+.performance-table th.coach-column {
+    text-align: center;
+}
+
+.performance-table td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.performance-table tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.period-cell {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.data-cell {
+    text-align: center;
+}
+
+.cell-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+}
+
+.cell-main {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.cell-sub {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.locked-cell {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.locked-row {
+    opacity: 0.6;
+}
+
+.table-unlock-btn {
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    border: none;
+    border-radius: 6px;
+    color: #000;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.table-unlock-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+}
+
+.best-week {
+    color: #00c853;
+    font-weight: 600;
+}
+
+.worst-week {
+    color: #ff5252;
+    font-weight: 600;
+}
+
+/* ============================================
+   TOOLTIP
+   ============================================ */
+
+.chart-tooltip {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.95);
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: pre-line;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -100%);
+    border: 1px solid rgba(0, 212, 255, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    animation: tooltipFadeIn 0.2s ease;
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -90%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -100%);
+    }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .period-selector {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .coach-checkboxes {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .coach-performance-history {
+        padding: 16px;
+    }
+
+    .performance-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .performance-title {
+        font-size: 24px;
+    }
+
+    .performance-title i {
+        font-size: 28px;
+    }
+
+    .metric-selector {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .metric-buttons {
+        flex-direction: column;
+    }
+
+    .chart-wrapper {
+        flex-direction: column;
+    }
+
+    .chart-y-axis {
+        flex-direction: row;
+        justify-content: space-between;
+        min-width: 100%;
+        padding: 0 10px;
+    }
+
+    .chart-area {
+        height: 300px;
+    }
+
+    .chart-x-axis {
+        padding: 0 16px;
+    }
+
+    .x-axis-label {
+        font-size: 10px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .coach-checkboxes {
+        grid-template-columns: 1fr;
+    }
+
+    .performance-table {
+        font-size: 12px;
+    }
+
+    .performance-table th,
+    .performance-table td {
+        padding: 8px;
+    }
+
+    .cell-main {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .performance-title {
+        font-size: 20px;
+    }
+
+    .export-btn span {
+        display: none;
+    }
+
+    .period-btn {
+        padding: 16px;
+    }
+
+    .period-btn span {
+        font-size: 14px;
+    }
+
+    .stat-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-area {
+        height: 250px;
+    }
+}

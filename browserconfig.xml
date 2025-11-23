@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+    <msapplication>
+        <tile>
+            <square150x150logo src="https://play.rosebud.ai/assets/Super intelligent AI high res icon by pridictmaster Ai.png?5eN6"/>
+            <square310x310logo src="https://play.rosebud.ai/assets/Super intelligent AI high res icon by pridictmaster Ai.png?5eN6"/>
+            <wide310x150logo src="https://play.rosebud.ai/assets/Super intelligent AI high res icon by pridictmaster Ai.png?5eN6"/>
+            <TileColor>#4CAF50</TileColor>
+        </tile>
+    </msapplication>
+</browserconfig>

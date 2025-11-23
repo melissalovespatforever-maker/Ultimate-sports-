@@ -1,0 +1,936 @@
+/* ============================================
+   COACH PICK SHARING STYLES
+   Social sharing for winning picks
+   ============================================ */
+
+/* ============================================
+   SHARE MODAL
+   ============================================ */
+
+.share-pick-overlay {
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+}
+
+.share-pick-modal {
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.share-pick-modal .modal-content {
+    padding: 1.5rem;
+}
+
+/* ============================================
+   SHARE CARD PREVIEW
+   ============================================ */
+
+.share-preview-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.share-card {
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.share-card-inner {
+    padding: 2rem;
+    color: white;
+    position: relative;
+}
+
+.share-preview-hint {
+    margin-top: 1rem;
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+/* ============================================
+   SHARE CARD COMPONENTS
+   ============================================ */
+
+.share-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.share-card-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.share-card-logo img {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+}
+
+.share-card-logo span {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.share-card-badge {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Coach Info */
+.share-card-coach {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.coach-avatar {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.coach-info h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.coach-info p {
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+/* Game Info */
+.share-card-game {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.teams {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.vs {
+    opacity: 0.7;
+    font-size: 1rem;
+}
+
+.league-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.35rem 0.875rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Pick Details */
+.share-card-pick {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.pick-selection,
+.pick-odds {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.pick-label,
+.odds-label {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pick-value,
+.odds-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Result */
+.share-card-result {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.result-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.result-status svg {
+    color: #10b981;
+}
+
+.result-status span {
+    font-size: 2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.result-profit {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.profit-amount {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #10b981;
+}
+
+.profit-roi {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Confidence Bar */
+.share-card-confidence {
+    margin-bottom: 1.5rem;
+}
+
+.confidence-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.confidence-bar-fill {
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+.confidence-text {
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+/* Footer */
+.share-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 0.875rem;
+}
+
+.username {
+    font-weight: 600;
+}
+
+.timestamp {
+    opacity: 0.8;
+}
+
+/* ============================================
+   SHARE OPTIONS
+   ============================================ */
+
+.share-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.share-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border: 2px solid #374151;
+    background: #1f2937;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.share-option:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.share-option.twitter {
+    border-color: #1DA1F2;
+}
+
+.share-option.twitter:hover {
+    background: #1DA1F2;
+    border-color: #1DA1F2;
+}
+
+.share-option.facebook {
+    border-color: #4267B2;
+}
+
+.share-option.facebook:hover {
+    background: #4267B2;
+    border-color: #4267B2;
+}
+
+.share-option.reddit {
+    border-color: #FF4500;
+}
+
+.share-option.reddit:hover {
+    background: #FF4500;
+    border-color: #FF4500;
+}
+
+.share-option.linkedin {
+    border-color: #0077B5;
+}
+
+.share-option.linkedin:hover {
+    background: #0077B5;
+    border-color: #0077B5;
+}
+
+.share-option.download {
+    border-color: #10b981;
+}
+
+.share-option.download:hover {
+    background: #10b981;
+    border-color: #10b981;
+}
+
+.share-option.copy-link {
+    border-color: #6b7280;
+}
+
+.share-option.copy-link:hover {
+    background: #6b7280;
+    border-color: #6b7280;
+}
+
+/* ============================================
+   CUSTOM MESSAGE INPUT
+   ============================================ */
+
+.share-message-input {
+    margin-bottom: 1.5rem;
+}
+
+.share-message-input label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #d1d5db;
+}
+
+.share-message-input textarea {
+    width: 100%;
+    padding: 0.875rem;
+    background: #1f2937;
+    border: 2px solid #374151;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    resize: vertical;
+    transition: border-color 0.2s;
+}
+
+.share-message-input textarea:focus {
+    outline: none;
+    border-color: #10b981;
+}
+
+.char-count {
+    display: block;
+    text-align: right;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #9ca3af;
+}
+
+/* ============================================
+   STATS SUMMARY
+   ============================================ */
+
+.share-stats-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+    background: #1f2937;
+    border-radius: 12px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.stat-value.positive {
+    color: #10b981;
+}
+
+/* ============================================
+   SHARE WIN BUTTON (in bet history)
+   ============================================ */
+
+.share-win-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.share-win-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.share-win-btn svg {
+    flex-shrink: 0;
+}
+
+/* ============================================
+   LOADING SPINNER
+   ============================================ */
+
+.share-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(17, 24, 39, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    z-index: 10001;
+}
+
+.loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #374151;
+    border-top-color: #10b981;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.share-loader p {
+    color: #d1d5db;
+    font-weight: 600;
+}
+
+/* ============================================
+   SHARED PICK PAGE (view link)
+   ============================================ */
+
+.shared-pick-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+.shared-pick-container {
+    position: sticky;
+    top: 2rem;
+}
+
+.shared-pick-details {
+    padding: 2rem;
+    background: #1f2937;
+    border-radius: 16px;
+}
+
+.shared-pick-details h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.detail-section {
+    margin-bottom: 2rem;
+}
+
+.detail-section h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #10b981;
+}
+
+.reasoning-list {
+    list-style: none;
+    padding: 0;
+}
+
+.reasoning-list li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #374151;
+    color: #d1d5db;
+}
+
+.reasoning-list li:last-child {
+    border-bottom: none;
+}
+
+.reasoning-list li::before {
+    content: '✓';
+    margin-right: 0.75rem;
+    color: #10b981;
+    font-weight: 700;
+}
+
+.cta-section {
+    background: linear-gradient(135deg, #10b981, #059669);
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+}
+
+.cta-section h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.cta-section p {
+    margin-bottom: 1.5rem;
+    opacity: 0.95;
+}
+
+.cta-button {
+    padding: 1rem 2rem;
+    background: white;
+    color: #059669;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.shared-pick-error {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.shared-pick-error h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.shared-pick-error p {
+    color: #9ca3af;
+    font-size: 1.125rem;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .share-pick-modal {
+        max-width: 95%;
+        margin: 1rem;
+    }
+
+    .share-card {
+        max-width: 100%;
+    }
+
+    .share-card-inner {
+        padding: 1.5rem;
+    }
+
+    .share-options {
+        grid-template-columns: 1fr;
+    }
+
+    .share-stats-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .shared-pick-page {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .shared-pick-container {
+        position: static;
+    }
+
+    .teams {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .vs {
+        transform: rotate(90deg);
+    }
+
+    .result-status span {
+        font-size: 1.5rem;
+    }
+
+    .profit-amount {
+        font-size: 2rem;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.share-card-inner > * {
+    animation: slideInUp 0.5s ease backwards;
+}
+
+.share-card-header {
+    animation-delay: 0.1s;
+}
+
+.share-card-coach {
+    animation-delay: 0.2s;
+}
+
+.share-card-game {
+    animation-delay: 0.3s;
+}
+
+.share-card-pick {
+    animation-delay: 0.4s;
+}
+
+.share-card-result {
+    animation-delay: 0.5s;
+}
+
+.share-card-confidence {
+    animation-delay: 0.6s;
+}
+
+.share-card-footer {
+    animation-delay: 0.7s;
+}
+
+/* ============================================
+   SHARE SUGGESTION TOAST
+   ============================================ */
+
+.share-suggestion-toast {
+    position: fixed;
+    bottom: -200px;
+    right: 2rem;
+    background: linear-gradient(135deg, #1f2937, #111827);
+    border: 2px solid #10b981;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    z-index: 9999;
+    transition: bottom 0.3s ease;
+}
+
+.share-suggestion-toast.show {
+    bottom: 2rem;
+}
+
+.suggestion-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.suggestion-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.suggestion-text strong {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: white;
+}
+
+.suggestion-text p {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.suggestion-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.share-now-btn {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.share-now-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.dismiss-btn {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 2px solid #374151;
+    border-radius: 8px;
+    color: #9ca3af;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dismiss-btn:hover {
+    background: #374151;
+    color: white;
+}
+
+/* ============================================
+   WIN CARD (for coach performance page)
+   ============================================ */
+
+.winning-picks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.win-card {
+    background: #1f2937;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 2px solid #374151;
+    transition: all 0.2s;
+}
+
+.win-card:hover {
+    border-color: #10b981;
+    transform: translateY(-2px);
+}
+
+.win-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.win-date {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.win-badge {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.win-game {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #d1d5db;
+}
+
+.win-pick {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #374151;
+}
+
+.win-pick strong {
+    color: white;
+}
+
+.win-pick .odds {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.win-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.win-result .profit {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #10b981;
+}
+
+.win-result .roi {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.win-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.share-win-btn.small {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .share-pick-modal {
+        box-shadow: none;
+    }
+
+    .modal-header,
+    .share-options,
+    .share-message-input,
+    .share-stats-summary {
+        display: none;
+    }
+
+    .share-card {
+        box-shadow: none;
+    }
+}
+
+/* ============================================
+   MOBILE RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .share-suggestion-toast {
+        right: 1rem;
+        left: 1rem;
+        max-width: none;
+    }
+
+    .winning-picks-grid {
+        grid-template-columns: 1fr;
+    }
+}
