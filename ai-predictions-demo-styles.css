@@ -1,0 +1,553 @@
+/* ============================================
+   AI PREDICTIONS DEMO PAGE STYLES
+   ============================================ */
+
+.ai-predictions-page {
+    padding: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ============================================
+   PAGE HEADER
+   ============================================ */
+
+.predictions-page-header {
+    margin-bottom: 32px;
+}
+
+.page-hero {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 32px;
+    background: linear-gradient(135deg, var(--primary)15 0%, var(--primary)05 100%);
+    border: 2px solid var(--primary)30;
+    border-radius: 20px;
+}
+
+.compare-coaches-btn {
+    margin-left: auto;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.compare-coaches-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+.hero-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary) 0%, #059669 100%);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 40px;
+    flex-shrink: 0;
+}
+
+.hero-content {
+    flex: 1;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ============================================
+   SECTIONS
+   ============================================ */
+
+.coaches-section,
+.todays-predictions-section,
+.performance-section {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 20px 0;
+}
+
+.section-title i {
+    color: var(--primary);
+    font-size: 22px;
+}
+
+/* ============================================
+   COACHES GRID
+   ============================================ */
+
+.coaches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.coach-overview-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.coach-overview-card:hover {
+    border-color: var(--primary)40;
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.15);
+    transform: translateY(-4px);
+}
+
+.coach-overview-card.locked {
+    opacity: 0.8;
+}
+
+.coach-card-header {
+    position: relative;
+    padding: 24px;
+    background: linear-gradient(135deg, var(--primary)10 0%, var(--primary)05 100%);
+    display: flex;
+    justify-content: center;
+}
+
+.coach-card-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 20px;
+    object-fit: cover;
+    border: 4px solid var(--card-bg);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.coach-card-avatar.blurred {
+    filter: blur(8px);
+}
+
+.coach-lock-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 22px;
+}
+
+.coach-card-body {
+    padding: 24px;
+}
+
+.coach-card-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+    text-align: center;
+}
+
+.coach-card-title {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0 0 12px 0;
+    text-align: center;
+}
+
+.coach-card-specialty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--primary)08;
+    border: 1px solid var(--primary)20;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--text-primary);
+}
+
+.coach-card-specialty i {
+    color: var(--primary);
+}
+
+.coach-card-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.coach-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    background: var(--background-secondary);
+    border-radius: 10px;
+}
+
+.coach-stat .stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.coach-stat .stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.view-coach-btn,
+.unlock-coach-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.view-coach-btn {
+    background: linear-gradient(135deg, var(--primary) 0%, #059669 100%);
+    color: white;
+}
+
+.view-coach-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.unlock-coach-btn {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+}
+
+.unlock-coach-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+}
+
+.coach-locked-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    background: #6366f120;
+    border: 1px solid #6366f130;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6366f1;
+}
+
+/* ============================================
+   GAMES WITH PREDICTIONS
+   ============================================ */
+
+.games-with-predictions {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.game-prediction-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.game-prediction-item:hover {
+    border-color: var(--primary)30;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.game-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 16px;
+}
+
+.game-teams {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.team {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.team-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.team-record {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.game-vs {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 0 8px;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.game-time {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.game-sport {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   PERFORMANCE LEADERBOARD
+   ============================================ */
+
+.performance-table {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.performance-header {
+    display: grid;
+    grid-template-columns: 80px 2fr 1fr 1fr 1fr 1fr;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--primary)08;
+    border-bottom: 2px solid var(--primary)20;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.performance-row {
+    display: grid;
+    grid-template-columns: 80px 2fr 1fr 1fr 1fr 1fr;
+    gap: 16px;
+    padding: 16px 20px;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+}
+
+.performance-row:last-child {
+    border-bottom: none;
+}
+
+.performance-row:hover {
+    background: var(--background-secondary);
+}
+
+.performance-row.locked {
+    opacity: 0.6;
+}
+
+.perf-col {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.perf-col.rank {
+    display: flex;
+    justify-content: center;
+}
+
+.rank-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    background: var(--background-secondary);
+    color: var(--text-primary);
+}
+
+.rank-badge.rank-1 {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #000;
+}
+
+.rank-badge.rank-2 {
+    background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+    color: #000;
+}
+
+.rank-badge.rank-3 {
+    background: linear-gradient(135deg, #cd7f32 0%, #e89a6a 100%);
+    color: #fff;
+}
+
+.perf-col.coach {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.perf-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+}
+
+.perf-avatar.blurred {
+    filter: blur(5px);
+}
+
+.perf-coach-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.perf-coach-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.perf-specialty {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.perf-col span.blurred {
+    filter: blur(4px);
+    user-select: none;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .performance-header,
+    .performance-row {
+        grid-template-columns: 60px 2fr 1fr 1fr 1fr;
+    }
+    
+    .performance-header .perf-col:nth-child(5),
+    .performance-row .perf-col:nth-child(5) {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px;
+    }
+    
+    .page-title {
+        font-size: 24px;
+    }
+    
+    .coaches-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .game-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .game-info {
+        align-items: flex-start;
+    }
+    
+    .performance-header,
+    .performance-row {
+        grid-template-columns: 50px 1.5fr 1fr 1fr;
+        gap: 8px;
+        padding: 12px 16px;
+    }
+    
+    .performance-header .perf-col:nth-child(4),
+    .performance-header .perf-col:nth-child(5),
+    .performance-header .perf-col:nth-child(6),
+    .performance-row .perf-col:nth-child(4),
+    .performance-row .perf-col:nth-child(5),
+    .performance-row .perf-col:nth-child(6) {
+        display: none;
+    }
+}

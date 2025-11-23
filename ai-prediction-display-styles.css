@@ -1,0 +1,797 @@
+/* ============================================
+   AI PREDICTION DISPLAY STYLES
+   Professional prediction cards and UI
+   ============================================ */
+
+/* ============================================
+   PREDICTIONS SECTION
+   ============================================ */
+
+.game-predictions-section {
+    margin-top: 16px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+}
+
+.predictions-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, var(--primary)08 0%, var(--primary)03 100%);
+    border: 1px solid var(--primary)20;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.predictions-toggle:hover {
+    background: linear-gradient(135deg, var(--primary)15 0%, var(--primary)08 100%);
+    border-color: var(--primary)40;
+    transform: translateY(-1px);
+}
+
+.predictions-toggle-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.predictions-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary) 0%, #059669 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+}
+
+.predictions-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+.predictions-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.predictions-count {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.predictions-toggle i.fa-chevron-down,
+.predictions-toggle i.fa-chevron-up {
+    color: var(--primary);
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+/* ============================================
+   PREDICTIONS CONTENT
+   ============================================ */
+
+.predictions-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+
+.predictions-content.expanded {
+    max-height: 5000px;
+}
+
+.predictions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    padding: 16px 0;
+}
+
+@media (max-width: 768px) {
+    .predictions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   PREDICTION CARD
+   ============================================ */
+
+.prediction-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.prediction-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary) 0%, #059669 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.prediction-card:hover {
+    border-color: var(--primary)40;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12);
+}
+
+.prediction-card:hover::before {
+    opacity: 1;
+}
+
+/* ============================================
+   COACH HEADER
+   ============================================ */
+
+.prediction-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.coach-avatar-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.coach-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+}
+
+.confidence-badge {
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 2px solid var(--card-bg);
+}
+
+.coach-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.coach-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+
+.coach-specialty {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ============================================
+   PREDICTION PICK
+   ============================================ */
+
+.prediction-pick {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--primary)08;
+    border: 1px solid var(--primary)20;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.pick-team {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.pick-team i {
+    color: var(--primary);
+    font-size: 18px;
+}
+
+.pick-odds {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* ============================================
+   REASONING
+   ============================================ */
+
+.prediction-reasoning {
+    margin-bottom: 16px;
+}
+
+.reasoning-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+}
+
+.reasoning-title i {
+    color: var(--primary);
+}
+
+.reasoning-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.reasoning-list li {
+    padding: 6px 0;
+    padding-left: 24px;
+    position: relative;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.reasoning-list li::before {
+    content: '→';
+    position: absolute;
+    left: 8px;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* ============================================
+   STATS
+   ============================================ */
+
+.prediction-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background: var(--background-secondary);
+    border-radius: 8px;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* ============================================
+   BET DETAILS
+   ============================================ */
+
+.prediction-details {
+    margin-bottom: 16px;
+}
+
+.detail-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: var(--background-secondary);
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.detail-item i {
+    color: var(--primary);
+    font-size: 14px;
+}
+
+.detail-label {
+    color: var(--text-secondary);
+}
+
+.detail-value {
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-left: auto;
+}
+
+/* ============================================
+   COACH PERFORMANCE
+   ============================================ */
+
+.coach-performance {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 12px;
+    background: var(--background-secondary);
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.performance-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.perf-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.perf-value {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.perf-value.excellent {
+    color: #10b981;
+}
+
+.perf-value.good {
+    color: #f59e0b;
+}
+
+.perf-value.average {
+    color: var(--text-secondary);
+}
+
+.perf-value.positive {
+    color: #10b981;
+}
+
+.perf-value.negative {
+    color: #ef4444;
+}
+
+.result-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 4px;
+    margin: 0 2px;
+}
+
+.result-icon.win {
+    background: #10b98120;
+    color: #10b981;
+}
+
+.result-icon.loss {
+    background: #ef444420;
+    color: #ef4444;
+}
+
+.no-data {
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   ACTION BUTTON
+   ============================================ */
+
+.prediction-action-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary) 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.prediction-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.prediction-action-btn:active {
+    transform: translateY(0);
+}
+
+/* ============================================
+   LOCKED PREDICTION
+   ============================================ */
+
+.prediction-card.locked {
+    background: linear-gradient(135deg, var(--card-bg) 0%, var(--background-secondary) 100%);
+}
+
+.prediction-locked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.locked-preview {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.coach-avatar.blurred {
+    filter: blur(8px);
+    opacity: 0.5;
+}
+
+.lock-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+}
+
+.locked-info {
+    margin-bottom: 20px;
+}
+
+.locked-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+.locked-stats {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.locked-stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: var(--background-secondary);
+    border-radius: 10px;
+}
+
+.stat-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--primary)15;
+    color: var(--primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.stat-content .stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.stat-content .stat-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat-content .stat-value.blurred {
+    filter: blur(5px);
+    user-select: none;
+}
+
+/* ============================================
+   UPGRADE BUTTON
+   ============================================ */
+
+.upgrade-btn {
+    width: 100%;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.upgrade-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.upgrade-btn:hover::before {
+    left: 100%;
+}
+
+.upgrade-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+}
+
+.upgrade-price {
+    margin-left: auto;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* ============================================
+   CONSENSUS VIEW
+   ============================================ */
+
+.consensus-card {
+    background: linear-gradient(135deg, var(--primary)10 0%, var(--primary)05 100%);
+    border: 2px solid var(--primary)30;
+    border-radius: 16px;
+    padding: 20px;
+    grid-column: 1 / -1;
+}
+
+.consensus-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.consensus-header i {
+    font-size: 20px;
+    color: var(--primary);
+}
+
+.consensus-header h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.consensus-pick {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: var(--card-bg);
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.consensus-team {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.consensus-agreement {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.consensus-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.breakdown-item {
+    display: grid;
+    grid-template-columns: 100px 1fr 60px;
+    gap: 12px;
+    align-items: center;
+}
+
+.breakdown-pick {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.breakdown-bar {
+    height: 8px;
+    background: var(--background-secondary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.breakdown-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.breakdown-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-align: right;
+}
+
+.consensus-coaches {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.coaches-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.coaches-avatars {
+    display: flex;
+    gap: 4px;
+}
+
+.consensus-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid var(--card-bg);
+    transition: transform 0.2s ease;
+}
+
+.consensus-avatar:hover {
+    transform: scale(1.1);
+    z-index: 10;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.prediction-card {
+    animation: slideIn 0.3s ease forwards;
+}
+
+.prediction-card:nth-child(1) { animation-delay: 0s; }
+.prediction-card:nth-child(2) { animation-delay: 0.1s; }
+.prediction-card:nth-child(3) { animation-delay: 0.2s; }
+.prediction-card:nth-child(4) { animation-delay: 0.3s; }
+.prediction-card:nth-child(5) { animation-delay: 0.4s; }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .prediction-card {
+        padding: 16px;
+    }
+    
+    .coach-avatar {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .predictions-grid {
+        padding: 12px 0;
+        gap: 12px;
+    }
+    
+    .consensus-card {
+        padding: 16px;
+    }
+    
+    .breakdown-item {
+        grid-template-columns: 80px 1fr 50px;
+    }
+}

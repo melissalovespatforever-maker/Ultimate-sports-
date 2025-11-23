@@ -1,0 +1,8 @@
+# Ultimate Sports AI - App-ads.txt
+# This file is used to declare authorized digital sellers
+# Format: domain, publisher_id, relationship, certification_authority_id
+
+# Google AdMob (if applicable in future)
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+
+# Add your authorized sellers here when monetization is implemented
