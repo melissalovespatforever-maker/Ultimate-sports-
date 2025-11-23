@@ -1,0 +1,154 @@
+/* ============================================
+   IN-APP NOTIFICATION STYLES
+   ============================================ */
+
+.in-app-notifications {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.in-app-notification {
+    background: var(--card-bg, #1a1d29);
+    border: 1px solid var(--border-color, #2a2d3a);
+    border-radius: 12px;
+    padding: 16px;
+    min-width: 320px;
+    max-width: 400px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    pointer-events: auto;
+    transform: translateX(450px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.in-app-notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.in-app-notification:hover {
+    transform: translateX(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    border-color: #667eea;
+}
+
+.notification-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+    animation: notification-bounce 0.5s ease;
+}
+
+@keyframes notification-bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.notification-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.notification-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary, #ffffff);
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.notification-body {
+    font-size: 14px;
+    color: var(--text-secondary, #8b92a7);
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary, #8b92a7);
+    font-size: 24px;
+    line-height: 1;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.notification-close:hover {
+    background: rgba(255, 59, 92, 0.1);
+    color: #ff3b5c;
+}
+
+/* Special notification types */
+.in-app-notification[data-type="score_update"] {
+    border-left: 4px solid #10b981;
+}
+
+.in-app-notification[data-type="big_play"] {
+    border-left: 4px solid #f59e0b;
+    animation: big-play-pulse 0.5s ease;
+}
+
+@keyframes big-play-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.02); opacity: 0.95; }
+}
+
+.in-app-notification[data-type="game_end"] {
+    border-left: 4px solid #667eea;
+}
+
+.in-app-notification[data-type="quarter_end"] {
+    border-left: 4px solid #6366f1;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .in-app-notifications {
+        top: 60px;
+        right: 12px;
+        left: 12px;
+    }
+
+    .in-app-notification {
+        min-width: auto;
+        max-width: none;
+        width: 100%;
+    }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+    .in-app-notification {
+        transition: opacity 0.3s ease;
+    }
+
+    .in-app-notification.show {
+        transform: none;
+    }
+
+    .notification-icon {
+        animation: none;
+    }
+
+    @keyframes notification-bounce {
+        0%, 100% { transform: none; }
+    }
+}

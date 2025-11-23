@@ -1,0 +1,1254 @@
+/* ============================================
+   INJURY IMPACT ANALYZER STYLES
+   ============================================ */
+
+.injury-impact-analyzer {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.analyzer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.analyzer-title-section {
+    flex: 1;
+}
+
+.analyzer-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.analyzer-title i {
+    color: #ff5252;
+    font-size: 32px;
+}
+
+.analyzer-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    font-size: 14px;
+}
+
+.analyzer-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.analyzer-btn {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.analyzer-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 82, 82, 0.5);
+    transform: translateY(-2px);
+}
+
+.analyzer-btn .badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff5252;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 18px;
+    text-align: center;
+}
+
+/* ============================================
+   STATS OVERVIEW
+   ============================================ */
+
+.stats-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-box {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.3s ease;
+}
+
+.stat-box:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 82, 82, 0.3);
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    font-size: 36px;
+    opacity: 0.9;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+}
+
+/* ============================================
+   FILTERS
+   ============================================ */
+
+.analyzer-filters {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.filter-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.filter-group i {
+    color: #ff5252;
+    font-size: 16px;
+}
+
+.filter-group select {
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-group select:hover,
+.filter-group select:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ff5252;
+    outline: none;
+}
+
+/* ============================================
+   INJURIES CONTAINER
+   ============================================ */
+
+.injuries-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.no-injuries {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.no-injuries i {
+    font-size: 48px;
+    color: #00c853;
+    margin-bottom: 16px;
+    display: block;
+}
+
+/* ============================================
+   INJURY CARD
+   ============================================ */
+
+.injury-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid #666;
+    padding: 24px;
+    transition: all 0.3s ease;
+}
+
+.injury-card.critical {
+    border-left-color: #ff5252;
+}
+
+.injury-card.high {
+    border-left-color: #ff9800;
+}
+
+.injury-card.medium {
+    border-left-color: #ffc107;
+}
+
+.injury-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Card Header */
+.injury-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.player-avatar {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.player-details {
+    flex: 1;
+}
+
+.player-name {
+    margin: 0 0 4px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.player-team {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+}
+
+.severity-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.severity-badge.out {
+    background: rgba(255, 82, 82, 0.2);
+    color: #ff5252;
+    border: 1px solid #ff5252;
+}
+
+.severity-badge.doubtful {
+    background: rgba(255, 152, 0, 0.2);
+    color: #ff9800;
+    border: 1px solid #ff9800;
+}
+
+.severity-badge.questionable {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid #ffc107;
+}
+
+.severity-badge.probable {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+    border: 1px solid #4caf50;
+}
+
+/* ============================================
+   IMPACT SECTION
+   ============================================ */
+
+.impact-section {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.impact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.impact-header h4 {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 700;
+}
+
+.impact-score {
+    font-size: 24px;
+    font-weight: 900;
+    color: #ff5252;
+}
+
+.impact-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.impact-bar-item {
+    display: grid;
+    grid-template-columns: 80px 1fr 40px;
+    align-items: center;
+    gap: 12px;
+}
+
+.bar-label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+}
+
+.progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.progress-fill.offensive {
+    background: linear-gradient(90deg, #ff5252 0%, #ff8a80 100%);
+}
+
+.progress-fill.defensive {
+    background: linear-gradient(90deg, #2196f3 0%, #64b5f6 100%);
+}
+
+.bar-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    text-align: right;
+}
+
+/* ============================================
+   INJURY DETAILS
+   ============================================ */
+
+.injury-details {
+    margin-bottom: 20px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+}
+
+.detail-label i {
+    color: #ff5252;
+    font-size: 14px;
+}
+
+.detail-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.probability-high {
+    color: #00c853;
+}
+
+.probability-medium {
+    color: #ffc107;
+}
+
+.probability-low {
+    color: #ff5252;
+}
+
+/* ============================================
+   PREDICTION SECTION
+   ============================================ */
+
+.prediction-section {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: rgba(0, 212, 255, 0.05);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 10px;
+}
+
+.prediction-title {
+    margin: 0 0 16px 0;
+    font-size: 15px;
+    color: #00d4ff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.prediction-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.prediction-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.prediction-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.prediction-value {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+}
+
+.prediction-value.major {
+    color: #ff5252;
+}
+
+.prediction-value.medium {
+    color: #ff9800;
+}
+
+.prediction-confidence {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.limited-impact {
+    margin-top: 12px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid #ffc107;
+}
+
+.limited-impact h5 {
+    margin: 0 0 8px 0;
+    font-size: 12px;
+    color: #ffc107;
+    font-weight: 700;
+}
+
+.limited-stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.limited-stats span {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+}
+
+/* ============================================
+   BETTING RECOMMENDATION
+   ============================================ */
+
+.betting-recommendation {
+    margin-bottom: 20px;
+    padding: 16px;
+    border-radius: 10px;
+    border-left: 4px solid;
+}
+
+.betting-recommendation.success {
+    background: rgba(0, 200, 83, 0.1);
+    border-left-color: #00c853;
+}
+
+.betting-recommendation.warning {
+    background: rgba(255, 193, 7, 0.1);
+    border-left-color: #ffc107;
+}
+
+.betting-recommendation.info {
+    background: rgba(33, 150, 243, 0.1);
+    border-left-color: #2196f3;
+}
+
+.recommendation-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.recommendation-header i {
+    font-size: 20px;
+}
+
+.betting-recommendation.success .recommendation-header i {
+    color: #00c853;
+}
+
+.betting-recommendation.warning .recommendation-header i {
+    color: #ffc107;
+}
+
+.betting-recommendation.info .recommendation-header i {
+    color: #2196f3;
+}
+
+.recommendation-title {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.urgency-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.urgency-badge.high {
+    background: #ff5252;
+    color: #fff;
+}
+
+.urgency-badge.medium {
+    background: #ff9800;
+    color: #fff;
+}
+
+.urgency-badge.low {
+    background: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.recommendation-reason {
+    margin: 0 0 12px 0;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+}
+
+.recommended-side {
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.recommended-side strong {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.value-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffd700;
+}
+
+.value-indicator i {
+    font-size: 16px;
+}
+
+/* ============================================
+   HISTORICAL CONTEXT
+   ============================================ */
+
+.historical-context {
+    margin-bottom: 16px;
+}
+
+.expand-btn {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+
+.expand-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.expand-btn i:first-child {
+    margin-right: 8px;
+}
+
+.historical-content {
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.historical-content.collapsed {
+    max-height: 0;
+}
+
+.historical-data {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0 0 8px 8px;
+    margin-top: -8px;
+}
+
+.historical-data h5 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 700;
+}
+
+.historical-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.hist-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+}
+
+.hist-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.hist-value {
+    font-size: 12px;
+    font-weight: 700;
+    color: #00d4ff;
+}
+
+.past-injuries {
+    margin-top: 16px;
+}
+
+.past-injuries h6 {
+    margin: 0 0 12px 0;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 700;
+}
+
+.injury-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.timeline-item {
+    display: grid;
+    grid-template-columns: 20px 1fr auto;
+    align-items: center;
+    gap: 12px;
+}
+
+.timeline-dot {
+    width: 8px;
+    height: 8px;
+    background: #ff5252;
+    border-radius: 50%;
+    position: relative;
+}
+
+.timeline-dot::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 20px;
+    background: rgba(255, 82, 82, 0.3);
+}
+
+.timeline-item:last-child .timeline-dot::before {
+    display: none;
+}
+
+.timeline-injury {
+    font-size: 13px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.timeline-date {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================
+   CARD FOOTER
+   ============================================ */
+
+.injury-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.update-time {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.alert-btn {
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.alert-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #ff5252;
+}
+
+.alert-btn.highlight {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    border-color: #ffd700;
+    color: #000;
+}
+
+.alert-btn.highlight:hover {
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.4);
+}
+
+.alert-btn.active {
+    background: #00c853;
+    border-color: #00c853;
+    pointer-events: none;
+}
+
+/* ============================================
+   LOCKED CONTENT
+   ============================================ */
+
+.locked-content {
+    grid-column: 1 / -1;
+    min-height: 500px;
+    position: relative;
+}
+
+.locked-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+}
+
+.locked-overlay i {
+    font-size: 64px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.locked-overlay h3 {
+    margin: 0;
+    font-size: 28px;
+    color: #fff;
+}
+
+.locked-overlay p {
+    margin: 0;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 400px;
+}
+
+.locked-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.locked-feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.locked-feature i {
+    color: #00c853;
+    font-size: 16px;
+}
+
+.locked-feature span {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+}
+
+.unlock-btn-large {
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    border: none;
+    border-radius: 12px;
+    color: #000;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.unlock-btn-large:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 215, 0, 0.5);
+}
+
+.unlock-note {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================
+   ACCURACY MODAL
+   ============================================ */
+
+.accuracy-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.accuracy-modal.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-header {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.close-modal {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #ff5252;
+    color: #ff5252;
+}
+
+.modal-content {
+    padding: 24px;
+    max-height: calc(80vh - 82px);
+    overflow-y: auto;
+}
+
+.accuracy-overview {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.accuracy-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-circle {
+    width: 150px;
+    height: 150px;
+    position: relative;
+}
+
+.stat-circle svg {
+    width: 100%;
+    height: 100%;
+}
+
+.stat-circle-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 36px;
+    font-weight: 900;
+    color: #fff;
+}
+
+.stat-circle-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    text-align: center;
+}
+
+.accuracy-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.breakdown-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+}
+
+.breakdown-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: #00d4ff;
+}
+
+.accuracy-by-sport h4 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    color: #fff;
+}
+
+.sport-accuracy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.sport-acc-card {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sport-icon {
+    font-size: 36px;
+}
+
+.sport-name {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+}
+
+.sport-accuracy {
+    font-size: 24px;
+    font-weight: 900;
+    color: #00c853;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .injuries-container {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+
+    .prediction-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .accuracy-overview {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .injury-impact-analyzer {
+        padding: 16px;
+    }
+
+    .analyzer-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .analyzer-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .analyzer-btn {
+        flex: 1;
+        min-width: calc(50% - 6px);
+        justify-content: center;
+    }
+
+    .stats-overview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .analyzer-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group select {
+        width: 100%;
+    }
+
+    .injuries-container {
+        grid-template-columns: 1fr;
+    }
+
+    .impact-bar-item {
+        grid-template-columns: 70px 1fr 35px;
+    }
+
+    .locked-features {
+        grid-template-columns: 1fr;
+    }
+
+    .sport-accuracy-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .analyzer-title {
+        font-size: 22px;
+    }
+
+    .injury-card {
+        padding: 16px;
+    }
+
+    .player-name {
+        font-size: 18px;
+    }
+
+    .prediction-value {
+        font-size: 18px;
+    }
+
+    .historical-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+.modal-content::-webkit-scrollbar,
+.historical-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content::-webkit-scrollbar-track,
+.historical-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.modal-content::-webkit-scrollbar-thumb,
+.historical-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 82, 82, 0.5);
+    border-radius: 4px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover,
+.historical-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 82, 82, 0.7);
+}
