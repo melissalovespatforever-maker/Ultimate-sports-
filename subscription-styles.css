@@ -1,0 +1,726 @@
+/* ============================================
+   SUBSCRIPTION STYLES
+   Pricing page and subscription management
+   ============================================ */
+
+/* ============================================
+   SUBSCRIPTION PAGE
+   ============================================ */
+
+.subscription-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.subscription-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.subscription-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #10b981, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subscription-subtitle {
+    font-size: 1.25rem;
+    color: #9ca3af;
+    margin-bottom: 2rem;
+}
+
+/* ============================================
+   BILLING TOGGLE
+   ============================================ */
+
+.billing-toggle {
+    display: inline-flex;
+    background: #1f2937;
+    border-radius: 12px;
+    padding: 4px;
+    gap: 4px;
+}
+
+.billing-option {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: transparent;
+    color: #9ca3af;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.billing-option.active {
+    background: #10b981;
+    color: white;
+}
+
+.savings-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+/* ============================================
+   PRICING CARDS
+   ============================================ */
+
+.pricing-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.pricing-card {
+    background: #1f2937;
+    border-radius: 16px;
+    padding: 2rem;
+    border: 2px solid #374151;
+    transition: all 0.3s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.pricing-card:hover {
+    transform: translateY(-4px);
+    border-color: #10b981;
+    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.1);
+}
+
+.pricing-card.popular {
+    border-color: #10b981;
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+}
+
+.pricing-card.current {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.current-badge {
+    position: absolute;
+    top: -12px;
+    right: 1rem;
+    background: #3b82f6;
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.pricing-card-header {
+    text-align: center;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #374151;
+    margin-bottom: 2rem;
+}
+
+.pricing-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 1rem;
+}
+
+.pricing-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.pricing-amount {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+.price-currency {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #9ca3af;
+}
+
+.price-value {
+    font-size: 3rem;
+    font-weight: 800;
+    color: white;
+}
+
+.price-interval {
+    font-size: 1rem;
+    color: #9ca3af;
+}
+
+.pricing-savings {
+    margin-top: 0.5rem;
+    color: #10b981;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.pricing-billed {
+    margin-top: 0.25rem;
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.pricing-features {
+    flex: 1;
+    margin-bottom: 2rem;
+}
+
+.pricing-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.pricing-feature svg {
+    flex-shrink: 0;
+    color: #10b981;
+    margin-top: 2px;
+}
+
+.pricing-feature span {
+    color: #d1d5db;
+    line-height: 1.6;
+}
+
+.pricing-coaches {
+    padding: 1rem;
+    background: rgba(16, 185, 129, 0.05);
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.coaches-label {
+    font-size: 0.85rem;
+    color: #9ca3af;
+    margin-bottom: 0.5rem;
+}
+
+.coaches-count {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.pricing-cta {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.pricing-cta:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.pricing-cta:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pricing-cta.current {
+    background: #374151;
+    color: #9ca3af;
+}
+
+/* ============================================
+   FEATURES COMPARISON
+   ============================================ */
+
+.features-comparison {
+    margin-bottom: 4rem;
+}
+
+.comparison-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.comparison-table-element {
+    width: 100%;
+    background: #1f2937;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.comparison-table-element thead {
+    background: #374151;
+}
+
+.comparison-table-element th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 700;
+    color: #f3f4f6;
+}
+
+.comparison-table-element tbody tr {
+    border-bottom: 1px solid #374151;
+}
+
+.comparison-table-element tbody tr:last-child {
+    border-bottom: none;
+}
+
+.comparison-table-element td {
+    padding: 1rem;
+    color: #d1d5db;
+}
+
+.feature-name {
+    font-weight: 600;
+}
+
+.feature-value {
+    text-align: center;
+}
+
+/* ============================================
+   FAQ SECTION
+   ============================================ */
+
+.subscription-faq {
+    max-width: 800px;
+    margin: 0 auto 4rem;
+}
+
+.faq-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.faq-item {
+    background: #1f2937;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.faq-question {
+    width: 100%;
+    padding: 1.5rem;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: left;
+    transition: background 0.2s;
+}
+
+.faq-question:hover {
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.faq-question svg {
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.faq-item.active .faq-question svg {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+}
+
+.faq-answer p {
+    padding: 0 1.5rem 1.5rem;
+    color: #9ca3af;
+    line-height: 1.6;
+}
+
+/* ============================================
+   TRUST SECTION
+   ============================================ */
+
+.trust-section {
+    padding: 3rem 0;
+}
+
+.trust-badges {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #9ca3af;
+    font-weight: 600;
+}
+
+.trust-badge svg {
+    color: #10b981;
+}
+
+/* ============================================
+   SUBSCRIPTION MODAL
+   ============================================ */
+
+.subscription-modal {
+    max-width: 600px;
+}
+
+.current-subscription {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: #1f2937;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.subscription-badge {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.subscription-info h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.subscription-price {
+    color: #10b981;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.subscription-warning {
+    color: #f59e0b;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.subscription-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border: 2px solid #374151;
+    background: transparent;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-button:hover {
+    background: #374151;
+    transform: translateY(-2px);
+}
+
+.action-button.upgrade {
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.action-button.upgrade:hover {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.action-button.resume {
+    border-color: #3b82f6;
+    color: #3b82f6;
+}
+
+.action-button.resume:hover {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.action-button.danger {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.action-button.danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.subscription-benefits {
+    padding: 1.5rem;
+    background: #1f2937;
+    border-radius: 12px;
+}
+
+.subscription-benefits h4 {
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.subscription-benefits ul {
+    list-style: none;
+    padding: 0;
+}
+
+.subscription-benefits li {
+    padding: 0.5rem 0;
+    color: #d1d5db;
+}
+
+/* ============================================
+   UPGRADE MODAL
+   ============================================ */
+
+.upgrade-modal {
+    max-width: 700px;
+}
+
+.upgrade-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.upgrade-option {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: #1f2937;
+    border-radius: 12px;
+    border: 2px solid #374151;
+    transition: all 0.2s;
+}
+
+.upgrade-option:hover {
+    border-color: #10b981;
+}
+
+.upgrade-badge {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.upgrade-info {
+    flex: 1;
+}
+
+.upgrade-info h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.upgrade-price {
+    color: #10b981;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.upgrade-features {
+    list-style: none;
+    padding: 0;
+}
+
+.upgrade-features li {
+    font-size: 0.9rem;
+    color: #9ca3af;
+    margin-bottom: 0.25rem;
+}
+
+.upgrade-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.upgrade-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   CONFIRMATION MODAL
+   ============================================ */
+
+.confirmation-modal {
+    max-width: 500px;
+}
+
+.cancel-loses {
+    background: #1f2937;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    list-style: none;
+}
+
+.cancel-loses li {
+    padding: 0.5rem 0;
+    color: #f87171;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.button {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button.secondary {
+    background: #374151;
+    color: white;
+}
+
+.button.secondary:hover {
+    background: #4b5563;
+}
+
+.button.danger {
+    background: #ef4444;
+    color: white;
+}
+
+.button.danger:hover {
+    background: #dc2626;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .subscription-title {
+        font-size: 2rem;
+    }
+
+    .subscription-subtitle {
+        font-size: 1rem;
+    }
+
+    .pricing-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .billing-toggle {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .billing-option {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .trust-badges {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .comparison-table-element {
+        font-size: 0.85rem;
+    }
+
+    .comparison-table-element th,
+    .comparison-table-element td {
+        padding: 0.75rem 0.5rem;
+    }
+}

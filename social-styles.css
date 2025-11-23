@@ -1,0 +1,939 @@
+/* ========================================
+   SOCIAL FEATURES STYLES
+   ======================================== */
+
+/* Social Header */
+.social-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.add-friend-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.add-friend-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+/* Social Stats Grid */
+.social-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.social-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    transition: var(--transition-normal);
+}
+
+.social-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.social-stat-card .stat-icon {
+    font-size: 2.5rem;
+}
+
+.social-stat-card .stat-content {
+    flex: 1;
+}
+
+.social-stat-card .stat-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+}
+
+.social-stat-card .stat-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.social-stat-card.online {
+    border-color: var(--accent-primary);
+}
+
+.social-stat-card.challenges {
+    border-color: var(--accent-secondary);
+}
+
+/* Social Tabs */
+.social-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--border-color);
+    overflow-x: auto;
+}
+
+.social-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    position: relative;
+    white-space: nowrap;
+}
+
+.social-tab:hover {
+    color: var(--text-primary);
+}
+
+.social-tab.active {
+    color: var(--accent-primary);
+}
+
+.social-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--gradient-primary);
+}
+
+.social-tab .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background: var(--accent-danger);
+    color: white;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* Social Section */
+.social-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+/* Friend Requests */
+.friend-requests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.friend-request-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    gap: 1.5rem;
+}
+
+.request-user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.user-details h4 {
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+}
+
+.user-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.request-message {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    font-style: italic;
+    color: var(--text-secondary);
+}
+
+.request-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.accept-request-btn,
+.decline-request-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.accept-request-btn {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.accept-request-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.decline-request-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.decline-request-btn:hover {
+    background: var(--bg-primary);
+}
+
+/* Friends Grid */
+.friends-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.friend-card {
+    position: relative;
+    padding: 1.5rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    transition: var(--transition-normal);
+}
+
+.friend-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-primary);
+}
+
+.friend-status-indicator {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-tertiary);
+}
+
+.friend-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin: 0 auto 1rem;
+}
+
+.friend-info {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.friend-info h4 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.friend-level {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--gradient-secondary);
+    color: white;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.friend-stats {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.friend-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.friend-action-btn {
+    width: 44px;
+    height: 44px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.friend-action-btn:hover {
+    background: var(--bg-card);
+    transform: scale(1.1);
+}
+
+.friend-action-btn.challenge-btn:hover {
+    border-color: var(--accent-secondary);
+}
+
+/* Challenges */
+.challenges-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.create-challenge-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--gradient-secondary);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.create-challenge-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+}
+
+.challenges-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.challenge-card {
+    padding: 1.5rem;
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    transition: var(--transition-normal);
+}
+
+.challenge-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.challenge-card.active {
+    border-color: var(--accent-primary);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 100%);
+}
+
+.challenge-card.pending {
+    border-color: var(--accent-secondary);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, transparent 100%);
+}
+
+.challenge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.challenge-type-badge {
+    padding: 0.5rem 1rem;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.challenge-type-badge.head-to-head {
+    color: var(--accent-primary);
+}
+
+.challenge-type-badge.weekly-competition {
+    color: var(--accent-secondary);
+}
+
+.challenge-type-badge.parlay-battle {
+    color: var(--accent-info);
+}
+
+.challenge-status {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.challenge-status.active {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--accent-primary);
+}
+
+.challenge-status.pending {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--accent-secondary);
+}
+
+.challenge-matchup {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: var(--bg-primary);
+    border-radius: 12px;
+}
+
+.challenge-participant {
+    text-align: center;
+    flex: 1;
+}
+
+.participant-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin: 0 auto 1rem;
+}
+
+.participant-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.participant-score {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.participant-score .profit {
+    display: block;
+    font-weight: 700;
+    margin-top: 0.25rem;
+}
+
+.participant-score .profit.positive {
+    color: var(--accent-primary);
+}
+
+.participant-score .profit.negative {
+    color: var(--accent-danger);
+}
+
+.vs-divider {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--accent-secondary);
+    margin: 0 1rem;
+}
+
+.challenge-details {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+}
+
+.challenge-details > div {
+    text-align: center;
+}
+
+.detail-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.detail-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.challenge-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.accept-challenge-btn,
+.decline-challenge-btn,
+.view-challenge-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.accept-challenge-btn {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.accept-challenge-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.decline-challenge-btn {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.view-challenge-btn {
+    background: var(--bg-primary);
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+/* Activity Feed */
+.activity-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    transition: var(--transition-fast);
+}
+
+.activity-item:hover {
+    background: var(--bg-card);
+}
+
+.activity-user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    flex-shrink: 0;
+}
+
+.activity-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.activity-icon.success {
+    background: rgba(16, 185, 129, 0.2);
+}
+
+.activity-icon.achievement {
+    background: rgba(245, 158, 11, 0.2);
+}
+
+.activity-icon.challenge {
+    background: rgba(139, 92, 246, 0.2);
+}
+
+.activity-icon.levelup {
+    background: rgba(59, 130, 246, 0.2);
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-content p {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.activity-time {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* Friend Leaderboard */
+.friend-leaderboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    transition: var(--transition-fast);
+}
+
+.leaderboard-item:hover {
+    transform: translateX(4px);
+    background: var(--bg-card);
+}
+
+.leaderboard-item .rank {
+    font-size: 1.25rem;
+    font-weight: 800;
+    min-width: 40px;
+    text-align: center;
+}
+
+.leaderboard-item .user-avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 1.75rem;
+}
+
+.leaderboard-item .user-info {
+    flex: 1;
+}
+
+.leaderboard-item .user-info h4 {
+    margin-bottom: 0.25rem;
+}
+
+.user-stats-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.leaderboard-item .user-points {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-secondary);
+    margin-right: 1rem;
+}
+
+.challenge-btn-small {
+    padding: 0.5rem 1rem;
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.challenge-btn-small:hover {
+    transform: scale(1.05);
+}
+
+/* Social Modal */
+.social-modal {
+    max-width: 600px;
+}
+
+.search-box {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.search-btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.search-btn:hover {
+    transform: scale(1.05);
+}
+
+.search-results {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    transition: var(--transition-fast);
+}
+
+.search-result-item:hover {
+    background: var(--bg-card);
+}
+
+.search-result-item .user-avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 1.75rem;
+}
+
+.search-result-item .user-info {
+    flex: 1;
+}
+
+.send-request-btn {
+    padding: 0.5rem 1rem;
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.send-request-btn:hover {
+    transform: scale(1.05);
+}
+
+.send-request-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.search-hint,
+.no-results {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.cancel-btn,
+.submit-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.cancel-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.submit-btn {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.submit-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.empty-icon {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .social-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .friends-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .challenge-matchup {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .vs-divider {
+        transform: rotate(90deg);
+        margin: 0;
+    }
+
+    .challenge-details {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .friend-request-card {
+        flex-direction: column;
+    }
+
+    .request-actions {
+        width: 100%;
+    }
+
+    .accept-request-btn,
+    .decline-request-btn {
+        flex: 1;
+    }
+}
