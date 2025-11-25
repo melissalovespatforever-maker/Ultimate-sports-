@@ -328,7 +328,7 @@ export class LiveGamesFeed {
     // DATA & FILTERING
     // ============================================
 
-    async loadGames() {
+      async loadGames() {
         try {
             // Try to fetch from API first
             const apiUrl = `${CONFIG.API.BASE_URL}/api/test/games`;
@@ -336,25 +336,28 @@ export class LiveGamesFeed {
             
             const response = await fetch(apiUrl, {
                 method: 'GET',
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json' },
+                timeout: 5000
             });
             
             if (response.ok) {
                 const result = await response.json();
-                console.log('✅ Games loaded from API:', result.data.games);
-                // If API returns data, use it
-                if (result.data && result.data.games && result.data.games.length > 0) {
-                    console.log('🎉 Using real API data!');
-                    // Show alert to confirm API is working
-                    alert(`✅ API Working!\n\n${JSON.stringify(result.data.games, null, 2)}`);
-                    return;
+                console.log('✅ Games loaded from API:', result);
+                // Show success message on tablet
+                if (result.success) {
+                    alert('✅ BACKEND CONNECTED!\n\n' + 
+                          'API is working perfectly!\n' +
+                          'Status: ' + result.message);
                 }
+            } else {
+                console.warn('API returned status:', response.status);
             }
         } catch (error) {
-            console.error('❌ API fetch failed:', error);
+            console.error('❌ API fetch failed:', error.message);
+            alert('⚠️ API Connection Issue:\n' + error.message);
         }
         
-        // Fallback: Use mock data
+        // Load mock data for display
         this.games = [
             {
                 id: 'nfl-1',
