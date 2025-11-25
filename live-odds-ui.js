@@ -184,25 +184,51 @@ const LiveOddsUI = {
                             </div>
                             <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                                 <span style="font-weight: 600;">${game.away_team}</span>
-                                <span style="
+                                <button onclick='window.BetSlipUI?.addPick({
+                                    gameId: "${game.id}",
+                                    game: "${game.away_team} @ ${game.home_team}",
+                                    sport: "${game.sport_key}",
+                                    homeTeam: "${game.home_team}",
+                                    awayTeam: "${game.away_team}",
+                                    gameTime: "${game.commence_time}",
+                                    betType: "Moneyline",
+                                    selection: "${game.away_team} ML",
+                                    odds: ${bestH2H.away.price}
+                                })' style="
                                     background: ${bestH2H.away.price > 0 ? '#10b981' : '#ef4444'};
                                     color: white;
                                     padding: 4px 12px;
                                     border-radius: 6px;
                                     font-weight: 700;
                                     font-size: 14px;
-                                ">${bestH2H.away.price > 0 ? '+' : ''}${bestH2H.away.price}</span>
+                                    border: none;
+                                    cursor: pointer;
+                                    transition: transform 0.2s;
+                                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">${bestH2H.away.price > 0 ? '+' : ''}${bestH2H.away.price}</button>
                             </div>
                             <div style="display: flex; justify-content: space-between;">
                                 <span style="font-weight: 600;">${game.home_team}</span>
-                                <span style="
+                                <button onclick='window.BetSlipUI?.addPick({
+                                    gameId: "${game.id}",
+                                    game: "${game.away_team} @ ${game.home_team}",
+                                    sport: "${game.sport_key}",
+                                    homeTeam: "${game.home_team}",
+                                    awayTeam: "${game.away_team}",
+                                    gameTime: "${game.commence_time}",
+                                    betType: "Moneyline",
+                                    selection: "${game.home_team} ML",
+                                    odds: ${bestH2H.home.price}
+                                })' style="
                                     background: ${bestH2H.home.price > 0 ? '#10b981' : '#ef4444'};
                                     color: white;
                                     padding: 4px 12px;
                                     border-radius: 6px;
                                     font-weight: 700;
                                     font-size: 14px;
-                                ">${bestH2H.home.price > 0 ? '+' : ''}${bestH2H.home.price}</span>
+                                    border: none;
+                                    cursor: pointer;
+                                    transition: transform 0.2s;
+                                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">${bestH2H.home.price > 0 ? '+' : ''}${bestH2H.home.price}</button>
                             </div>
                             <div style="font-size: 11px; color: #6b7280; margin-top: 8px;">
                                 Best: ${bestH2H.bookmaker}
