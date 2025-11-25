@@ -7,7 +7,7 @@
     
     <!-- Primary Meta Tags -->
     <meta name="title" content="Ultimate Sports AI - Sports Analytics Education Platform">
-    <meta name="description" content="Learn sports analytics with AI-powered coaching. Educational platform for tracking picks, mastering data analysis, and joining a community of sports enthusiasts.">
+    <meta name="description" content="Learn sports analytics with AI-powered coaching. Educational platform for tracking picks, mastering data analysis, and joining a community of sports enthusiasts. No gambling - pure education.">
     <meta name="theme-color" content="#10b981">
     
     <!-- Icons -->
@@ -22,112 +22,135 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    <!-- Main Styles -->
-    <link rel="stylesheet" href="styles.css">
+    <!-- App Configuration (load first) -->
+    <script src="config.js"></script>
     
-    <style>
-        /* Override for page display */
-        .page {
-            display: none;
-        }
-        
-        .page.active {
-            display: block !important;
-        }
-        
-        /* Ensure drawer works */
-        #drawer-nav {
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
-        
-        #drawer-nav.active {
-            transform: translateX(0);
-        }
-        
-        #drawer-overlay {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        
-        #drawer-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        
-        /* Bottom nav active state */
-        .bottom-nav-item.active {
-            color: #10b981;
-        }
-        
-        .bottom-nav-item.active i {
-            color: #10b981;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="icon-enhancements.css">
+    <link rel="stylesheet" href="buildabet-styles.css">
+    <link rel="stylesheet" href="analytics-styles.css">
+    <link rel="stylesheet" href="line-movement-styles.css">
+    <link rel="stylesheet" href="social-styles.css">
+    <link rel="stylesheet" href="notification-styles.css">
+    <link rel="stylesheet" href="live-score-styles.css">
+    <link rel="stylesheet" href="share-modal-styles.css">
+    <link rel="stylesheet" href="templates-styles.css">
+    <link rel="stylesheet" href="odds-comparison-styles.css">
+    <link rel="stylesheet" href="game-detail-styles.css">
+    <link rel="stylesheet" href="bet-analytics-styles.css">
+    <link rel="stylesheet" href="bet-history-filter-styles.css">
+    <link rel="stylesheet" href="template-performance-styles.css">
+    <link rel="stylesheet" href="subscription-styles.css">
+    <link rel="stylesheet" href="paywall-styles.css">
+    <link rel="stylesheet" href="coach-pick-sharing-styles.css">
+    <link rel="stylesheet" href="notification-settings-styles.css">
+    <link rel="stylesheet" href="in-app-notification-styles.css">
+    <link rel="stylesheet" href="betting-pools-styles.css">
+    <link rel="stylesheet" href="pool-chat-styles.css">
+    <link rel="stylesheet" href="ai-coaching-dashboard-styles.css">
+    <link rel="stylesheet" href="ai-prediction-display-styles.css">
+    <link rel="stylesheet" href="ai-predictions-demo-styles.css">
+    <link rel="stylesheet" href="ai-coach-comparison-styles.css">
+    <link rel="stylesheet" href="coach-performance-history-styles.css">
+    <link rel="stylesheet" href="live-odds-tracker-styles.css">
+    <link rel="stylesheet" href="injury-impact-analyzer-styles.css">
+    <link rel="stylesheet" href="educational-disclaimer-styles.css">
+    <link rel="stylesheet" href="meeting-room-styles.css">
+    <link rel="stylesheet" href="live-games-feed-styles.css">
+    <link rel="stylesheet" href="profile-styles.css">
+    <link rel="stylesheet" href="achievements-styles.css">
+    <link rel="stylesheet" href="challenges-styles.css">
+    <link rel="stylesheet" href="shop-styles.css">
+    <link rel="stylesheet" href="daily-streak-styles.css">
+    <link rel="stylesheet" href="referral-styles.css">
+    <link rel="stylesheet" href="lucky-wheel-styles.css">
+    <link rel="stylesheet" href="friend-system-styles.css">
+    <link rel="stylesheet" href="activity-feed-styles.css">
+    <link rel="stylesheet" href="collaborative-analysis-styles.css">
+    <link rel="stylesheet" href="meeting-room-improved-styles.css">
+    <link rel="stylesheet" href="parlay-builder-styles.css">
+    <link rel="stylesheet" href="arbitrage-detector-styles.css">
+    <link rel="stylesheet" href="injury-tracker-styles.css">
+    <link rel="stylesheet" href="live-odds-comparison-styles.css">
+    <link rel="stylesheet" href="paypal-payment-styles.css">
+    <link rel="stylesheet" href="paypal-invoice-styles.css">
+    <link rel="stylesheet" href="community-chat-styles.css">
+    <link rel="stylesheet" href="user-profile-styles.css">
+    <link rel="stylesheet" href="live-odds-matrix-styles.css">
+    <link rel="stylesheet" href="subscription-email-receipt-styles.css">
+    <link rel="stylesheet" href="subscription-notification-center-styles.css">
+    <link rel="stylesheet" href="live-odds-real-time-styles.css">
 </head>
 <body>
     <!-- App Container -->
     <div id="app">
-        <!-- Top App Bar -->
+        <!-- Top App Bar (Mobile & Desktop) -->
         <header class="app-bar">
             <button id="menu-btn" class="icon-button" aria-label="Menu">
                 <i class="fas fa-bars"></i>
             </button>
             
-            <div class="app-title">
+            <div class="app-bar-title">
                 <img src="https://play.rosebud.ai/assets/Super intelligent AI high res icon by pridictmaster Ai.png?5eN6" alt="Logo" class="app-logo">
-                <span>Ultimate Sports AI</span>
+                <span>Sports AI</span>
             </div>
             
             <div class="app-bar-actions">
-                <button class="icon-button" id="notifications-btn" aria-label="Notifications">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+                <button id="community-chat-btn" class="icon-button" aria-label="Community Chat" title="Join Community Chat">
+                    <i class="fas fa-comments"></i>
+                    <span class="chat-badge">LIVE</span>
                 </button>
-                <button class="icon-button profile-btn" data-page="profile" aria-label="Profile">
+                <button id="betting-pools-btn" class="icon-button" aria-label="Group Challenges" title="Join Group Challenges">
+                    <i class="fas fa-trophy"></i>
+                </button>
+                <button id="push-notification-settings-btn" class="icon-button" aria-label="Push Notification Settings" title="Live Score Alerts">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button id="notifications-btn" class="icon-button" aria-label="Notifications">
+                    <i class="fas fa-bolt"></i>
+                    <span class="notification-badge" id="notification-count">3</span>
+                </button>
+                <button id="profile-btn" class="icon-button" aria-label="Profile" title="View Profile">
                     <i class="fas fa-user-circle"></i>
                 </button>
             </div>
         </header>
 
-        <!-- Drawer Overlay -->
-        <div id="drawer-overlay"></div>
-
-        <!-- Drawer Navigation -->
-        <nav id="drawer-nav" class="drawer">
+        <!-- Side Navigation Drawer (Mobile) -->
+        <div id="drawer-overlay" class="drawer-overlay"></div>
+        <nav id="drawer-nav" class="drawer-nav">
             <div class="drawer-header">
-                <div class="user-profile-section">
-                    <div class="user-avatar">
-                        <i class="fas fa-user-circle"></i>
+                <div class="drawer-profile">
+                    <div class="drawer-avatar">
+                        <i class="fas fa-user-circle" style="font-size: 48px; color: var(--primary);"></i>
                     </div>
-                    <div class="user-info">
-                        <h3>Guest User</h3>
-                        <p class="user-tier">FREE TIER</p>
+                    <div class="drawer-user-info">
+                        <h3 id="drawer-username">Player</h3>
+                        <p id="drawer-tier">FREE Member</p>
                     </div>
                 </div>
-                <button id="upgrade-btn" class="upgrade-button">
-                    <i class="fas fa-crown"></i> Upgrade to PRO
-                </button>
+                <div class="drawer-header-actions">
+                    <button id="drawer-close-btn" class="icon-button" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
 
             <div class="drawer-menu">
-                <!-- Dashboard -->
+                <!-- Main Features -->
                 <div class="menu-section">
-                    <h4 class="menu-section-title">Dashboard</h4>
-                    <button class="menu-item" data-page="home">
+                    <h4 class="menu-section-title">Main Features</h4>
+                    <button class="menu-item active" data-page="home">
                         <i class="fas fa-home"></i>
                         <span>Home</span>
                     </button>
                     <button class="menu-item" data-page="live-games">
-                        <i class="fas fa-play-circle"></i>
+                        <i class="fas fa-signal"></i>
                         <span>Live Games</span>
-                        <span class="premium-badge live-badge">LIVE</span>
                     </button>
                     <button class="menu-item" data-page="meeting-room">
-                        <i class="fas fa-door-open"></i>
+                        <i class="fas fa-users-cog"></i>
                         <span>Meeting Room</span>
-                        <span class="premium-badge">NEW</span>
                     </button>
                 </div>
 
@@ -190,7 +213,7 @@
                 <!-- Community -->
                 <div class="menu-section">
                     <h4 class="menu-section-title">Community</h4>
-                    <button class="menu-item" data-page="chat">
+                    <button class="menu-item" id="chat-menu-btn">
                         <i class="fas fa-comments"></i>
                         <span>Live Chat</span>
                         <span class="premium-badge live-badge">LIVE</span>
@@ -199,7 +222,7 @@
                         <i class="fas fa-medal"></i>
                         <span>Leaderboard</span>
                     </button>
-                    <button class="menu-item" data-page="friends">
+                    <button class="menu-item" id="friends-menu-btn">
                         <i class="fas fa-user-friends"></i>
                         <span>Friends</span>
                     </button>
@@ -219,280 +242,173 @@
 
                 <!-- Settings -->
                 <div class="menu-section">
-                    <button class="menu-item" data-page="settings">
+                    <button class="menu-item" id="settings-menu-btn">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
                     </button>
-                    <button class="menu-item" data-page="help">
+                    <button class="menu-item" id="help-menu-btn">
                         <i class="fas fa-question-circle"></i>
                         <span>Help & FAQ</span>
                     </button>
                 </div>
             </div>
+
+            <div class="drawer-footer">
+                <div class="balance-display">
+                    <div class="balance-item">
+                        <span class="balance-label">Accuracy</span>
+                        <span class="balance-value" id="drawer-accuracy-value">68%</span>
+                    </div>
+                    <div class="balance-item">
+                        <span class="balance-label">Level</span>
+                        <span class="balance-value" id="drawer-level">5</span>
+                    </div>
+                </div>
+            </div>
         </nav>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- HOME PAGE -->
-            <div id="home-page" class="page active">
-                <div class="page-header">
-                    <h1>Welcome to Ultimate Sports AI</h1>
-                    <p class="page-subtitle">Master sports analytics with AI-powered insights</p>
-                </div>
-
-                <div class="quick-actions">
-                    <div class="quick-action-card" data-action="coaching">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-robot"></i>
+        <!-- Main Content Area -->
+        <main id="main-content" class="main-content">
+            <!-- Dynamic pages will be loaded here -->
+            <div id="page-container" class="page-container">
+                <!-- Home Page -->
+                <div id="home-page" class="page active">
+                    <!-- Educational Disclaimer -->
+                    <div class="educational-disclaimer educational-disclaimer--banner">
+                        <div class="disclaimer-content">
+                            <i class="fas fa-graduation-cap disclaimer-icon"></i>
+                            <div class="disclaimer-text">
+                                <strong>Educational Platform</strong>
+                                <p>We provide sports analytics education and community. We do not process bets, hold funds, or facilitate gambling. All predictions and analysis are for learning purposes only.</p>
+                            </div>
                         </div>
-                        <h3>AI Coaches</h3>
-                        <p>Get expert predictions</p>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <button class="quick-action-card" data-action="live-games">
+                            <div class="quick-action-icon game">
+                                <img src="https://play.rosebud.ai/assets/Ultimate%20sports%20AI%20computer%20Lab.png?kq0G" alt="Ultimate Sports AI" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                            </div>
+                            <div class="quick-action-info">
+                                <h3>Live Games</h3>
+                                <p>Real-time Odds & Scores</p>
+                            </div>
+                        </button>
+                        
+                        <button class="quick-action-card" data-action="meeting-room">
+                            <div class="quick-action-icon bet">
+                                <i class="fas fa-users-cog"></i>
+                            </div>
+                            <div class="quick-action-info">
+                                <h3>Meeting Room</h3>
+                                <p>AI Strategy Sessions</p>
+                            </div>
+                        </button>
+
+                        <button class="quick-action-card" data-action="shop">
+                            <div class="quick-action-icon shop" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="quick-action-info">
+                                <h3>Item Shop</h3>
+                                <p>Spend Your Coins</p>
+                            </div>
+                        </button>
                     </div>
 
-                    <div class="quick-action-card" data-action="live-games">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-play-circle"></i>
+                    <!-- Stats Overview -->
+                    <div class="stats-overview">
+                        <div class="stat-card">
+                            <div class="stat-icon win-rate">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="home-win-rate">68%</span>
+                                <span class="stat-label">Win Rate</span>
+                            </div>
                         </div>
-                        <h3>Live Games</h3>
-                        <p>Track games in real-time</p>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon profit">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="home-picks-tracked">142</span>
+                                <span class="stat-label">Picks Tracked</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon streak">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="home-win-streak">7</span>
+                                <span class="stat-label">Win Streak</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="quick-action-card" data-action="analytics">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-chart-line"></i>
+                    <!-- Live Games Section -->
+                    <section class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <span class="live-indicator"></span>
+                                <i class="fas fa-broadcast-tower" style="color: var(--danger); margin-right: 8px; font-size: 18px;"></i>
+                                Live Games
+                            </h2>
+                            <button class="section-action" data-navigate="live-games">
+                                <span>View All</span>
+                                <i class="fas fa-arrow-right" style="margin-left: 6px; font-size: 14px;"></i>
+                            </button>
                         </div>
-                        <h3>Analytics</h3>
-                        <p>View your stats</p>
-                    </div>
+                        <div id="home-live-games" class="live-games-grid"></div>
+                    </section>
 
-                    <div class="quick-action-card" data-action="odds-comparison">
-                        <div class="quick-action-icon">
-                            <i class="fas fa-exchange-alt"></i>
+                    <!-- Hot Picks Section -->
+                    <section class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <i class="fas fa-fire" style="color: var(--danger); margin-right: 8px; font-size: 20px; animation: pulse-glow 2s ease-in-out infinite;"></i>
+                                Today's Hot Picks
+                            </h2>
+                            <button class="section-action" data-navigate="coaching">
+                                <span>See More</span>
+                                <i class="fas fa-arrow-right" style="margin-left: 6px; font-size: 14px;"></i>
+                            </button>
                         </div>
-                        <h3>Best Odds</h3>
-                        <p>Compare 30+ sportsbooks</p>
-                    </div>
-                </div>
-            </div>
+                        <div id="home-hot-picks" class="hot-picks-grid"></div>
+                    </section>
 
-            <!-- COACHING PAGE -->
-            <div id="coaching-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-robot"></i> AI Coaches</h1>
-                    <p class="page-subtitle">Get expert AI-powered sports predictions</p>
+                    <!-- Recent Activity -->
+                    <section class="content-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <i class="fas fa-clock" style="color: var(--text-secondary); margin-right: 8px; font-size: 18px;"></i>
+                                Recent Activity
+                            </h2>
+                        </div>
+                        <div id="home-recent-activity" class="activity-list"></div>
+                    </section>
                 </div>
-                <div class="content-placeholder">
-                    <p>AI Coaches content will load here...</p>
-                </div>
-            </div>
 
-            <!-- LIVE GAMES PAGE -->
-            <div id="live-games-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-play-circle"></i> Live Games</h1>
-                    <p class="page-subtitle">Track live games and scores in real-time</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Live games feed will load here...</p>
-                </div>
-            </div>
-
-            <!-- MEETING ROOM PAGE -->
-            <div id="meeting-room-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-door-open"></i> Meeting Room</h1>
-                    <p class="page-subtitle">Collaborate with other sports analysts</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Meeting room content will load here...</p>
-                </div>
-            </div>
-
-            <!-- ANALYTICS PAGE -->
-            <div id="analytics-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-chart-line"></i> Analytics</h1>
-                    <p class="page-subtitle">Track your performance metrics</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Analytics dashboard will load here...</p>
-                </div>
-            </div>
-
-            <!-- BET HISTORY PAGE -->
-            <div id="bet-history-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-history"></i> Pick History</h1>
-                    <p class="page-subtitle">Review your past predictions</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Pick history will load here...</p>
-                </div>
-            </div>
-
-            <!-- LINE MOVEMENT PAGE -->
-            <div id="line-movement-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-chart-area"></i> Line Movement</h1>
-                    <p class="page-subtitle">Track betting line changes</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Line movement tracker will load here...</p>
-                </div>
-            </div>
-
-            <!-- PARLAY BUILDER PAGE -->
-            <div id="parlay-builder-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-layer-group"></i> Parlay Builder</h1>
-                    <p class="page-subtitle">Build optimized parlay bets with AI</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Parlay builder will load here...</p>
-                </div>
-            </div>
-
-            <!-- ARBITRAGE PAGE -->
-            <div id="arbitrage-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-balance-scale"></i> Arbitrage Detector</h1>
-                    <p class="page-subtitle">Find arbitrage opportunities across sportsbooks</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Arbitrage detector will load here...</p>
-                </div>
-            </div>
-
-            <!-- INJURIES PAGE -->
-            <div id="injuries-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-plus-circle"></i> Injury Tracker</h1>
-                    <p class="page-subtitle">Monitor player injuries and impact</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Injury tracker will load here...</p>
-                </div>
-            </div>
-
-            <!-- ODDS COMPARISON PAGE -->
-            <div id="odds-comparison-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-exchange-alt"></i> Odds Comparison</h1>
-                    <p class="page-subtitle">Compare odds across 30+ sportsbooks</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Odds comparison will load here...</p>
-                </div>
-            </div>
-
-            <!-- ANALYSIS ROOMS PAGE -->
-            <div id="analysis-rooms-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-users-cog"></i> Analysis Rooms</h1>
-                    <p class="page-subtitle">Join collaborative analysis sessions</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Analysis rooms will load here...</p>
-                </div>
-            </div>
-
-            <!-- SOCIAL PAGE -->
-            <div id="social-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-users"></i> Social Feed</h1>
-                    <p class="page-subtitle">Connect with the community</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Social feed will load here...</p>
-                </div>
-            </div>
-
-            <!-- CHAT PAGE -->
-            <div id="chat-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-comments"></i> Live Chat</h1>
-                    <p class="page-subtitle">Chat with other sports enthusiasts</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Live chat will load here...</p>
-                </div>
-            </div>
-
-            <!-- LEADERBOARD PAGE -->
-            <div id="leaderboard-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-medal"></i> Leaderboard</h1>
-                    <p class="page-subtitle">See top performers</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Leaderboard will load here...</p>
-                </div>
-            </div>
-
-            <!-- FRIENDS PAGE -->
-            <div id="friends-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-user-friends"></i> Friends</h1>
-                    <p class="page-subtitle">Manage your friend connections</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Friends list will load here...</p>
-                </div>
-            </div>
-
-            <!-- REWARDS PAGE -->
-            <div id="rewards-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-gift"></i> Rewards</h1>
-                    <p class="page-subtitle">Claim your rewards and bonuses</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Rewards system will load here...</p>
-                </div>
-            </div>
-
-            <!-- SHOP PAGE -->
-            <div id="shop-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-store"></i> Shop</h1>
-                    <p class="page-subtitle">Purchase items with your points</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Shop will load here...</p>
-                </div>
-            </div>
-
-            <!-- PROFILE PAGE -->
-            <div id="profile-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-user"></i> Profile</h1>
-                    <p class="page-subtitle">Manage your account settings</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Profile settings will load here...</p>
-                </div>
-            </div>
-
-            <!-- SETTINGS PAGE -->
-            <div id="settings-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-cog"></i> Settings</h1>
-                    <p class="page-subtitle">Configure your preferences</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Settings will load here...</p>
-                </div>
-            </div>
-
-            <!-- HELP PAGE -->
-            <div id="help-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-question-circle"></i> Help & FAQ</h1>
-                    <p class="page-subtitle">Get help and answers to common questions</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Help documentation will load here...</p>
-                </div>
+                <!-- Other pages will be dynamically loaded -->
+                <div id="coaching-page" class="page"></div>
+                <div id="live-games-page" class="page"></div>
+                <div id="meeting-room-page" class="page"></div>
+                <div id="analytics-page" class="page"></div>
+                <div id="bet-history-page" class="page"></div>
+                <div id="line-movement-page" class="page"></div>
+                <div id="social-page" class="page"></div>
+                <div id="leaderboard-page" class="page"></div>
+                <div id="rewards-page" class="page"></div>
+                <div id="profile-page" class="page"></div>
+                <div id="shop-page" class="page"></div>
+                <div id="analysis-rooms-page" class="page"></div>
+                <div id="odds-comparison-page" class="page"></div>
+                <div id="parlay-builder-page" class="page"></div>
+                <div id="arbitrage-page" class="page"></div>
+                <div id="injuries-page" class="page"></div>
             </div>
         </main>
 
@@ -503,109 +419,39 @@
                 <span>Home</span>
             </button>
             <button class="bottom-nav-item" data-page="live-games">
-                <i class="fas fa-play-circle"></i>
+                <i class="fas fa-signal"></i>
                 <span>Live</span>
             </button>
-            <button class="bottom-nav-item" data-page="coaching">
-                <i class="fas fa-robot"></i>
-                <span>AI Picks</span>
+            <button class="bottom-nav-item fab" data-page="meeting-room">
+                <i class="fas fa-users-cog"></i>
             </button>
             <button class="bottom-nav-item" data-page="analytics">
                 <i class="fas fa-chart-line"></i>
                 <span>Analytics</span>
             </button>
-            <button class="bottom-nav-item" data-page="profile">
-                <i class="fas fa-user"></i>
-                <span>Profile</span>
+            <button class="bottom-nav-item" data-page="social">
+                <i class="fas fa-users"></i>
+                <span>Social</span>
             </button>
         </nav>
     </div>
 
-    <!-- VERSION 3.0 - CLEAN NAVIGATION SCRIPT -->
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
     <script>
-        console.log('🚀 Ultimate Sports AI - Version 3.0');
+        // ============================================
+        // INLINE MINIMAL APP - Navigation Only
+        // ============================================
         
-        // Simple navigation system
-        const AppNavigation = {
+        console.log('🚀 INLINE APP LOADING...');
+        
+        // Simple navigation
+        const navigation = {
             currentPage: 'home',
             
-            init() {
-                console.log('⚙️ Initializing navigation...');
-                this.setupDrawer();
-                this.setupNavButtons();
-                this.setupQuickActions();
-                console.log('✅ Navigation ready!');
-            },
-            
-            setupDrawer() {
-                const menuBtn = document.getElementById('menu-btn');
-                const drawer = document.getElementById('drawer-nav');
-                const overlay = document.getElementById('drawer-overlay');
-                
-                if (menuBtn && drawer && overlay) {
-                    menuBtn.addEventListener('click', () => {
-                        console.log('📂 Toggle drawer');
-                        drawer.classList.toggle('active');
-                        overlay.classList.toggle('active');
-                    });
-                    
-                    overlay.addEventListener('click', () => {
-                        console.log('📤 Close drawer');
-                        drawer.classList.remove('active');
-                        overlay.classList.remove('active');
-                    });
-                }
-            },
-            
-            setupNavButtons() {
-                // Bottom nav
-                document.querySelectorAll('.bottom-nav-item[data-page]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const page = btn.dataset.page;
-                        console.log(`🔘 Bottom nav: ${page}`);
-                        this.navigateTo(page);
-                        
-                        // Update active state
-                        document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                    });
-                });
-                
-                // Drawer menu
-                document.querySelectorAll('.menu-item[data-page]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const page = btn.dataset.page;
-                        console.log(`📋 Menu: ${page}`);
-                        this.navigateTo(page);
-                        
-                        // Close drawer
-                        document.getElementById('drawer-nav').classList.remove('active');
-                        document.getElementById('drawer-overlay').classList.remove('active');
-                    });
-                });
-                
-                // Top bar profile button
-                document.querySelectorAll('.profile-btn[data-page]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const page = btn.dataset.page;
-                        console.log(`👤 Profile button: ${page}`);
-                        this.navigateTo(page);
-                    });
-                });
-            },
-            
-            setupQuickActions() {
-                document.querySelectorAll('.quick-action-card[data-action]').forEach(card => {
-                    card.addEventListener('click', () => {
-                        const page = card.dataset.action;
-                        console.log(`⚡ Quick action: ${page}`);
-                        this.navigateTo(page);
-                    });
-                });
-            },
-            
             navigateTo(page) {
-                console.log(`📍 Navigate to: ${page}`);
+                console.log(`📍 Navigating to: ${page}`);
                 
                 // Hide all pages
                 document.querySelectorAll('.page').forEach(p => {
@@ -616,23 +462,134 @@
                 const targetPage = document.getElementById(`${page}-page`);
                 if (targetPage) {
                     targetPage.classList.add('active');
+                    console.log(`✅ Showed page: ${page}-page`);
                     this.currentPage = page;
-                    window.scrollTo(0, 0);
-                    console.log(`✅ Showing: ${page}`);
                 } else {
-                    console.error(`❌ Page not found: ${page}`);
+                    console.error(`❌ Page not found: ${page}-page`);
                 }
             }
         };
         
-        // Initialize when DOM is ready
+        // Setup button handlers
+        function setupNavigation() {
+            console.log('⚙️ Setting up navigation handlers...');
+            
+            // Hamburger menu
+            const menuBtn = document.getElementById('menu-btn');
+            const drawer = document.getElementById('drawer-nav');
+            const drawerOverlay = document.getElementById('drawer-overlay');
+            
+            if (menuBtn) {
+                menuBtn.addEventListener('click', () => {
+                    console.log('🎯 Menu button clicked');
+                    drawer.classList.toggle('active');
+                    drawerOverlay.classList.toggle('active');
+                });
+                console.log('✅ Menu button handler set');
+            } else {
+                console.error('❌ Menu button not found!');
+            }
+            
+            // Close drawer when overlay is clicked
+            if (drawerOverlay) {
+                drawerOverlay.addEventListener('click', () => {
+                    console.log('📤 Closing drawer via overlay');
+                    drawer.classList.remove('active');
+                    drawerOverlay.classList.remove('active');
+                });
+            }
+            
+            // Close drawer button
+            const closeBtn = document.getElementById('drawer-close-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    console.log('📤 Close button clicked');
+                    drawer.classList.remove('active');
+                    drawerOverlay.classList.remove('active');
+                });
+            }
+            
+            // Bottom nav items
+            const bottomNavItems = document.querySelectorAll('.bottom-nav-item[data-page]');
+            console.log(`Found ${bottomNavItems.length} bottom nav items`);
+            bottomNavItems.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = btn.dataset.page;
+                    console.log(`🔘 Bottom nav clicked: ${page}`);
+                    
+                    // Update active state
+                    document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    btn.classList.add('active');
+                    
+                    navigation.navigateTo(page);
+                });
+            });
+            console.log('✅ Bottom nav handlers set');
+            
+            // Drawer menu items
+            const menuItems = document.querySelectorAll('.menu-item[data-page]');
+            console.log(`Found ${menuItems.length} drawer menu items`);
+            menuItems.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = btn.dataset.page;
+                    console.log(`📋 Drawer menu clicked: ${page}`);
+                    
+                    // Update active state
+                    document.querySelectorAll('.menu-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    btn.classList.add('active');
+                    
+                    navigation.navigateTo(page);
+                    drawer.classList.remove('active');
+                    drawerOverlay.classList.remove('active');
+                });
+            });
+            console.log('✅ Drawer menu handlers set');
+            
+            // Quick action cards
+            const quickActions = document.querySelectorAll('.quick-action-card[data-action]');
+            console.log(`Found ${quickActions.length} quick action cards`);
+            quickActions.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = btn.dataset.action;
+                    console.log(`⚡ Quick action clicked: ${page}`);
+                    navigation.navigateTo(page);
+                });
+            });
+            console.log('✅ Quick action handlers set');
+            
+            // Section action buttons (View All, See More)
+            const sectionButtons = document.querySelectorAll('[data-navigate]');
+            console.log(`Found ${sectionButtons.length} section buttons`);
+            sectionButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = btn.dataset.navigate;
+                    console.log(`🎬 Section button clicked: ${page}`);
+                    navigation.navigateTo(page);
+                });
+            });
+            console.log('✅ Section button handlers set');
+        }
+        
+        // Wait for DOM then initialize
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
-                AppNavigation.init();
+                console.log('📄 DOM loaded via event');
+                setupNavigation();
+                console.log('✅ INLINE APP READY!');
             });
         } else {
-            AppNavigation.init();
+            console.log('📄 DOM already loaded');
+            setupNavigation();
+            console.log('✅ INLINE APP READY!');
         }
+        
+        // Make available globally for debugging
+        window.navigation = navigation;
+        console.log('✅ Navigation system exposed to window');
     </script>
 </body>
 </html>
