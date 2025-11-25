@@ -844,14 +844,38 @@ class SportAIApp {
         if (winStreakEl) winStreakEl.textContent = state.user.stats?.currentStreak || 7;
     }
 
-    setupEventListeners() {
-        // Profile button
+        setupEventListeners() {
+        // Profile button - check auth first
         const profileBtn = document.getElementById('profile-btn');
         if (profileBtn) {
             profileBtn.addEventListener('click', () => {
-                this.navigation.navigateTo('profile');
+                if (authSystem.isAuthenticated) {
+                    this.navigation.navigateTo('profile');
+                } else {
+                    authUI.showLoginModal();
+                }
             });
         }
+
+        // "View All" buttons on home page for Live Games & Hot Picks
+        document.querySelectorAll('.section-action').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const section = e.target.closest('.content-section');
+                if (!section) return;
+                
+                const title = section.querySelector('.section-title')?.textContent || '';
+                
+                if (title.includes('Live Games')) {
+                    window.dispatchEvent(new CustomEvent('pagechange', {
+                        detail: { page: 'live-games' }
+                    }));
+                } else if (title.includes('Hot Picks') || title.includes('Today\'s')) {
+                    window.dispatchEvent(new CustomEvent('pagechange', {
+                        detail: { page: 'coaching' }
+                    }));
+                }
+            });
+        });
 
         // Settings button in drawer
         const settingsMenuBtn = document.getElementById('settings-menu-btn');
