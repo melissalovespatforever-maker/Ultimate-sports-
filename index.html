@@ -406,6 +406,9 @@
                 <div id="shop-page" class="page"></div>
                 <div id="analysis-rooms-page" class="page"></div>
                 <div id="odds-comparison-page" class="page"></div>
+                <div id="parlay-builder-page" class="page"></div>
+                <div id="arbitrage-page" class="page"></div>
+                <div id="injuries-page" class="page"></div>
             </div>
         </main>
 
@@ -436,6 +439,157 @@
     <!-- Toast Notifications -->
     <div id="toast-container" class="toast-container"></div>
 
-    <script src="./app-minimal.js"></script>
+    <script>
+        // ============================================
+        // INLINE MINIMAL APP - Navigation Only
+        // ============================================
+        
+        console.log('🚀 INLINE APP LOADING...');
+        
+        // Simple navigation
+        const navigation = {
+            currentPage: 'home',
+            
+            navigateTo(page) {
+                console.log(`📍 Navigating to: ${page}`);
+                
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(p => {
+                    p.classList.remove('active');
+                });
+                
+                // Show target page
+                const targetPage = document.getElementById(`${page}-page`);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                    console.log(`✅ Showed page: ${page}-page`);
+                    this.currentPage = page;
+                } else {
+                    console.error(`❌ Page not found: ${page}-page`);
+                }
+            }
+        };
+        
+        // Setup button handlers
+        function setupNavigation() {
+            console.log('⚙️ Setting up navigation handlers...');
+            
+            // Hamburger menu
+            const menuBtn = document.getElementById('menu-btn');
+            const drawer = document.getElementById('drawer-nav');
+            const drawerOverlay = document.getElementById('drawer-overlay');
+            
+            if (menuBtn) {
+                menuBtn.addEventListener('click', () => {
+                    console.log('🎯 Menu button clicked');
+                    drawer.classList.toggle('active');
+                    drawerOverlay.classList.toggle('active');
+                });
+                console.log('✅ Menu button handler set');
+            } else {
+                console.error('❌ Menu button not found!');
+            }
+            
+            // Close drawer when overlay is clicked
+            if (drawerOverlay) {
+                drawerOverlay.addEventListener('click', () => {
+                    console.log('📤 Closing drawer via overlay');
+                    drawer.classList.remove('active');
+                    drawerOverlay.classList.remove('active');
+                });
+            }
+            
+            // Close drawer button
+            const closeBtn = document.getElementById('drawer-close-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    console.log('📤 Close button clicked');
+                    drawer.classList.remove('active');
+                    drawerOverlay.classList.remove('active');
+                });
+            }
+            
+            // Bottom nav items
+            const bottomNavItems = document.querySelectorAll('.bottom-nav-item[data-page]');
+            console.log(`Found ${bottomNavItems.length} bottom nav items`);
+            bottomNavItems.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = btn.dataset.page;
+                    console.log(`🔘 Bottom nav clicked: ${page}`);
+                    
+                    // Update active state
+                    document.querySelectorAll('.bottom-nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    btn.classList.add('active');
+                    
+                    navigation.navigateTo(page);
+                });
+            });
+            console.log('✅ Bottom nav handlers set');
+            
+            // Drawer menu items
+            const menuItems = document.querySelectorAll('.menu-item[data-page]');
+            console.log(`Found ${menuItems.length} drawer menu items`);
+            menuItems.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = btn.dataset.page;
+                    console.log(`📋 Drawer menu clicked: ${page}`);
+                    
+                    // Update active state
+                    document.querySelectorAll('.menu-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    btn.classList.add('active');
+                    
+                    navigation.navigateTo(page);
+                    drawer.classList.remove('active');
+                    drawerOverlay.classList.remove('active');
+                });
+            });
+            console.log('✅ Drawer menu handlers set');
+            
+            // Quick action cards
+            const quickActions = document.querySelectorAll('.quick-action-card[data-action]');
+            console.log(`Found ${quickActions.length} quick action cards`);
+            quickActions.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = btn.dataset.action;
+                    console.log(`⚡ Quick action clicked: ${page}`);
+                    navigation.navigateTo(page);
+                });
+            });
+            console.log('✅ Quick action handlers set');
+            
+            // Section action buttons (View All, See More)
+            const sectionButtons = document.querySelectorAll('[data-navigate]');
+            console.log(`Found ${sectionButtons.length} section buttons`);
+            sectionButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const page = btn.dataset.navigate;
+                    console.log(`🎬 Section button clicked: ${page}`);
+                    navigation.navigateTo(page);
+                });
+            });
+            console.log('✅ Section button handlers set');
+        }
+        
+        // Wait for DOM then initialize
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('📄 DOM loaded via event');
+                setupNavigation();
+                console.log('✅ INLINE APP READY!');
+            });
+        } else {
+            console.log('📄 DOM already loaded');
+            setupNavigation();
+            console.log('✅ INLINE APP READY!');
+        }
+        
+        // Make available globally for debugging
+        window.navigation = navigation;
+        console.log('✅ Navigation system exposed to window');
+    </script>
 </body>
 </html>
