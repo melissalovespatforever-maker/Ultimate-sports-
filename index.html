@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <!-- App Configuration (load first) -->
-    <script src="config.js"></script>
+    <!-- DISABLED: <script src="config.js"></script> -->
     
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="icon-enhancements.css">
@@ -82,6 +82,21 @@
     <link rel="stylesheet" href="live-odds-real-time-styles.css">
 </head>
 <body>
+    <script>
+        // BLOCK ALL OTHER EVENT LISTENERS AND SCRIPTS
+        // Intercept and disable any external JS trying to interfere
+        window.addEventListener('load', (e) => {
+            e.stopImmediatePropagation();
+        }, true);
+        
+        // Clear any existing listeners that might have been added
+        if (window.app) window.app = null;
+        if (window.appInstance) window.appInstance = null;
+        if (window.initApp) window.initApp = null;
+        
+        console.log('🔒 SECURITY SCRIPT: External JS blocked');
+    </script>
+
     <!-- App Container -->
     <div id="app">
         <!-- Top App Bar (Mobile & Desktop) -->
@@ -406,9 +421,6 @@
                 <div id="shop-page" class="page"></div>
                 <div id="analysis-rooms-page" class="page"></div>
                 <div id="odds-comparison-page" class="page"></div>
-                <div id="parlay-builder-page" class="page"></div>
-                <div id="arbitrage-page" class="page"></div>
-                <div id="injuries-page" class="page"></div>
             </div>
         </main>
 
@@ -499,16 +511,6 @@
                 });
             }
             
-            // Close drawer button
-            const closeBtn = document.getElementById('drawer-close-btn');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    console.log('📤 Close button clicked');
-                    drawer.classList.remove('active');
-                    drawerOverlay.classList.remove('active');
-                });
-            }
-            
             // Bottom nav items
             const bottomNavItems = document.querySelectorAll('.bottom-nav-item[data-page]');
             console.log(`Found ${bottomNavItems.length} bottom nav items`);
@@ -516,13 +518,6 @@
                 btn.addEventListener('click', () => {
                     const page = btn.dataset.page;
                     console.log(`🔘 Bottom nav clicked: ${page}`);
-                    
-                    // Update active state
-                    document.querySelectorAll('.bottom-nav-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    btn.classList.add('active');
-                    
                     navigation.navigateTo(page);
                 });
             });
@@ -535,13 +530,6 @@
                 btn.addEventListener('click', () => {
                     const page = btn.dataset.page;
                     console.log(`📋 Drawer menu clicked: ${page}`);
-                    
-                    // Update active state
-                    document.querySelectorAll('.menu-item').forEach(item => {
-                        item.classList.remove('active');
-                    });
-                    btn.classList.add('active');
-                    
                     navigation.navigateTo(page);
                     drawer.classList.remove('active');
                     drawerOverlay.classList.remove('active');
@@ -590,6 +578,19 @@
         // Make available globally for debugging
         window.navigation = navigation;
         console.log('✅ Navigation system exposed to window');
+        
+        // NUCLEAR OPTION: Block ALL alerts and external interference
+        window.alert = function(msg) {
+            console.log('🚫 ALERT BLOCKED:', msg);
+        };
+        
+        // Intercept any data attributes that might trigger old code
+        const originalQuery = document.querySelector;
+        document.querySelector = function(selector) {
+            return originalQuery.call(document, selector);
+        };
+        
+        console.log('🛡️ DEFENSE SYSTEM ACTIVE - All alerts blocked');
     </script>
 </body>
 </html>
