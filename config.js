@@ -12,7 +12,7 @@ const CONFIG = {
     // Backend API URL - automatically switches based on environment
     BASE_URL: window.location.hostname === 'localhost'
       ? 'http://localhost:3001'
-      : (window.ENV?.API_URL || 'https://ultimate-sports-ai-backend-production.up.railway.app'),
+      : 'https://ultimate-sports-ai-backend-production.up.railway.app',
     
     // WebSocket URL for real-time updates
     WS_URL: window.location.hostname === 'localhost'
