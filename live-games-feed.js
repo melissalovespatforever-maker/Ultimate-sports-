@@ -172,29 +172,29 @@ export class LiveGamesFeed {
                 <!-- Teams -->
                 <div class="game-teams">
                     <div class="team away-team">
-                        <div class="team-logo">${game.awayTeam.logo}</div>
+                        <div class="team-logo">${game.awayTeam?.logo || '🏆'}</div>
                         <div class="team-info">
-                            <div class="team-name">${game.awayTeam.name}</div>
-                            <div class="team-record">${game.awayTeam.record || '0-0'}</div>
+                            <div class="team-name">${game.awayTeam?.name || 'Away Team'}</div>
+                            <div class="team-record">${game.awayTeam?.record || '0-0'}</div>
                         </div>
                         ${game.status === 'live' || game.status === 'final' ? 
-                            `<div class="team-score">${game.awayTeam.score}</div>` : ''}
+                            `<div class="team-score">${game.awayTeam?.score || 0}</div>` : ''}
                     </div>
 
                     <div class="game-divider">
                         ${game.status === 'upcoming' ? 
-                            `<div class="game-time">${game.startTime}</div>` : 
+                            `<div class="game-time">${game.startTime || 'TBD'}</div>` : 
                             `<div class="vs-text">@</div>`}
                     </div>
 
                     <div class="team home-team">
-                        <div class="team-logo">${game.homeTeam.logo}</div>
+                        <div class="team-logo">${game.homeTeam?.logo || '🏆'}</div>
                         <div class="team-info">
-                            <div class="team-name">${game.homeTeam.name}</div>
-                            <div class="team-record">${game.homeTeam.record || '0-0'}</div>
+                            <div class="team-name">${game.homeTeam?.name || 'Home Team'}</div>
+                            <div class="team-record">${game.homeTeam?.record || '0-0'}</div>
                         </div>
                         ${game.status === 'live' || game.status === 'final' ? 
-                            `<div class="team-score">${game.homeTeam.score}</div>` : ''}
+                            `<div class="team-score">${game.homeTeam?.score || 0}</div>` : ''}
                     </div>
                 </div>
 
@@ -208,9 +208,6 @@ export class LiveGamesFeed {
                             <i class="fas fa-chart-line"></i>
                             Live Odds
                         </span>
-                        <span class="odds-movement ${game.oddsMovement > 0 ? 'up' : 'down'}">
-                            ${game.oddsMovement > 0 ? '↑' : '↓'} Moving
-                        </span>
                     </div>
 
                     <div class="odds-grid">
@@ -219,12 +216,12 @@ export class LiveGamesFeed {
                             <div class="odds-label">Money Line</div>
                             <div class="odds-buttons">
                                 <button class="odds-btn away-odds" data-bet-type="ml" data-team="away">
-                                    <span class="odds-team">${game.awayTeam.abbr}</span>
-                                    <span class="odds-value">${game.odds.awayML > 0 ? '+' : ''}${game.odds.awayML}</span>
+                                    <span class="odds-team">${game.awayTeam?.abbr || 'A'}</span>
+                                    <span class="odds-value">-110</span>
                                 </button>
                                 <button class="odds-btn home-odds" data-bet-type="ml" data-team="home">
-                                    <span class="odds-team">${game.homeTeam.abbr}</span>
-                                    <span class="odds-value">${game.odds.homeML > 0 ? '+' : ''}${game.odds.homeML}</span>
+                                    <span class="odds-team">${game.homeTeam?.abbr || 'H'}</span>
+                                    <span class="odds-value">-110</span>
                                 </button>
                             </div>
                         </div>
@@ -234,12 +231,12 @@ export class LiveGamesFeed {
                             <div class="odds-label">Spread</div>
                             <div class="odds-buttons">
                                 <button class="odds-btn away-odds" data-bet-type="spread" data-team="away">
-                                    <span class="odds-team">${game.awayTeam.abbr}</span>
-                                    <span class="odds-value">${game.odds.awaySpread > 0 ? '+' : ''}${game.odds.awaySpread}</span>
+                                    <span class="odds-team">${game.awayTeam?.abbr || 'A'}</span>
+                                    <span class="odds-value">-2.5</span>
                                 </button>
                                 <button class="odds-btn home-odds" data-bet-type="spread" data-team="home">
-                                    <span class="odds-team">${game.homeTeam.abbr}</span>
-                                    <span class="odds-value">${game.odds.homeSpread > 0 ? '+' : ''}${game.odds.homeSpread}</span>
+                                    <span class="odds-team">${game.homeTeam?.abbr || 'H'}</span>
+                                    <span class="odds-value">+2.5</span>
                                 </button>
                             </div>
                         </div>
@@ -250,11 +247,11 @@ export class LiveGamesFeed {
                             <div class="odds-buttons">
                                 <button class="odds-btn over-odds" data-bet-type="total" data-team="over">
                                     <span class="odds-team">O</span>
-                                    <span class="odds-value">${game.odds.total}</span>
+                                    <span class="odds-value">45.5</span>
                                 </button>
                                 <button class="odds-btn under-odds" data-bet-type="total" data-team="under">
                                     <span class="odds-team">U</span>
-                                    <span class="odds-value">${game.odds.total}</span>
+                                    <span class="odds-value">45.5</span>
                                 </button>
                             </div>
                         </div>
@@ -266,7 +263,7 @@ export class LiveGamesFeed {
                     <div class="ai-prediction">
                         <div class="ai-icon">🤖</div>
                         <div class="ai-content">
-                            <div class="ai-pick">${game.aiPrediction.pick}</div>
+                            <div class="ai-pick">${game.aiPrediction?.pick || 'No prediction'}</div>
                             <div class="ai-confidence">
                                 <div class="confidence-bar">
                                     <div class="confidence-fill" style="width: ${aiConfidence}%"></div>
@@ -285,7 +282,7 @@ export class LiveGamesFeed {
                     </button>
                     <button class="game-action-btn primary" data-action="discuss" data-game-id="${game.id}">
                         <i class="fas fa-comments"></i>
-                        <span>Discuss in Meeting Room</span>
+                        <span>Discuss</span>
                     </button>
                 </div>
             </div>
@@ -298,11 +295,11 @@ export class LiveGamesFeed {
                 return `
                     <div class="status-live">
                         <span class="live-dot"></span>
-                        <span class="status-text">${game.period} - ${game.clock}</span>
+                        <span class="status-text">LIVE</span>
                     </div>
                 `;
             case 'upcoming':
-                return `<div class="status-upcoming">${game.startTime}</div>`;
+                return `<div class="status-upcoming">UPCOMING</div>`;
             case 'final':
                 return `<div class="status-final">Final</div>`;
             default:
@@ -331,8 +328,33 @@ export class LiveGamesFeed {
     // DATA & FILTERING
     // ============================================
 
-    loadGames() {
-        // Mock data - in production, fetch from API
+    async loadGames() {
+        try {
+            // Try to fetch from API first
+            const apiUrl = `${CONFIG.API.BASE_URL}/api/test/games`;
+            console.log('📡 Fetching games from:', apiUrl);
+            
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                console.log('✅ Games loaded from API:', result.data.games);
+                // If API returns data, use it
+                if (result.data && result.data.games && result.data.games.length > 0) {
+                    console.log('🎉 Using real API data!');
+                    // Show alert to confirm API is working
+                    alert(`✅ API Working!\n\n${JSON.stringify(result.data.games, null, 2)}`);
+                    return;
+                }
+            }
+        } catch (error) {
+            console.error('❌ API fetch failed:', error);
+        }
+        
+        // Fallback: Use mock data
         this.games = [
             {
                 id: 'nfl-1',
@@ -469,74 +491,8 @@ export class LiveGamesFeed {
                     pick: 'Celtics -2.5',
                     confidence: 65
                 }
-            },
-            {
-                id: 'mlb-1',
-                league: 'MLB',
-                status: 'live',
-                period: 'Top 7th',
-                clock: '2 Outs',
-                startTime: '7:05 PM ET',
-                awayTeam: {
-                    name: 'NY Yankees',
-                    abbr: 'NYY',
-                    logo: '⚾',
-                    record: '45-32',
-                    score: 3
-                },
-                homeTeam: {
-                    name: 'Boston Red Sox',
-                    abbr: 'BOS',
-                    logo: '⚾',
-                    record: '40-37',
-                    score: 2
-                },
-                odds: {
-                    awayML: -130,
-                    homeML: +110,
-                    awaySpread: -1.5,
-                    homeSpread: +1.5,
-                    total: 8.5
-                },
-                oddsMovement: 1,
-                aiPrediction: {
-                    pick: 'Yankees ML',
-                    confidence: 61
-                }
-            },
-            {
-                id: 'nhl-1',
-                league: 'NHL',
-                status: 'upcoming',
-                startTime: '7:00 PM ET',
-                awayTeam: {
-                    name: 'Toronto Maple Leafs',
-                    abbr: 'TOR',
-                    logo: '🏒',
-                    record: '24-10-3'
-                },
-                homeTeam: {
-                    name: 'Tampa Bay Lightning',
-                    abbr: 'TB',
-                    logo: '🏒',
-                    record: '22-12-2'
-                },
-                odds: {
-                    awayML: -115,
-                    homeML: -105,
-                    awaySpread: -1.5,
-                    homeSpread: +1.5,
-                    total: 6.5
-                },
-                oddsMovement: -1,
-                aiPrediction: {
-                    pick: 'Over 6.5',
-                    confidence: 70
-                }
             }
         ];
-
-        this.updateLiveGameCount();
     }
 
     getFilteredGames() {
@@ -547,204 +503,51 @@ export class LiveGamesFeed {
         });
     }
 
-    updateLiveGameCount() {
-        const liveCount = this.games.filter(g => g.status === 'live').length;
-        const counter = document.getElementById('live-game-count');
-        if (counter) {
-            counter.textContent = `${liveCount} Live`;
-        }
-    }
-
-    // ============================================
-    // EVENT HANDLERS
-    // ============================================
-
     attachEventListeners() {
-        // League filters
-        document.querySelectorAll('.filter-chip').forEach(chip => {
-            chip.addEventListener('click', (e) => {
-                const league = e.currentTarget.dataset.league;
-                this.filters.league = league;
-                this.updateView();
+        // Filter buttons
+        document.querySelectorAll('[data-league]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                this.filters.league = e.currentTarget.dataset.league;
+                this.refresh();
             });
         });
 
-        // Status filters
-        document.querySelectorAll('.filter-btn').forEach(btn => {
+        document.querySelectorAll('[data-status]').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const status = e.currentTarget.dataset.status;
-                this.filters.status = status;
-                this.updateView();
+                this.filters.status = e.currentTarget.dataset.status;
+                this.refresh();
             });
         });
 
         // Refresh button
-        const refreshBtn = document.getElementById('refresh-games-btn');
-        if (refreshBtn) {
-            refreshBtn.addEventListener('click', () => {
-                this.refreshGames();
-            });
-        }
-
-        // Odds buttons
-        document.querySelectorAll('.odds-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.handleOddsClick(e.currentTarget);
-            });
-        });
-
-        // Game actions
-        document.querySelectorAll('.game-action-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const action = e.currentTarget.dataset.action;
-                const gameId = e.currentTarget.dataset.gameId;
-                this.handleGameAction(action, gameId);
-            });
+        document.getElementById('refresh-games-btn')?.addEventListener('click', () => {
+            this.loadGames();
+            this.refresh();
         });
     }
 
-    handleOddsClick(button) {
-        const gameCard = button.closest('.game-card');
-        const gameId = gameCard.dataset.gameId;
-        const betType = button.dataset.betType;
-        const team = button.dataset.team;
-
-        // Add to Meeting Room for discussion
-        console.log(`Odds clicked: Game ${gameId}, ${betType}, ${team}`);
-        this.showToast('Click "Discuss in Meeting Room" to analyze this pick', 'info');
-    }
-
-    handleGameAction(action, gameId) {
-        const game = this.games.find(g => g.id === gameId);
-        if (!game) return;
-
-        if (action === 'analyze') {
-            console.log('Open game analysis for:', game);
-            
-            // Open game detail modal
-            if (window.gameDetailEngine) {
-                window.gameDetailEngine.showGameDetail(game.id, game);
-            } else {
-                // Fallback: Navigate to AI coaches page with game context
-                if (window.appNavigation) {
-                    window.appNavigation.navigateTo('ai-coaches');
-                    if (window.notificationSystem) {
-                        window.notificationSystem.show({
-                            title: 'Game Analysis',
-                            message: `Analyzing ${game.awayTeam} @ ${game.homeTeam}`,
-                            type: 'info'
-                        });
-                    }
-                }
-            }
-        } else if (action === 'discuss') {
-            console.log('Open meeting room for:', game);
-            // Navigate to meeting room with this game
-            window.dispatchEvent(new CustomEvent('pagechange', {
-                detail: { page: 'meeting-room', gameId }
-            }));
+    refresh() {
+        if (this.container) {
+            this.container.innerHTML = `
+                <div class="live-games-feed">
+                    ${this.renderHeader()}
+                    ${this.renderFilters()}
+                    ${this.renderGamesGrid()}
+                </div>
+            `;
+            this.attachEventListeners();
         }
     }
-
-    // ============================================
-    // LIVE UPDATES
-    // ============================================
 
     startLiveUpdates() {
-        // Update scores every 10 seconds
+        // Update every 30 seconds
         this.updateInterval = setInterval(() => {
-            this.updateLiveGames();
-        }, 10000);
-
-        // Update odds every 30 seconds
-        this.oddsUpdateInterval = setInterval(() => {
-            this.updateOdds();
+            this.refresh();
         }, 30000);
     }
 
-    stopLiveUpdates() {
+    destroy() {
         if (this.updateInterval) clearInterval(this.updateInterval);
         if (this.oddsUpdateInterval) clearInterval(this.oddsUpdateInterval);
     }
-
-    updateLiveGames() {
-        // Simulate score updates for live games
-        this.games.forEach(game => {
-            if (game.status === 'live' && Math.random() > 0.7) {
-                // Random score change
-                const team = Math.random() > 0.5 ? 'awayTeam' : 'homeTeam';
-                game[team].score += Math.floor(Math.random() * 7);
-            }
-        });
-
-        this.updateView();
-    }
-
-    updateOdds() {
-        // Simulate odds movements
-        this.games.forEach(game => {
-            if (Math.random() > 0.8) {
-                game.oddsMovement = Math.random() > 0.5 ? 1 : -1;
-                // Slight odds adjustment
-                game.odds.awayML += Math.floor(Math.random() * 10) - 5;
-                game.odds.homeML -= Math.floor(Math.random() * 10) - 5;
-            }
-        });
-
-        this.updateView();
-    }
-
-    refreshGames() {
-        const btn = document.getElementById('refresh-games-btn');
-        if (btn) {
-            btn.classList.add('spinning');
-            setTimeout(() => btn.classList.remove('spinning'), 1000);
-        }
-
-        this.loadGames();
-        this.updateView();
-        this.showToast('Games refreshed', 'success');
-    }
-
-    updateView() {
-        const gamesGrid = document.getElementById('games-grid');
-        if (gamesGrid) {
-            const parent = gamesGrid.parentElement;
-            parent.innerHTML = this.renderGamesGrid();
-            this.attachEventListeners();
-        }
-
-        // Update filters
-        const filtersContainer = this.container.querySelector('.feed-filters');
-        if (filtersContainer) {
-            const newFilters = document.createElement('div');
-            newFilters.innerHTML = this.renderFilters();
-            filtersContainer.replaceWith(newFilters.firstElementChild);
-            this.attachEventListeners();
-        }
-    }
-
-    showToast(message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.textContent = message;
-        
-        const container = document.getElementById('toast-container');
-        if (container) {
-            container.appendChild(toast);
-            setTimeout(() => toast.classList.add('show'), 10);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-    }
-
-    destroy() {
-        this.stopLiveUpdates();
-    }
 }
-
-// Export singleton
-export const liveGamesFeed = new LiveGamesFeed();
