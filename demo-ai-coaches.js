@@ -358,27 +358,27 @@ async function renderLiveGames() {
                             font-weight: 700;
                             animation: pulse 2s infinite;
                         ">
-                            🔴 ${game.status}
+                            🔴 ${game.status || 'LIVE'}
                         </span>
                         <span style="color: #6b7280; font-size: 14px; font-weight: 600;">
-                            ${game.sport} • ${game.quarter} ${game.time}
+                            ${game.league || game.sport || 'NBA'} • ${game.quarter || game.period || 'Q4'} ${game.time_remaining || game.time || '5:00'}
                         </span>
                     </div>
                     
                     <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center;">
                         <div style="text-align: right;">
-                            <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">${game.awayTeam}</div>
+                            <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">${game.away_team || game.awayTeam || 'Away Team'}</div>
                             <div style="color: #6b7280; font-size: 14px;">Away</div>
                         </div>
                         
                         <div style="text-align: center;">
                             <div style="font-size: 36px; font-weight: 800; color: #111827;">
-                                ${game.awayScore} - ${game.homeScore}
+                                ${game.away_score || game.awayScore || 0} - ${game.home_score || game.homeScore || 0}
                             </div>
                         </div>
                         
                         <div style="text-align: left;">
-                            <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">${game.homeTeam}</div>
+                            <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">${game.home_team || game.homeTeam || 'Home Team'}</div>
                             <div style="color: #6b7280; font-size: 14px;">Home</div>
                         </div>
                     </div>

@@ -54,11 +54,20 @@ const LiveOddsUI = {
         try {
             // Fetch odds from backend
             const response = await fetch(`${window.APP_CONFIG.API.BASE_URL}/api/odds/live?sport=${this.currentSport}`);
+            
+            if (!response.ok) {
+                throw new Error(`API returned ${response.status}: ${response.statusText}`);
+            }
+            
             const data = await response.json();
+            console.log('📊 Odds API Response:', data);
             
             if (data.odds && data.odds.length > 0) {
+                console.log('✅ Found', data.odds.length, 'games');
+                console.log('Sample game:', data.odds[0]);
                 this.renderOdds(data.odds);
             } else {
+                console.warn('⚠️ No odds data returned');
                 this.renderNoData();
             }
         } catch (error) {
@@ -280,41 +289,52 @@ const LiveOddsUI = {
         
         for (const book of bookmakers) {
             const market = book.markets?.find(m => m.key === marketKey);
-            if (!market) continue;
+            if (!market || !market.outcomes) continue;
             
-            if (marketKey === 'h2h') {
-                const away = market.outcomes.find(o => o.name === book.away_team);
-                const home = market.outcomes.find(o => o.name === book.home_team);
-                
-                if (!bestOdds || (away.price + home.price) > (bestOdds.away.price + bestOdds.home.price)) {
-                    bestOdds = {
-                        bookmaker: book.title,
-                        away: { price: away.price },
-                        home: { price: home.price }
-                    };
+            try {
+                if (marketKey === 'h2h') {
+                    const away = market.outcomes[0];
+                    const home = market.outcomes[1];
+                    
+                    if (!away || !home || away.price === undefined || home.price === undefined) continue;
+                    
+                    if (!bestOdds || (away.price + home.price) > (bestOdds.away.price + bestOdds.home.price)) {
+                        bestOdds = {
+                            bookmaker: book.title || book.key,
+                            away: { price: away.price },
+                            home: { price: home.price }
+                        };
+                    }
+                } else if (marketKey === 'spreads') {
+                    const away = market.outcomes[0];
+                    const home = market.outcomes[1];
+                    
+                    if (!away || !home || away.price === undefined || home.price === undefined) continue;
+                    
+                    if (!bestOdds || away.price > bestOdds.away.price) {
+                        bestOdds = {
+                            bookmaker: book.title || book.key,
+                            away: { price: away.price, point: away.point || 0 },
+                            home: { price: home.price, point: home.point || 0 }
+                        };
+                    }
+                } else if (marketKey === 'totals') {
+                    const over = market.outcomes.find(o => o.name === 'Over');
+                    const under = market.outcomes.find(o => o.name === 'Under');
+                    
+                    if (!over || !under || over.price === undefined || under.price === undefined) continue;
+                    
+                    if (!bestOdds || over.price > bestOdds.over.price) {
+                        bestOdds = {
+                            bookmaker: book.title || book.key,
+                            over: { price: over.price, point: over.point || 0 },
+                            under: { price: under.price, point: under.point || 0 }
+                        };
+                    }
                 }
-            } else if (marketKey === 'spreads') {
-                const away = market.outcomes.find(o => o.name === book.away_team);
-                const home = market.outcomes.find(o => o.name === book.home_team);
-                
-                if (!bestOdds || away.price > bestOdds.away.price) {
-                    bestOdds = {
-                        bookmaker: book.title,
-                        away: { price: away.price, point: away.point },
-                        home: { price: home.price, point: home.point }
-                    };
-                }
-            } else if (marketKey === 'totals') {
-                const over = market.outcomes.find(o => o.name === 'Over');
-                const under = market.outcomes.find(o => o.name === 'Under');
-                
-                if (!bestOdds || over.price > bestOdds.over.price) {
-                    bestOdds = {
-                        bookmaker: book.title,
-                        over: { price: over.price, point: over.point },
-                        under: { price: under.price, point: under.point }
-                    };
-                }
+            } catch (error) {
+                console.warn('Error parsing odds for book:', book.key, error);
+                continue;
             }
         }
         
