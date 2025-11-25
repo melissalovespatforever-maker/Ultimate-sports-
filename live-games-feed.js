@@ -344,17 +344,13 @@ export class LiveGamesFeed {
                 const result = await response.json();
                 console.log('✅ Games loaded from API:', result);
                 // Show success message on tablet
-                if (result.success) {
-                    alert('✅ BACKEND CONNECTED!\n\n' + 
-                          'API is working perfectly!\n' +
-                          'Status: ' + result.message);
-                }
+                // API connection successful - logged to console
             } else {
                 console.warn('API returned status:', response.status);
             }
         } catch (error) {
             console.error('❌ API fetch failed:', error.message);
-            alert('⚠️ API Connection Issue:\n' + error.message);
+            // API connection failed - using mock data instead
         }
         
         // Load mock data for display
