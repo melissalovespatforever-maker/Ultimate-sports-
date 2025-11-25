@@ -5,13 +5,19 @@
 
 export class ModernNavigation {
     constructor() {
+        console.log('🚀 ModernNavigation constructor called');
         this.currentPage = 'home';
         this.drawerOpen = false;
         this.init();
     }
 
-    init() {
+        init() {
+        console.log('⚙️ ModernNavigation init called');
         this.setupDrawer();
+        this.setupBottomNav();
+        this.setupPageNavigation();
+        console.log('✅ ModernNavigation fully initialized');
+    }
         this.setupBottomNav();
         this.setupPageNavigation();
     }
