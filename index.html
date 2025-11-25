@@ -469,12 +469,8 @@
 
             <!-- PROFILE PAGE -->
             <div id="profile-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-user"></i> Profile</h1>
-                    <p class="page-subtitle">Manage your account settings</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Profile settings will load here...</p>
+                <div id="profile-content">
+                    <!-- Will be populated by JavaScript -->
                 </div>
             </div>
 
@@ -527,13 +523,18 @@
     </div>
 
     <!-- Load Configuration First -->
-    <script src="config.js?v=3.0.1"></script>
+    <script src="config.js?v=3.0.2"></script>
+    
+    <!-- Load Services -->
+    <script src="auth-service.js?v=3.0.2"></script>
+    <script src="backend-api.js?v=3.0.2"></script>
     
     <!-- Load App Initialization -->
-    <script src="app-init.js?v=3.0.1"></script>
+    <script src="app-init.js?v=3.0.2"></script>
     
     <!-- Load Demo Features -->
-    <script src="demo-ai-coaches.js?v=3.0.1"></script>
+    <script src="demo-ai-coaches.js?v=3.0.2"></script>
+    <script src="profile-ui.js?v=3.0.2"></script>
     
     <!-- VERSION 3.0 - CLEAN NAVIGATION SCRIPT -->
     <script>

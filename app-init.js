@@ -25,13 +25,11 @@ async function initializeApp() {
             window.UltimateSportsApp.config = CONFIG;
         }
         
-        // 2. Check authentication
-        await initAuth();
+        // 2. Test backend connection
+        await testBackendConnection();
         
-        // 3. Initialize API service
-        if (typeof APIService !== 'undefined') {
-            console.log('✅ API Service ready');
-        }
+        // 3. Check authentication
+        await initAuth();
         
         // 4. Load feature modules based on current page
         loadPageFeatures();
@@ -44,6 +42,29 @@ async function initializeApp() {
         
     } catch (error) {
         console.error('❌ App initialization error:', error);
+    }
+}
+
+// Test backend connection
+async function testBackendConnection() {
+    if (!window.BackendAPI) {
+        console.warn('⚠️ Backend API not loaded');
+        return;
+    }
+    
+    try {
+        const health = await window.BackendAPI.testConnection();
+        console.log('✅ Backend connected:', health.status);
+        
+        // Show connection status in console
+        console.log(`📊 Backend Status:
+   - Status: ${health.status}
+   - Environment: ${health.environment}
+   - Uptime: ${Math.floor(health.uptime / 60)} minutes`);
+        
+    } catch (error) {
+        console.error('❌ Backend connection failed:', error.message);
+        console.warn('⚠️ App will use demo data');
     }
 }
 

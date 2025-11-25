@@ -129,7 +129,20 @@ const DEMO_AI_COACHES = [
 ];
 
 // Render AI Coaches UI
-function renderAICoaches(coaches = DEMO_AI_COACHES) {
+async function renderAICoaches(coaches = null) {
+    // Fetch coaches from backend if not provided
+    if (!coaches && window.BackendAPI) {
+        try {
+            coaches = await window.BackendAPI.getAICoaches();
+        } catch (error) {
+            console.error('Failed to fetch coaches, using demo data');
+            coaches = DEMO_AI_COACHES;
+        }
+    }
+    
+    if (!coaches) {
+        coaches = DEMO_AI_COACHES;
+    }
     const coachingPage = document.getElementById('coaching-page');
     if (!coachingPage) return;
     
