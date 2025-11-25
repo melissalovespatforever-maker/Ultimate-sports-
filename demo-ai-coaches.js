@@ -280,11 +280,23 @@ async function renderAICoaches(coaches = null) {
 }
 
 // Render Live Games
-function renderLiveGames() {
+async function renderLiveGames() {
     const liveGamesPage = document.getElementById('live-games-page');
     if (!liveGamesPage) return;
     
-    const demoGames = [
+    // Try to fetch real games from backend
+    let games = [];
+    try {
+        if (window.BackendAPI) {
+            games = await window.BackendAPI.getLiveGames();
+        }
+    } catch (error) {
+        console.error('Failed to fetch live games:', error);
+    }
+    
+    // Fallback to demo if no games
+    if (!games || games.length === 0) {
+        games = [
         {
             id: 1,
             sport: 'NBA',
@@ -318,7 +330,8 @@ function renderLiveGames() {
             time: '12:45',
             status: 'LIVE'
         }
-    ];
+        ];
+    }
     
     const html = `
         <div class="page-header">
@@ -327,7 +340,7 @@ function renderLiveGames() {
         </div>
         
         <div style="padding: 20px;">
-            ${demoGames.map(game => `
+            ${games.map(game => `
                 <div style="
                     background: white;
                     border-radius: 16px;
