@@ -81,7 +81,7 @@ const PayPalService = {
     
     loadUserTier() {
         // Get user tier from backend or localStorage
-        const user = window.AuthService?.getCurrentUser();
+        const user = window.AuthService?.getUser?.();
         if (user && user.subscription_tier) {
             this.currentTier = user.subscription_tier.toUpperCase();
         } else {
@@ -443,10 +443,10 @@ const PayPalService = {
         
         // Update AuthService user data
         if (window.AuthService) {
-            const user = window.AuthService.getCurrentUser();
+            const user = window.AuthService.getUser?.();
             if (user) {
                 user.subscription_tier = this.currentTier;
-                localStorage.setItem('user_data', JSON.stringify(user));
+                localStorage.setItem('ultimate_sports_user', JSON.stringify(user));
             }
         }
         
