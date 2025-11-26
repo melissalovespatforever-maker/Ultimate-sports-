@@ -7,6 +7,7 @@
 import { modernNav } from './navigation.js';
 import { authSystem } from './auth-system.js';
 import { authUI } from './auth-ui.js';
+import { SkeletonLoader } from './skeleton-loader.js';
 
 // Analytics & Data
 import { analyticsDashboard } from './analytics-dashboard.js';
@@ -40,7 +41,6 @@ import { liveMatchAutoSubscribe } from './live-match-auto-subscribe.js';
 import { aiCoachingDashboard } from './ai-coaching-dashboard.js';
 import { aiCoachingDashboardUI } from './ai-coaching-dashboard-ui.js';
 import { aiPredictionDisplay } from './ai-prediction-display.js';
-import { meetingRoom } from './meeting-room.js';
 
 // Achievements & Challenges
 import { achievementsSystem } from './achievements-system.js';
@@ -267,6 +267,9 @@ class SportAIApp {
     }
 
     setup() {
+        console.log('🚀 SportAIApp setup() called');
+        console.log('📱 Navigation system:', this.navigation);
+        
         // Initialize authentication system
         authUI.init();
         
@@ -277,6 +280,7 @@ class SportAIApp {
         }
 
         // Setup event listeners
+        console.log('⚙️ Setting up event listeners...');
         this.setupEventListeners();
         
         // Setup auth listeners
@@ -666,7 +670,7 @@ class SportAIApp {
                 if (authSystem.isAuthenticated) {
                     userProfileUI.open();
                 } else {
-                    authUI.showAuthModal('login');
+                    authUI.showLoginModal();
                 }
             });
         }
@@ -844,7 +848,7 @@ class SportAIApp {
         if (winStreakEl) winStreakEl.textContent = state.user.stats?.currentStreak || 7;
     }
 
-        setupEventListeners() {
+    setupEventListeners() {
         // Profile button - check auth first
         const profileBtn = document.getElementById('profile-btn');
         if (profileBtn) {
@@ -856,26 +860,6 @@ class SportAIApp {
                 }
             });
         }
-
-        // "View All" buttons on home page for Live Games & Hot Picks
-        document.querySelectorAll('.section-action').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const section = e.target.closest('.content-section');
-                if (!section) return;
-                
-                const title = section.querySelector('.section-title')?.textContent || '';
-                
-                if (title.includes('Live Games')) {
-                    window.dispatchEvent(new CustomEvent('pagechange', {
-                        detail: { page: 'live-games' }
-                    }));
-                } else if (title.includes('Hot Picks') || title.includes('Today\'s')) {
-                    window.dispatchEvent(new CustomEvent('pagechange', {
-                        detail: { page: 'coaching' }
-                    }));
-                }
-            });
-        });
 
         // Settings button in drawer
         const settingsMenuBtn = document.getElementById('settings-menu-btn');
@@ -922,6 +906,9 @@ class SportAIApp {
         window.addEventListener('pagechange', (e) => {
             const page = e.detail.page;
             
+            // Navigate to the page first (show/hide pages)
+            this.navigation.navigateTo(page);
+            
             // Load page-specific content
             if (page === 'live-games') {
                 this.loadLiveGamesPage();
@@ -938,7 +925,13 @@ class SportAIApp {
             } else if (page === 'analysis-rooms') {
                 collaborativeAnalysisUI.renderRoomBrowser();
             } else if (page === 'coaching') {
-                aiPredictionsDemo.render();
+                const coachingContainer = document.getElementById('coaching-page');
+                if (coachingContainer) {
+                    SkeletonLoader.show(coachingContainer, 'coach-card', 3);
+                    setTimeout(() => {
+                        aiCoachingDashboardUI.render('coaching-page');
+                    }, 100);
+                }
             } else if (page === 'parlay-builder') {
                 parlayBuilderUI.render();
             } else if (page === 'arbitrage') {
@@ -1032,8 +1025,15 @@ class SportAIApp {
         const container = document.getElementById('live-games-page');
         if (!container) return;
 
-        // Render the Live Games Feed
-        liveGamesFeed.render(container);
+        // Show skeleton while loading
+        SkeletonLoader.show(container, 'game-card', 5);
+        
+        // Add slight delay to allow skeleton to show
+        setTimeout(() => {
+            // Render the Live Games Feed
+            liveGamesFeed.render(container);
+            SkeletonLoader.hide(container);
+        }, 100);
     }
 
     async loadMeetingRoom() {
@@ -1048,7 +1048,11 @@ class SportAIApp {
         const container = document.getElementById('leaderboard-page');
         if (!container) return;
 
-        container.innerHTML = `
+        // Show skeleton while building page
+        SkeletonLoader.show(container, 'leaderboard-item', 8);
+        
+        setTimeout(() => {
+            container.innerHTML = `
             <div class="page-content">
                 <!-- Educational Disclaimer -->
                 <div class="educational-disclaimer educational-disclaimer--inline">
@@ -1076,27 +1080,32 @@ class SportAIApp {
             </div>
         `;
 
-        this.loadLeaderboard('weekly');
+            this.loadLeaderboard('weekly');
 
-        // Period selector
-        document.querySelectorAll('.period-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                this.loadLeaderboard(e.target.dataset.period);
+            // Period selector
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    this.loadLeaderboard(e.target.dataset.period);
+                });
             });
-        });
+        }, 200);
     }
 
     loadProfilePage() {
         const container = document.getElementById('profile-page');
         if (!container) return;
 
-        const user = state.user;
-        const authUser = authSystem.getUser();
-        const stats = coinHistoryManager.getStatistics();
+        // Show skeleton while loading
+        SkeletonLoader.show(container, 'profile', 1);
+        
+        setTimeout(() => {
+            const user = state.user;
+            const authUser = authSystem.getUser();
+            const stats = coinHistoryManager.getStatistics();
 
-        container.innerHTML = `
+            container.innerHTML = `
             <div class="page-content">
                 <div class="profile-header">
                     <div class="profile-avatar">
@@ -1227,13 +1236,14 @@ class SportAIApp {
             });
         }
 
-        // Upgrade button
-        const upgradeBtn = document.getElementById('upgrade-subscription-btn');
-        if (upgradeBtn) {
-            upgradeBtn.addEventListener('click', () => {
-                this.showToast('💎 Subscription upgrade coming soon!');
-            });
-        }
+            // Upgrade button
+            const upgradeBtn = document.getElementById('upgrade-subscription-btn');
+            if (upgradeBtn) {
+                upgradeBtn.addEventListener('click', () => {
+                    this.showToast('💎 Subscription upgrade coming soon!');
+                });
+            }
+        }, 150);
     }
 
     renderCoinHistory(filter = 'all') {
@@ -1662,12 +1672,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Initialize app with error boundary
+console.log('🎬 Starting Ultimate Sports AI...');
+console.log('📦 All modules loaded');
 try {
+    console.log('🏗️ Creating SportAIApp instance...');
     new SportAIApp();
     setupUpgradeButton();
     console.log('✅ Ultimate Sports AI initialized successfully');
 } catch (error) {
     console.error('❌ Failed to initialize app:', error);
+    console.error('Error stack:', error.stack);
     
     // Show user-friendly error
     const appContainer = document.getElementById('app');
@@ -1717,6 +1731,9 @@ try {
 setTimeout(() => {
     setupPushNotifications();
     
+    // Make SkeletonLoader globally accessible
+    window.SkeletonLoader = SkeletonLoader;
+    
     // Make systems globally accessible for development/testing
     const isDevelopment = window.location.hostname === 'localhost' || 
                         window.location.hostname === '127.0.0.1' ||
@@ -1731,7 +1748,6 @@ setTimeout(() => {
         window.poolChatUI = poolChatUI;
         window.aiCoachingDashboard = aiCoachingDashboard;
         window.aiCoachingDashboardUI = aiCoachingDashboardUI;
-        window.aiPredictionsDemo = aiPredictionsDemo;
         window.aiPredictionDisplay = aiPredictionDisplay;
         window.achievementsSystem = achievementsSystem;
         window.achievementsUI = achievementsUI;
