@@ -48,23 +48,27 @@ async function initializeApp() {
 // Test backend connection
 async function testBackendConnection() {
     if (!window.BackendAPI) {
-        console.warn('⚠️ Backend API not loaded');
+        console.warn('⚠️ Backend API not loaded yet');
         return;
     }
     
     try {
+        // Give backend API a moment to initialize
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
         const health = await window.BackendAPI.testConnection();
         console.log('✅ Backend connected:', health.status);
         
         // Show connection status in console
         console.log(`📊 Backend Status:
    - Status: ${health.status}
-   - Environment: ${health.environment}
-   - Uptime: ${Math.floor(health.uptime / 60)} minutes`);
+   - Environment: ${health.environment || 'unknown'}
+   - Uptime: ${health.uptime ? Math.floor(health.uptime / 60) + ' minutes' : 'unknown'}`);
         
     } catch (error) {
-        console.error('❌ Backend connection failed:', error.message);
-        console.warn('⚠️ App will use demo data');
+        console.warn('⚠️ Backend connection check failed:', error.message);
+        console.warn('⚠️ App will use demo/cached data');
+        // Don't throw - app still works with demo data
     }
 }
 
@@ -231,9 +235,28 @@ window.loadUserAnalytics = loadUserAnalytics;
 
 // Auto-initialize when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeApp);
+    document.addEventListener('DOMContentLoaded', () => {
+        // Ensure backend API is loaded first
+        setTimeout(() => {
+            if (window.BackendAPI) {
+                initializeApp();
+            } else {
+                console.warn('⚠️ Waiting for BackendAPI to load...');
+                // Retry after a delay
+                setTimeout(initializeApp, 500);
+            }
+        }, 100);
+    });
 } else {
-    initializeApp();
+    // Give backend scripts time to load
+    setTimeout(() => {
+        if (window.BackendAPI) {
+            initializeApp();
+        } else {
+            console.warn('⚠️ BackendAPI not available, initializing anyway');
+            initializeApp();
+        }
+    }, 100);
 }
 
 console.log('📦 App initialization script loaded');
