@@ -130,6 +130,77 @@ const DEMO_AI_COACHES = [
 
 // Render AI Coaches UI
 async function renderAICoaches(coaches = null) {
+    const coachingPage = document.getElementById('coaching-page');
+    if (!coachingPage) return;
+    
+    // Check if user has access to AI coaches (PRO/VIP only)
+    const tier = window.PayPalService?.getTier() || 'FREE';
+    const canAccess = tier === 'PRO' || tier === 'VIP';
+    
+    if (!canAccess) {
+        coachingPage.innerHTML = `
+            <div class="page-header">
+                <h1><i class="fas fa-robot"></i> AI Coaches</h1>
+                <p class="page-subtitle">Get expert AI-powered sports predictions</p>
+            </div>
+            <div style="padding: 60px 20px; text-align: center; max-width: 600px; margin: 0 auto;">
+                <div style="font-size: 80px; margin-bottom: 24px;">🔒</div>
+                <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 16px; color: #111827;">Premium Feature</h2>
+                <p style="color: #6b7280; margin-bottom: 32px; line-height: 1.7; font-size: 17px;">
+                    AI Coaches are available on <strong style="color: #10b981;">PRO</strong> and <strong style="color: #f59e0b;">VIP</strong> plans. 
+                    Get expert predictions powered by advanced machine learning algorithms that analyze thousands of data points.
+                </p>
+                <div style="background: #f9fafb; border-radius: 16px; padding: 24px; margin-bottom: 32px; text-align: left;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #111827;">
+                        <i class="fas fa-crown" style="color: #10b981;"></i> What you'll get:
+                    </h3>
+                    <div style="display: grid; gap: 12px;">
+                        <div style="display: flex; gap: 12px; align-items: start;">
+                            <i class="fas fa-check-circle" style="color: #10b981; font-size: 20px; margin-top: 2px;"></i>
+                            <span style="color: #374151;"><strong>PRO:</strong> Access to 3 AI coaches (NBA, NFL, NHL)</span>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: start;">
+                            <i class="fas fa-check-circle" style="color: #f59e0b; font-size: 20px; margin-top: 2px;"></i>
+                            <span style="color: #374151;"><strong>VIP:</strong> All 6 AI coaches (includes MLB, Tennis, Soccer)</span>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: start;">
+                            <i class="fas fa-check-circle" style="color: #10b981; font-size: 20px; margin-top: 2px;"></i>
+                            <span style="color: #374151;">Real-time pick notifications</span>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: start;">
+                            <i class="fas fa-check-circle" style="color: #10b981; font-size: 20px; margin-top: 2px;"></i>
+                            <span style="color: #374151;">Detailed reasoning for each pick</span>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: start;">
+                            <i class="fas fa-check-circle" style="color: #10b981; font-size: 20px; margin-top: 2px;"></i>
+                            <span style="color: #374151;">Historical performance tracking</span>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="window.PayPalService?.createSubscription('PRO')" style="
+                    padding: 18px 36px;
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 12px;
+                    font-weight: 700;
+                    font-size: 18px;
+                    cursor: pointer;
+                    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+                    transition: transform 0.2s;
+                    margin-bottom: 12px;
+                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    <i class="fas fa-crown"></i> Upgrade to PRO - $49.99/mo
+                </button>
+                <p style="color: #9ca3af; font-size: 14px;">
+                    7-day money back guarantee • Cancel anytime
+                </p>
+            </div>
+        `;
+        return;
+    }
+    
+    // User has access - show coaches
     // Fetch coaches from backend if not provided
     if (!coaches && window.BackendAPI) {
         try {
@@ -143,8 +214,13 @@ async function renderAICoaches(coaches = null) {
     if (!coaches) {
         coaches = DEMO_AI_COACHES;
     }
-    const coachingPage = document.getElementById('coaching-page');
-    if (!coachingPage) return;
+    
+    // Filter coaches based on tier
+    if (tier === 'PRO') {
+        // PRO users get first 3 coaches
+        coaches = coaches.slice(0, 3);
+    }
+    // VIP users get all 6 coaches
     
     const html = `
         <div class="page-header">
