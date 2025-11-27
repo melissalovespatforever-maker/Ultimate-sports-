@@ -29,6 +29,22 @@
     
     <!-- Main Styles -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ui-enhancements.css">
+    <link rel="stylesheet" href="leaderboard-styles.css">
+    <link rel="stylesheet" href="expert-follow-styles.css">
+    <link rel="stylesheet" href="challenge-styles.css">
+    <link rel="stylesheet" href="advanced-analytics-styles.css">
+    <link rel="stylesheet" href="odds-comparison-v2-styles.css">
+    <link rel="stylesheet" href="parlay-optimizer-ai-styles.css">
+    <link rel="stylesheet" href="arbitrage-scanner-styles.css">
+    <link rel="stylesheet" href="bankroll-tracker-styles.css">
+    <link rel="stylesheet" href="injury-impact-tracker-styles.css">
+    <link rel="stylesheet" href="social-feed-styles.css">
+    <link rel="stylesheet" href="user-profile-page-styles.css">
+    <link rel="stylesheet" href="direct-messages-styles.css">
+    <link rel="stylesheet" href="notifications-styles.css">
+    <link rel="stylesheet" href="leaderboard-realtime-styles.css">
+    <link rel="stylesheet" href="competitions-styles.css">
     
     <style>
         /* Override for page display */
@@ -69,9 +85,48 @@
         .bottom-nav-item.active i {
             color: #10b981;
         }
+        
+        /* Navigation unread badge */
+        .nav-unread-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 18px;
+            text-align: center;
+        }
+        
+        .menu-item {
+            position: relative;
+        }
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div id="app-loader" style="position: fixed; inset: 0; background: linear-gradient(135deg, #0a0e14 0%, #151922 100%); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s ease;">
+        <div style="text-align: center;">
+            <div style="width: 60px; height: 60px; border: 4px solid rgba(16, 185, 129, 0.1); border-top-color: #10b981; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 24px;"></div>
+            <h2 style="color: #10b981; font-size: 24px; font-weight: 800; margin: 0; letter-spacing: -0.02em;">Ultimate Sports AI</h2>
+            <p style="color: #a8b3cf; font-size: 14px; margin: 8px 0 0; font-weight: 500;">Loading your experience...</p>
+        </div>
+    </div>
+    
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        #app-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+    </style>
+
     <!-- App Container -->
     <div id="app">
         <!-- Top App Bar -->
@@ -195,6 +250,15 @@
                 <!-- Community -->
                 <div class="menu-section">
                     <h4 class="menu-section-title">Community</h4>
+                    <button class="menu-item" data-page="activity-feed">
+                        <i class="fas fa-stream"></i>
+                        <span>Activity Feed</span>
+                        <span class="premium-badge">NEW</span>
+                    </button>
+                    <button class="menu-item" data-page="direct-messages">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messages</span>
+                    </button>
                     <button class="menu-item" data-page="chat">
                         <i class="fas fa-comments"></i>
                         <span>Live Chat</span>
@@ -203,6 +267,11 @@
                     <button class="menu-item" data-page="leaderboard">
                         <i class="fas fa-medal"></i>
                         <span>Leaderboard</span>
+                    </button>
+                    <button class="menu-item" data-page="challenges">
+                        <i class="fas fa-trophy"></i>
+                        <span>Challenges</span>
+                        <span class="premium-badge">NEW</span>
                     </button>
                     <button class="menu-item" data-page="friends">
                         <i class="fas fa-user-friends"></i>
@@ -240,9 +309,9 @@
         <main class="main-content">
             <!-- HOME PAGE -->
             <div id="home-page" class="page active">
-                <div class="page-header">
-                    <h1>Welcome to Ultimate Sports AI</h1>
-                    <p class="page-subtitle">Master sports analytics with AI-powered insights</p>
+                <div class="page-header" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);">
+                    <h1>🏆 Welcome to Ultimate Sports AI</h1>
+                    <p class="page-subtitle">Master sports analytics with AI-powered insights and compete with the best</p>
                 </div>
 
                 <div class="quick-actions">
@@ -405,11 +474,25 @@
             <div id="social-page" class="page">
                 <div class="page-header">
                     <h1><i class="fas fa-users"></i> Social Feed</h1>
-                    <p class="page-subtitle">Connect with the community</p>
+                    <p class="page-subtitle">Share picks, analysis, and connect with the community</p>
+                    <div class="page-actions">
+                        <button id="refresh-feed-btn" class="btn-secondary btn-sm">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                    </div>
                 </div>
-                <div class="content-placeholder">
-                    <p>Social feed will load here...</p>
-                </div>
+                
+                <!-- Social Feed Container -->
+                <div id="social-feed-container"></div>
+                
+                <!-- Trending Tags Sidebar (optional) -->
+                <div id="trending-tags-container" style="margin-top: 24px;"></div>
+            </div>
+
+            <!-- DIRECT MESSAGES PAGE -->
+            <div id="direct-messages-page" class="page">
+                <!-- Direct Messages UI will be rendered here by direct-messages-ui.js -->
             </div>
 
             <!-- CHAT PAGE -->
@@ -423,6 +506,11 @@
                 </div>
             </div>
 
+            <!-- ACTIVITY FEED PAGE -->
+            <div id="activity-feed-page" class="page">
+                <!-- Activity feed will be rendered here by notifications-ui.js -->
+            </div>
+
             <!-- LEADERBOARD PAGE -->
             <div id="leaderboard-page" class="page">
                 <div class="page-header">
@@ -432,6 +520,11 @@
                 <div class="content-placeholder">
                     <p>Leaderboard will load here...</p>
                 </div>
+            </div>
+
+            <!-- CHALLENGES PAGE (Competitions System) -->
+            <div id="challenges-page" class="page">
+                <!-- Competitions UI will render here via competitions-page-init.js -->
             </div>
 
             <!-- FRIENDS PAGE -->
@@ -469,9 +562,16 @@
 
             <!-- PROFILE PAGE -->
             <div id="profile-page" class="page">
-                <div id="profile-content">
-                    <!-- Will be populated by JavaScript -->
+                <div class="page-header">
+                    <h1><i class="fas fa-user-circle"></i> User Profile</h1>
+                    <p class="page-subtitle">View profile, posts, and activity</p>
                 </div>
+                
+                <!-- User Profile Container -->
+                <div id="user-profile-container"></div>
+                
+                <!-- Profile Suggestions Sidebar (optional) -->
+                <div id="profile-suggestions-container" style="margin-top: 24px;"></div>
             </div>
 
             <!-- SETTINGS PAGE -->
@@ -542,6 +642,82 @@
     <script src="bet-slip-ui.js?v=4.0.0"></script>
     <script src="pick-history-ui.js?v=3.0.5"></script>
     <script src="subscription-ui.js?v=4.0.0"></script>
+    
+    <!-- Leaderboard System (Phase 5: Competition) -->
+    <script type="module" src="leaderboard-system.js?v=5.0.0"></script>
+    <script type="module" src="leaderboard-ui.js?v=5.0.0"></script>
+    <script src="leaderboard-page-init.js?v=5.0.0"></script>
+    
+    <!-- Expert Follow System (Phase 5: Social) -->
+    <script type="module" src="expert-follow-system.js?v=5.0.0"></script>
+    <script type="module" src="expert-follow-ui.js?v=5.0.0"></script>
+    <script src="expert-follow-page-init.js?v=5.0.0"></script>
+    
+    <!-- Challenge System (Phase 6: Expert Challenges) -->
+    <script type="module" src="challenge-system.js?v=6.0.0"></script>
+    <script type="module" src="challenge-ui.js?v=6.0.0"></script>
+    <script src="challenge-page-init.js?v=6.0.0"></script>
+    
+    <!-- Advanced Analytics System (Phase 6B: ROI Tracking) -->
+    <script type="module" src="advanced-analytics-system.js?v=6.1.0"></script>
+    <script type="module" src="advanced-analytics-ui.js?v=6.1.0"></script>
+    <script src="advanced-analytics-page-init.js?v=6.1.0"></script>
+    
+    <!-- Odds Comparison V2 System (Phase 7: 30+ Sportsbooks) -->
+    <script type="module" src="odds-comparison-v2-system.js?v=7.0.0"></script>
+    <script type="module" src="odds-comparison-v2-ui.js?v=7.0.0"></script>
+    <script src="odds-comparison-v2-page-init.js?v=7.0.0"></script>
+    
+    <!-- Parlay Optimizer AI System (Phase 8: AI Parlay Builder) -->
+    <script type="module" src="parlay-optimizer-ai-system.js?v=8.0.0"></script>
+    <script type="module" src="parlay-optimizer-ai-ui.js?v=8.0.0"></script>
+    <script src="parlay-optimizer-ai-page-init.js?v=8.0.0"></script>
+    
+    <!-- Arbitrage Scanner System (Phase 9: Live Arbitrage Scanner) -->
+    <script type="module" src="arbitrage-scanner-system.js?v=9.0.0"></script>
+    <script type="module" src="arbitrage-scanner-ui.js?v=9.0.0"></script>
+    <script src="arbitrage-scanner-page-init.js?v=9.0.0"></script>
+    
+    <!-- Bankroll Tracker System (Phase 10: Profit/Loss Tracking) -->
+    <script type="module" src="bankroll-tracker-system.js?v=10.0.0"></script>
+    <script type="module" src="bankroll-tracker-ui.js?v=10.0.0"></script>
+    <script src="bankroll-tracker-page-init.js?v=10.0.0"></script>
+    
+    <!-- Injury Impact Tracker System (Phase 11: Live Injury Analysis) -->
+    <script type="module" src="injury-impact-tracker-system.js?v=11.0.0"></script>
+    <script type="module" src="injury-impact-tracker-ui.js?v=11.0.0"></script>
+    <script src="injury-impact-tracker-page-init.js?v=11.0.0"></script>
+    
+    <!-- Social Feed System (Phase 12: Community Posts & Comments) -->
+    <script type="module" src="social-feed-system.js?v=12.0.0"></script>
+    <script type="module" src="social-feed-ui.js?v=12.0.0"></script>
+    <script src="social-feed-page-init.js?v=12.0.0"></script>
+    
+    <!-- User Profile Page System (Phase 13: User Profiles with Post History) -->
+    <script type="module" src="user-profile-page-system.js?v=13.0.0"></script>
+    <script type="module" src="user-profile-page-ui.js?v=13.0.0"></script>
+    <script src="user-profile-page-init.js?v=13.0.0"></script>
+    
+    <!-- Direct Messages System (Phase 14: Real-Time Messaging) -->
+    <script type="module" src="direct-messages-system.js?v=14.0.0"></script>
+    <script type="module" src="direct-messages-ui.js?v=14.0.0"></script>
+    <script src="direct-messages-page-init.js?v=14.0.0"></script>
+    
+    <!-- Notifications System (Phase 15: Notifications & Activity Feed) -->
+    <script type="module" src="notifications-system.js?v=15.0.0"></script>
+    <script type="module" src="notifications-ui.js?v=15.0.0"></script>
+    <script src="notifications-page-init.js?v=15.0.0"></script>
+    
+    <!-- Real-time Leaderboard System (Phase 16: Live Rankings) -->
+    <script type="module" src="leaderboard-system-new.js?v=16.0.0"></script>
+    <script type="module" src="leaderboard-ui-realtime.js?v=16.0.0"></script>
+    <script src="leaderboard-realtime-init.js?v=16.0.0"></script>
+    
+    <!-- Competitions & Matchmaking System (Phase 17/18: Live Challenges + WebSocket) -->
+    <script type="module" src="competitions-system.js?v=18.0.0"></script>
+    <script type="module" src="competitions-ui.js?v=18.0.0"></script>
+    <script type="module" src="competitions-websocket-client.js?v=18.0.0"></script>
+    <script type="module" src="competitions-page-init.js?v=18.0.0"></script>
     
     <!-- VERSION 3.0 - CLEAN NAVIGATION SCRIPT -->
     <script>
@@ -641,8 +817,72 @@
                     this.currentPage = page;
                     window.scrollTo(0, 0);
                     console.log(`✅ Showing: ${page}`);
+                    
+                    // Initialize page-specific functionality
+                    this.initializePage(page);
                 } else {
                     console.error(`❌ Page not found: ${page}`);
+                }
+            },
+            
+            initializePage(page) {
+                // Call page-specific initialization functions
+                switch(page) {
+                    case 'social':
+                        if (window.initializeSocialFeed) {
+                            window.initializeSocialFeed();
+                        }
+                        break;
+                    case 'leaderboard':
+                        if (window.initializeLeaderboard) {
+                            window.initializeLeaderboard();
+                        }
+                        break;
+                    case 'expert-follow':
+                        if (window.initializeExpertFollow) {
+                            window.initializeExpertFollow();
+                        }
+                        break;
+                    case 'analytics':
+                        if (window.initializeAdvancedAnalytics) {
+                            window.initializeAdvancedAnalytics();
+                        }
+                        break;
+                    case 'odds-comparison':
+                        if (window.initializeOddsComparisonV2) {
+                            window.initializeOddsComparisonV2();
+                        }
+                        break;
+                    case 'parlay-optimizer':
+                        if (window.initializeParlayOptimizer) {
+                            window.initializeParlayOptimizer();
+                        }
+                        break;
+                    case 'arbitrage':
+                        if (window.initializeArbitrageScanner) {
+                            window.initializeArbitrageScanner();
+                        }
+                        break;
+                    case 'bankroll':
+                        if (window.initializeBankrollTracker) {
+                            window.initializeBankrollTracker();
+                        }
+                        break;
+                    case 'injuries':
+                        if (window.initializeInjuryImpactTracker) {
+                            window.initializeInjuryImpactTracker();
+                        }
+                        break;
+                    case 'profile':
+                        if (window.initializeUserProfilePage) {
+                            window.initializeUserProfilePage();
+                        }
+                        break;
+                    case 'challenges':
+                        if (window.initializeCompetitions) {
+                            window.initializeCompetitions();
+                        }
+                        break;
                 }
             }
         };
@@ -651,9 +891,27 @@
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 AppNavigation.init();
+                
+                // Hide loader after initialization
+                setTimeout(() => {
+                    const loader = document.getElementById('app-loader');
+                    if (loader) {
+                        loader.classList.add('hidden');
+                        setTimeout(() => loader.remove(), 500);
+                    }
+                }, 600);
             });
         } else {
             AppNavigation.init();
+            
+            // Hide loader after initialization
+            setTimeout(() => {
+                const loader = document.getElementById('app-loader');
+                if (loader) {
+                    loader.classList.add('hidden');
+                    setTimeout(() => loader.remove(), 500);
+                }
+            }, 600);
         }
     </script>
 </body>
