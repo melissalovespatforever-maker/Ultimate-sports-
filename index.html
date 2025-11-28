@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="live-scores-styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Ultimate Sports AI - Master Sports Analytics</title>
@@ -17,8 +16,8 @@
     <meta name="theme-color" content="#10b981">
     
     <!-- Icons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="https://play.rosebud.ai/assets/Super intelligent AI high res icon by pridictmaster Ai.png?5eN6">
-    <link rel="apple-touch-icon" href="https://play.rosebud.ai/assets/Super intelligent AI high res icon by pridictmaster Ai.png?5eN6">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://play.rosebud.ai/assets/Ultimate sports logo match app layout.png?lZrN">
+    <link rel="apple-touch-icon" href="https://play.rosebud.ai/assets/Ultimate sports logo match app layout.png?lZrN">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +30,8 @@
     <!-- Main Styles -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="ui-enhancements.css">
+    <link rel="stylesheet" href="oauth-styles.css">
+    <link rel="stylesheet" href="live-scores-styles.css">
     <link rel="stylesheet" href="leaderboard-styles.css">
     <link rel="stylesheet" href="expert-follow-styles.css">
     <link rel="stylesheet" href="challenge-styles.css">
@@ -46,6 +47,7 @@
     <link rel="stylesheet" href="notifications-styles.css">
     <link rel="stylesheet" href="leaderboard-realtime-styles.css">
     <link rel="stylesheet" href="competitions-styles.css">
+    <link rel="stylesheet" href="trophy-showcase-styles.css">
     
     <style>
         /* Override for page display */
@@ -137,7 +139,7 @@
             </button>
             
             <div class="app-title">
-                <img src="https://play.rosebud.ai/assets/Super intelligent AI high res icon by pridictmaster Ai.png?5eN6" alt="Logo" class="app-logo">
+                <img src="https://play.rosebud.ai/assets/Ultimate sports logo match app layout.png?lZrN" alt="Ultimate Sports AI Logo" class="app-logo">
                 <span>Ultimate Sports AI</span>
             </div>
             
@@ -272,6 +274,11 @@
                     <button class="menu-item" data-page="challenges">
                         <i class="fas fa-trophy"></i>
                         <span>Challenges</span>
+                        <span class="premium-badge">NEW</span>
+                    </button>
+                    <button class="menu-item" data-page="trophy-showcase">
+                        <i class="fas fa-award"></i>
+                        <span>Trophy Showcase</span>
                         <span class="premium-badge">NEW</span>
                     </button>
                     <button class="menu-item" data-page="friends">
@@ -528,6 +535,13 @@
                 <!-- Competitions UI will render here via competitions-page-init.js -->
             </div>
 
+            <!-- TROPHY SHOWCASE PAGE -->
+            <div id="trophy-showcase-page" class="page">
+                <div id="trophy-showcase-container">
+                    <!-- Trophy Showcase UI will render here via trophy-showcase-page-init.js -->
+                </div>
+            </div>
+
             <!-- FRIENDS PAGE -->
             <div id="friends-page" class="page">
                 <div class="page-header">
@@ -626,6 +640,11 @@
     <!-- Load Configuration First -->
     <script src="config.js?v=3.0.4"></script>
     
+    <!-- Load OAuth System (Phase 22: OAuth Authentication) -->
+    <script src="oauth-config.js?v=22.0.0"></script>
+    <script src="oauth-service.js?v=22.0.0"></script>
+    <script src="oauth-ui.js?v=22.0.0"></script>
+    
     <!-- Load Services -->
     <script src="auth-service.js?v=3.0.4"></script>
     <script src="backend-api.js?v=3.0.4"></script>
@@ -719,6 +738,14 @@
     <script type="module" src="competitions-ui.js?v=18.0.0"></script>
     <script type="module" src="competitions-websocket-client.js?v=18.0.0"></script>
     <script type="module" src="competitions-page-init.js?v=18.0.0"></script>
+    
+    <!-- Trophy Showcase System (Phase 21: Animated Achievement Display) -->
+    <script type="module" src="trophy-showcase-system.js?v=21.0.0"></script>
+    <script type="module" src="trophy-showcase-ui.js?v=21.0.0"></script>
+    <script type="module" src="trophy-showcase-page-init.js?v=21.0.0"></script>
+    
+    <!-- Security Configuration (Phase 21: Frontend Security) -->
+    <script type="module" src="security-config.js?v=21.1.0"></script>
     
     <!-- VERSION 3.0 - CLEAN NAVIGATION SCRIPT -->
     <script>
@@ -883,6 +910,14 @@
                         if (window.initializeCompetitions) {
                             window.initializeCompetitions();
                         }
+                        break;
+                    case 'trophy-showcase':
+                        // Trophy showcase page initializes itself via module
+                        import('./trophy-showcase-page-init.js').then(module => {
+                            if (module.default && module.default.init) {
+                                module.default.init();
+                            }
+                        });
                         break;
                 }
             }
