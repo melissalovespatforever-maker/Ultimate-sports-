@@ -36,7 +36,9 @@ export class AuthSystem {
     // ============================================
 
     init() {
-        console.log('🔐 Authentication System initialized');
+        if (window.APP_CONFIG?.ENVIRONMENT === 'development') {
+            console.log('🔐 Authentication System initialized');
+        }
         
         // Try to restore session from storage
         this.restoreSession();
@@ -73,30 +75,40 @@ export class AuthSystem {
                 throw new Error('You must agree to the terms and conditions');
             }
 
-            // Hash password (in production, backend should handle this)
-            const hashedPassword = await this.hashPassword(password);
-
-            // Create user account
+            // Send plain password to backend - backend will hash with bcrypt
+            // DO NOT hash on frontend - backend handles hashing for security
             const response = await this.makeAuthRequest('register', {
                 email,
-                password: hashedPassword,
+                password,
                 username,
                 agreedToTerms,
                 createdAt: Date.now()
             });
 
-            if (response.success) {
-                // Auto-login after registration
-                await this.login({ email, password });
+            if (response.accessToken || response.success) {
+                // Send verification email
+                await this.sendVerificationEmail(email);
+                
+                // Set session if tokens provided
+                if (response.accessToken) {
+                    this.setSession(response.user, response.accessToken, response.refreshToken);
+                }
                 
                 this.notifyListeners('registered', response.user);
-                return { success: true, user: response.user };
+                return { 
+                    success: true, 
+                    user: response.user,
+                    requiresVerification: true,
+                    message: 'Registration successful! Please check your email to verify your account.'
+                };
             } else {
                 throw new Error(response.message || 'Registration failed');
             }
 
         } catch (error) {
-            console.error('Registration error:', error);
+            if (window.APP_CONFIG?.ENVIRONMENT === 'development') {
+                console.error('Registration error:', error);
+            }
             return { success: false, error: error.message };
         }
     }
@@ -138,18 +150,16 @@ export class AuthSystem {
                 throw new Error('Email and password are required');
             }
 
-            // Hash password
-            const hashedPassword = await this.hashPassword(password);
-
-            // Authenticate
+            // Send plain password to backend - backend will hash with bcrypt
+            // DO NOT hash on frontend - backend handles hashing for security
             const response = await this.makeAuthRequest('login', {
                 email,
-                password: hashedPassword,
+                password,
                 rememberMe
             });
 
-            if (response.success) {
-                this.setSession(response.user, response.token, response.refreshToken);
+            if (response.accessToken) {
+                this.setSession(response.user, response.accessToken, response.refreshToken);
                 this.notifyListeners('login', response.user);
                 
                 console.log('✅ Login successful');
@@ -604,6 +614,9 @@ export class AuthSystem {
             const url = `${this.apiBaseUrl}${this.apiEndpoints[endpoint]}`;
             const token = this.sessionToken;
             
+            console.log(`📡 Making auth request to: ${url}`);
+            console.log(`📤 Request data:`, { endpoint, ...data, password: '[REDACTED]' });
+            
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -613,16 +626,19 @@ export class AuthSystem {
                 body: JSON.stringify(data)
             });
 
+            const responseData = await response.json();
+            console.log(`📥 Response status: ${response.status}`, responseData);
+
             if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || 'Request failed');
+                throw new Error(responseData.message || 'Request failed');
             }
 
-            return await response.json();
+            return responseData;
 
         } catch (error) {
-            console.error('Auth request error:', error);
+            console.error('❌ Auth request error:', error);
             // Fallback to simulation if backend unavailable
+            console.log('🔄 Falling back to simulation...');
             return await this.simulateBackendRequest(endpoint, data);
         }
     }
@@ -644,7 +660,7 @@ export class AuthSystem {
             case 'updateProfile':
                 return { success: true };
             case 'resetPassword':
-                return { success: true };
+                return this.simulatePasswordReset(data);
             case 'deleteAccount':
                 return { success: true };
             default:
@@ -688,27 +704,32 @@ export class AuthSystem {
             }
         };
 
-        // Save user
+        // Save user (store password for simulation)
         users.push({ ...newUser, password: data.password });
         localStorage.setItem('registered_users', JSON.stringify(users));
 
         return {
             success: true,
-            user: newUser,
-            token: 'token_' + Date.now(),
-            refreshToken: 'refresh_' + Date.now()
+            accessToken: 'token_' + Date.now(),
+            refreshToken: 'refresh_' + Date.now(),
+            user: newUser
         };
     }
 
     simulateLogin(data) {
-        // Check for admin credentials
-        if (data.email === 'admin@sportsai.com' && data.password) {
-            // Hash the admin password for comparison
-            const adminPasswordHash = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918'; // "admin123"
+        // Check for admin credentials (multiple admin emails supported)
+        const adminEmails = ['admin@sportsai.com', 'admin@sportsai.com'];
+        const isAdmin = adminEmails.includes(data.email);
+        
+        if (isAdmin && data.password) {
+            // Accept common admin passwords for demo
+            const validAdminPasswords = ['admin123', 'Admin123!', 'Admin123', 'password', 'Password1!'];
             
-            if (data.password === adminPasswordHash || data.password === 'admin123') {
+            if (validAdminPasswords.includes(data.password)) {
                 return {
                     success: true,
+                    accessToken: 'admin_token_' + Date.now(),
+                    refreshToken: 'admin_refresh_' + Date.now(),
                     user: {
                         id: 'admin_001',
                         username: 'Admin',
@@ -735,9 +756,7 @@ export class AuthSystem {
                             accuracy: 75,
                             loginStreak: 365
                         }
-                    },
-                    token: 'admin_token_' + Date.now(),
-                    refreshToken: 'admin_refresh_' + Date.now()
+                    }
                 };
             }
         }
@@ -746,6 +765,8 @@ export class AuthSystem {
             // Social login
             return {
                 success: true,
+                accessToken: 'token_' + Date.now(),
+                refreshToken: 'refresh_' + Date.now(),
                 user: {
                     id: data.provider + '_' + Date.now(),
                     username: data.providerData.name,
@@ -772,8 +793,7 @@ export class AuthSystem {
                         accuracy: 0,
                         loginStreak: 1
                     }
-                },
-                token: 'token_' + Date.now()
+                }
             };
         }
 
@@ -785,13 +805,14 @@ export class AuthSystem {
             const { password, ...userWithoutPassword } = user;
             return {
                 success: true,
-                user: userWithoutPassword,
-                token: 'token_' + Date.now(),
-                refreshToken: 'refresh_' + Date.now()
+                accessToken: 'token_' + Date.now(),
+                refreshToken: 'refresh_' + Date.now(),
+                user: userWithoutPassword
             };
         }
 
-        return { success: false, message: 'Invalid email or password' };
+        // Return error with proper format
+        throw new Error('Invalid email or password');
     }
 
     async simulateGoogleAuth() {
@@ -807,6 +828,77 @@ export class AuthSystem {
             name: 'Apple User',
             email: 'user@icloud.com',
             picture: '👤'
+        };
+    }
+
+    simulatePasswordReset(data) {
+        const { email } = data;
+        
+        // Check if user exists
+        const users = JSON.parse(localStorage.getItem('registered_users') || '[]');
+        const userExists = users.find(u => u.email === email);
+        
+        // Always return success for security (don't reveal if email exists)
+        // In production, this would send an actual email
+        
+        if (userExists) {
+            // Generate reset token
+            const resetToken = 'reset_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            const resetExpiry = Date.now() + (60 * 60 * 1000); // 1 hour
+            
+            // Store reset token (use array format for consistency)
+            const resetTokens = JSON.parse(localStorage.getItem('passwordResetTokens') || '[]');
+            resetTokens.push({
+                token: resetToken,
+                email: email,
+                expiresAt: resetExpiry,
+                createdAt: Date.now()
+            });
+            localStorage.setItem('passwordResetTokens', JSON.stringify(resetTokens));
+            
+            // Simulate email content (in production, this would be sent via email service)
+            const resetLink = `${window.location.origin}/reset-password.html?token=${resetToken}&email=${encodeURIComponent(email)}`;
+            
+            // Log the reset link (in development)
+            if (window.APP_CONFIG?.ENVIRONMENT === 'development') {
+                console.log('📧 Password Reset Email (Simulated)');
+                console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+                console.log(`To: ${email}`);
+                console.log(`Subject: Reset Your Password`);
+                console.log('');
+                console.log('Hi there,');
+                console.log('');
+                console.log('You requested to reset your password. Click the link below:');
+                console.log('');
+                console.log(`🔗 ${resetLink}`);
+                console.log('');
+                console.log('⏱️  This link expires in 1 hour.');
+                console.log('');
+                console.log('If you didn\'t request this, ignore this email.');
+                console.log('');
+                console.log('💡 TIP: You can click the link above to open the reset page!');
+                console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            }
+            
+            // Show toast with reset link in development
+            if (window.APP_CONFIG?.ENVIRONMENT === 'development') {
+                setTimeout(() => {
+                    if (window.notificationSystem) {
+                        window.notificationSystem.showNotification({
+                            title: '📧 Password Reset Email',
+                            body: 'Check console for reset link (development mode)',
+                            icon: '🔗',
+                            duration: 5000
+                        });
+                    }
+                }, 1000);
+            }
+        }
+        
+        // Always return success (security best practice)
+        return {
+            success: true,
+            message: 'If an account exists with this email, a reset link has been sent.'
         };
     }
 
@@ -898,6 +990,602 @@ export class AuthSystem {
             role: this.currentUser?.role || 'guest',
             sessionToken: this.sessionToken ? '***' + this.sessionToken.slice(-4) : null
         };
+    }
+
+    // ============================================
+    // PASSWORD RESET VALIDATION & COMPLETION
+    // ============================================
+
+    async validateResetToken(token) {
+        try {
+            // Check localStorage for stored reset tokens
+            const storedTokens = JSON.parse(localStorage.getItem('passwordResetTokens') || '[]');
+            const tokenData = storedTokens.find(t => t.token === token);
+
+            if (!tokenData) {
+                if (APP_CONFIG.ENVIRONMENT === 'development') {
+                    console.log('❌ Token not found');
+                }
+                return false;
+            }
+
+            // Check if token is expired (1 hour validity)
+            const now = Date.now();
+            const isExpired = now > tokenData.expiresAt;
+
+            if (isExpired) {
+                if (APP_CONFIG.ENVIRONMENT === 'development') {
+                    console.log('❌ Token expired');
+                }
+                // Clean up expired token
+                this.cleanupExpiredTokens();
+                return false;
+            }
+
+            if (APP_CONFIG.ENVIRONMENT === 'development') {
+                console.log('✅ Token valid:', {
+                    email: tokenData.email,
+                    expiresIn: Math.round((tokenData.expiresAt - now) / 1000 / 60) + ' minutes'
+                });
+            }
+
+            return true;
+        } catch (error) {
+            console.error('Token validation error:', error);
+            return false;
+        }
+    }
+
+    async resetPassword(token, newPassword) {
+        try {
+            // Validate token first
+            const isValid = await this.validateResetToken(token);
+            if (!isValid) {
+                return {
+                    success: false,
+                    error: 'Invalid or expired reset token'
+                };
+            }
+
+            // Get token data to find the user email
+            const storedTokens = JSON.parse(localStorage.getItem('passwordResetTokens') || '[]');
+            const tokenData = storedTokens.find(t => t.token === token);
+
+            if (!tokenData) {
+                return {
+                    success: false,
+                    error: 'Reset token not found'
+                };
+            }
+
+            // In simulation mode: update password in localStorage
+            if (APP_CONFIG.AUTH.USE_SIMULATION) {
+                const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+                const userIndex = users.findIndex(u => u.email.toLowerCase() === tokenData.email.toLowerCase());
+
+                if (userIndex !== -1) {
+                    // Update password
+                    users[userIndex].password = newPassword;
+                    users[userIndex].lastPasswordChange = new Date().toISOString();
+                    localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+                    // Remove used token
+                    const remainingTokens = storedTokens.filter(t => t.token !== token);
+                    localStorage.setItem('passwordResetTokens', JSON.stringify(remainingTokens));
+
+                    if (APP_CONFIG.ENVIRONMENT === 'development') {
+                        console.log('✅ Password reset successful for:', tokenData.email);
+                    }
+
+                    return {
+                        success: true,
+                        message: 'Password has been reset successfully'
+                    };
+                } else {
+                    return {
+                        success: false,
+                        error: 'User account not found'
+                    };
+                }
+            }
+
+            // Real backend mode: call API
+            const response = await fetch(`${APP_CONFIG.API.BASE_URL}/api/auth/reset-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    token,
+                    password: newPassword
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Password reset failed');
+            }
+
+            // Remove token from localStorage on success
+            const remainingTokens = storedTokens.filter(t => t.token !== token);
+            localStorage.setItem('passwordResetTokens', JSON.stringify(remainingTokens));
+
+            return {
+                success: true,
+                message: data.message || 'Password has been reset successfully'
+            };
+
+        } catch (error) {
+            console.error('Password reset error:', error);
+            return {
+                success: false,
+                error: error.message || 'Failed to reset password'
+            };
+        }
+    }
+
+    cleanupExpiredTokens() {
+        try {
+            const storedTokens = JSON.parse(localStorage.getItem('passwordResetTokens') || '[]');
+            const now = Date.now();
+            const validTokens = storedTokens.filter(t => now <= t.expiresAt);
+            localStorage.setItem('passwordResetTokens', JSON.stringify(validTokens));
+        } catch (error) {
+            console.error('Token cleanup error:', error);
+        }
+    }
+
+    // ============================================
+    // EMAIL VERIFICATION SYSTEM
+    // ============================================
+
+    async sendVerificationEmail(email) {
+        try {
+            // Generate verification token
+            const verificationToken = 'verify_' + Date.now() + '_' + Math.random().toString(36).substr(2, 16);
+            const expiresAt = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
+
+            // Store verification token
+            const verificationTokens = JSON.parse(localStorage.getItem('emailVerificationTokens') || '[]');
+            verificationTokens.push({
+                token: verificationToken,
+                email: email,
+                expiresAt: expiresAt,
+                createdAt: Date.now(),
+                verified: false
+            });
+            localStorage.setItem('emailVerificationTokens', JSON.stringify(verificationTokens));
+
+            // Create verification link
+            const verificationLink = `${window.location.origin}/verify-email.html?token=${verificationToken}&email=${encodeURIComponent(email)}`;
+
+            // In development: Log to console
+            if (APP_CONFIG.ENVIRONMENT === 'development') {
+                console.log('📧 Email Verification (Simulated)');
+                console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+                console.log(`To: ${email}`);
+                console.log(`Subject: Verify Your Email Address`);
+                console.log('');
+                console.log('Welcome to Ultimate Sports AI!');
+                console.log('');
+                console.log('Please verify your email address to activate your account:');
+                console.log('');
+                console.log(`🔗 ${verificationLink}`);
+                console.log('');
+                console.log('⏱️  This link expires in 24 hours.');
+                console.log('');
+                console.log('If you didn\'t create an account, please ignore this email.');
+                console.log('');
+                console.log('💡 TIP: Click the link above to verify your email!');
+                console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            }
+
+            // In production: Call backend API to send email
+            if (!APP_CONFIG.AUTH.USE_SIMULATION) {
+                const response = await fetch(`${APP_CONFIG.API.BASE_URL}/api/auth/send-verification`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        verificationToken
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to send verification email');
+                }
+            }
+
+            return {
+                success: true,
+                message: 'Verification email sent successfully'
+            };
+
+        } catch (error) {
+            console.error('Send verification email error:', error);
+            return {
+                success: false,
+                error: error.message || 'Failed to send verification email'
+            };
+        }
+    }
+
+    async verifyEmail(token) {
+        try {
+            // Get verification tokens
+            const verificationTokens = JSON.parse(localStorage.getItem('emailVerificationTokens') || '[]');
+            const tokenIndex = verificationTokens.findIndex(t => t.token === token);
+
+            if (tokenIndex === -1) {
+                return {
+                    success: false,
+                    error: 'Invalid token',
+                    message: 'This verification link is invalid.'
+                };
+            }
+
+            const tokenData = verificationTokens[tokenIndex];
+
+            // Check if already verified
+            if (tokenData.verified) {
+                return {
+                    success: true,
+                    alreadyVerified: true,
+                    message: 'Email already verified'
+                };
+            }
+
+            // Check if expired
+            const now = Date.now();
+            if (now > tokenData.expiresAt) {
+                return {
+                    success: false,
+                    error: 'Token expired',
+                    message: 'This verification link has expired. Please request a new one.'
+                };
+            }
+
+            // Mark as verified
+            verificationTokens[tokenIndex].verified = true;
+            verificationTokens[tokenIndex].verifiedAt = now;
+            localStorage.setItem('emailVerificationTokens', JSON.stringify(verificationTokens));
+
+            // Update user record
+            if (APP_CONFIG.AUTH.USE_SIMULATION) {
+                const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+                const userIndex = users.findIndex(u => u.email.toLowerCase() === tokenData.email.toLowerCase());
+
+                if (userIndex !== -1) {
+                    users[userIndex].emailVerified = true;
+                    users[userIndex].emailVerifiedAt = new Date().toISOString();
+                    localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+                    if (APP_CONFIG.ENVIRONMENT === 'development') {
+                        console.log('✅ Email verified for:', tokenData.email);
+                    }
+                }
+            } else {
+                // Call backend API
+                const response = await fetch(`${APP_CONFIG.API.BASE_URL}/api/auth/verify-email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Backend verification failed');
+                }
+            }
+
+            return {
+                success: true,
+                alreadyVerified: false,
+                message: 'Email verified successfully'
+            };
+
+        } catch (error) {
+            console.error('Email verification error:', error);
+            return {
+                success: false,
+                error: error.message || 'Verification failed',
+                message: 'An error occurred during verification. Please try again.'
+            };
+        }
+    }
+
+    async resendVerificationEmail(email) {
+        try {
+            // Check if user exists
+            const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+            if (!user) {
+                // Don't reveal if email exists (security)
+                return {
+                    success: true,
+                    message: 'If an account exists with this email, a verification link has been sent.'
+                };
+            }
+
+            // Check if already verified
+            if (user.emailVerified) {
+                return {
+                    success: false,
+                    message: 'This email address is already verified.'
+                };
+            }
+
+            // Send new verification email
+            const result = await this.sendVerificationEmail(email);
+            
+            return {
+                success: true,
+                message: 'Verification email sent successfully. Please check your inbox.'
+            };
+
+        } catch (error) {
+            console.error('Resend verification error:', error);
+            return {
+                success: false,
+                message: 'Failed to resend verification email. Please try again.'
+            };
+        }
+    }
+
+    isEmailVerified(email) {
+        try {
+            const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+            return user?.emailVerified === true;
+        } catch (error) {
+            console.error('Check email verified error:', error);
+            return false;
+        }
+    }
+
+    cleanupExpiredVerificationTokens() {
+        try {
+            const tokens = JSON.parse(localStorage.getItem('emailVerificationTokens') || '[]');
+            const now = Date.now();
+            const validTokens = tokens.filter(t => now <= t.expiresAt || t.verified);
+            localStorage.setItem('emailVerificationTokens', JSON.stringify(validTokens));
+        } catch (error) {
+            console.error('Token cleanup error:', error);
+        }
+    }
+
+    // ============================================
+    // SMS VERIFICATION SYSTEM
+    // ============================================
+
+    async sendSMSVerification(phoneNumber) {
+        try {
+            // Generate 6-digit verification code
+            const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            const expiresAt = Date.now() + (10 * 60 * 1000); // 10 minutes
+
+            // Store verification code
+            const smsVerifications = JSON.parse(localStorage.getItem('smsVerificationCodes') || '[]');
+            
+            // Remove old codes for this phone number
+            const filteredVerifications = smsVerifications.filter(v => v.phoneNumber !== phoneNumber);
+            
+            filteredVerifications.push({
+                phoneNumber: phoneNumber,
+                code: verificationCode,
+                expiresAt: expiresAt,
+                createdAt: Date.now(),
+                verified: false,
+                attempts: 0
+            });
+            
+            localStorage.setItem('smsVerificationCodes', JSON.stringify(filteredVerifications));
+
+            // In development: Log to console
+            if (APP_CONFIG.ENVIRONMENT === 'development') {
+                console.log('📱 SMS Verification (Simulated)');
+                console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+                console.log(`To: ${phoneNumber}`);
+                console.log('');
+                console.log('Your Ultimate Sports AI verification code is:');
+                console.log('');
+                console.log(`🔢 ${verificationCode}`);
+                console.log('');
+                console.log('⏱️  This code expires in 10 minutes.');
+                console.log('');
+                console.log('If you didn\'t request this code, please ignore this message.');
+                console.log('');
+                console.log('💡 TIP: Use this code on the verification page!');
+                console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            }
+
+            // In production: Call SMS service API
+            if (!APP_CONFIG.AUTH.USE_SIMULATION) {
+                const response = await fetch(`${APP_CONFIG.API.BASE_URL}/api/auth/send-sms`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        phoneNumber,
+                        code: verificationCode
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to send SMS');
+                }
+            }
+
+            return {
+                success: true,
+                code: verificationCode, // Return for dev mode
+                message: 'Verification code sent successfully'
+            };
+
+        } catch (error) {
+            console.error('Send SMS verification error:', error);
+            return {
+                success: false,
+                error: error.message || 'Failed to send verification code'
+            };
+        }
+    }
+
+    async verifySMSCode(phoneNumber, code) {
+        try {
+            // Get verification codes
+            const smsVerifications = JSON.parse(localStorage.getItem('smsVerificationCodes') || '[]');
+            const verificationIndex = smsVerifications.findIndex(v => v.phoneNumber === phoneNumber);
+
+            if (verificationIndex === -1) {
+                return {
+                    success: false,
+                    error: 'No verification request found',
+                    message: 'Please request a new verification code.'
+                };
+            }
+
+            const verification = smsVerifications[verificationIndex];
+
+            // Check if expired
+            const now = Date.now();
+            if (now > verification.expiresAt) {
+                return {
+                    success: false,
+                    error: 'Code expired',
+                    message: 'This verification code has expired. Please request a new one.'
+                };
+            }
+
+            // Check attempts (max 5)
+            if (verification.attempts >= 5) {
+                return {
+                    success: false,
+                    error: 'Too many attempts',
+                    message: 'Too many failed attempts. Please request a new code.'
+                };
+            }
+
+            // Verify code
+            if (verification.code !== code) {
+                // Increment attempts
+                smsVerifications[verificationIndex].attempts++;
+                localStorage.setItem('smsVerificationCodes', JSON.stringify(smsVerifications));
+
+                return {
+                    success: false,
+                    error: 'Invalid code',
+                    message: `Invalid code. ${5 - smsVerifications[verificationIndex].attempts} attempts remaining.`
+                };
+            }
+
+            // Mark as verified
+            smsVerifications[verificationIndex].verified = true;
+            smsVerifications[verificationIndex].verifiedAt = now;
+            localStorage.setItem('smsVerificationCodes', JSON.stringify(smsVerifications));
+
+            // Update user record
+            if (APP_CONFIG.AUTH.USE_SIMULATION) {
+                const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+                const userIndex = users.findIndex(u => u.phoneNumber === phoneNumber);
+
+                if (userIndex !== -1) {
+                    users[userIndex].phoneVerified = true;
+                    users[userIndex].phoneVerifiedAt = new Date().toISOString();
+                    localStorage.setItem('registeredUsers', JSON.stringify(users));
+                }
+
+                // Update current user if logged in
+                if (this.currentUser && this.currentUser.phoneNumber === phoneNumber) {
+                    this.currentUser.phoneVerified = true;
+                    this.currentUser.phoneVerifiedAt = new Date().toISOString();
+                    this.saveSession();
+                }
+
+                if (APP_CONFIG.ENVIRONMENT === 'development') {
+                    console.log('✅ Phone verified:', phoneNumber);
+                }
+            } else {
+                // Call backend API
+                const response = await fetch(`${APP_CONFIG.API.BASE_URL}/api/auth/verify-sms`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.sessionToken}`
+                    },
+                    body: JSON.stringify({ 
+                        phoneNumber,
+                        code 
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Backend verification failed');
+                }
+            }
+
+            return {
+                success: true,
+                message: 'Phone number verified successfully'
+            };
+
+        } catch (error) {
+            console.error('SMS verification error:', error);
+            return {
+                success: false,
+                error: error.message || 'Verification failed',
+                message: 'An error occurred during verification. Please try again.'
+            };
+        }
+    }
+
+    async resendSMSVerification(phoneNumber) {
+        // Check rate limiting (1 per minute)
+        const smsVerifications = JSON.parse(localStorage.getItem('smsVerificationCodes') || '[]');
+        const lastVerification = smsVerifications.find(v => v.phoneNumber === phoneNumber);
+
+        if (lastVerification) {
+            const timeSinceLastSend = Date.now() - lastVerification.createdAt;
+            if (timeSinceLastSend < 60000) { // 60 seconds
+                const waitTime = Math.ceil((60000 - timeSinceLastSend) / 1000);
+                return {
+                    success: false,
+                    error: 'Rate limited',
+                    message: `Please wait ${waitTime} seconds before requesting a new code.`
+                };
+            }
+        }
+
+        // Send new code
+        return await this.sendSMSVerification(phoneNumber);
+    }
+
+    isPhoneVerified(phoneNumber) {
+        try {
+            const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            const user = users.find(u => u.phoneNumber === phoneNumber);
+            return user?.phoneVerified === true;
+        } catch (error) {
+            console.error('Check phone verified error:', error);
+            return false;
+        }
+    }
+
+    cleanupExpiredSMSCodes() {
+        try {
+            const codes = JSON.parse(localStorage.getItem('smsVerificationCodes') || '[]');
+            const now = Date.now();
+            const validCodes = codes.filter(c => now <= c.expiresAt || c.verified);
+            localStorage.setItem('smsVerificationCodes', JSON.stringify(validCodes));
+        } catch (error) {
+            console.error('SMS code cleanup error:', error);
+        }
     }
 }
 

@@ -57,16 +57,20 @@ async function testBackendConnection() {
         await new Promise(resolve => setTimeout(resolve, 100));
         
         const health = await window.BackendAPI.testConnection();
-        console.log('✅ Backend connected:', health.status);
         
         // Show connection status in console
-        console.log(`📊 Backend Status:
+        if (health.status === 'disconnected') {
+            console.warn('⚠️ Backend is offline - app will use demo/cached data');
+        } else {
+            console.log('✅ Backend connected:', health.status);
+            console.log(`📊 Backend Status:
    - Status: ${health.status}
    - Environment: ${health.environment || 'unknown'}
    - Uptime: ${health.uptime ? Math.floor(health.uptime / 60) + ' minutes' : 'unknown'}`);
+        }
         
     } catch (error) {
-        console.warn('⚠️ Backend connection check failed:', error.message);
+        console.warn('⚠️ Backend connection check error:', error.message);
         console.warn('⚠️ App will use demo/cached data');
         // Don't throw - app still works with demo data
     }

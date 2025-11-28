@@ -641,7 +641,13 @@ export class AuthUI {
 
         if (result.success) {
             this.closeModal();
-            this.showToast('Account created successfully!', 'success');
+            
+            // Show verification message
+            if (result.requiresVerification) {
+                this.showVerificationNotice(userData.email);
+            } else {
+                this.showToast('Account created successfully!', 'success');
+            }
         } else {
             errorDiv.textContent = result.error;
             errorDiv.style.display = 'block';
@@ -772,17 +778,228 @@ export class AuthUI {
     }
 
     showForgotPasswordDialog() {
-        const email = prompt('Enter your email address:');
+        // Close current modal
+        this.closeModal();
         
-        if (email) {
-            authSystem.resetPassword(email).then(result => {
-                if (result.success) {
-                    this.showToast('Password reset email sent!', 'success');
-                } else {
-                    this.showToast(result.error, 'error');
-                }
+        // Create forgot password modal
+        const modal = this.createModal('forgot-password', `
+            <div class="auth-modal-content forgot-password-modal">
+                <div class="auth-modal-header">
+                    <button class="back-button" id="back-to-login">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2>Reset Password</h2>
+                    <p>Enter your email and we'll send you a reset link</p>
+                </div>
+
+                <div id="forgot-password-form-container">
+                    <form id="forgot-password-form" class="auth-form">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input 
+                                type="email" 
+                                name="email" 
+                                id="reset-email"
+                                placeholder="your@email.com" 
+                                required
+                                autocomplete="email"
+                            >
+                            <small class="form-hint">
+                                We'll send a password reset link to this email
+                            </small>
+                        </div>
+
+                        <button type="submit" class="auth-submit-btn" id="send-reset-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Reset Link
+                        </button>
+
+                        <div class="auth-error" id="reset-error" style="display: none;"></div>
+                        <div class="auth-success" id="reset-success" style="display: none;"></div>
+                    </form>
+                </div>
+
+                <div id="reset-sent-container" style="display: none;">
+                    <div class="reset-sent-icon">
+                        <i class="fas fa-envelope-open-text"></i>
+                    </div>
+                    <h3>Check Your Email!</h3>
+                    <p class="reset-sent-message">
+                        We've sent a password reset link to <strong id="reset-email-display"></strong>
+                    </p>
+                    <div class="reset-instructions">
+                        <h4>What's next?</h4>
+                        <ul>
+                            <li>Check your inbox (and spam folder)</li>
+                            <li>Click the reset link in the email</li>
+                            <li>Create your new password</li>
+                            <li>Sign in with your new password</li>
+                        </ul>
+                    </div>
+                    <button class="auth-submit-btn" id="back-to-login-2">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Back to Login
+                    </button>
+                    <button class="text-link resend-link" id="resend-reset-link">
+                        Didn't receive it? Resend email
+                    </button>
+                </div>
+
+                <div class="forgot-password-help">
+                    <p><i class="fas fa-info-circle"></i> Having trouble? Contact support</p>
+                </div>
+            </div>
+        `);
+
+        // Setup handlers
+        this.setupForgotPasswordHandlers(modal);
+    }
+
+    setupForgotPasswordHandlers(modal) {
+        const form = modal.querySelector('#forgot-password-form');
+        const formContainer = modal.querySelector('#forgot-password-form-container');
+        const sentContainer = modal.querySelector('#reset-sent-container');
+        const errorDiv = modal.querySelector('#reset-error');
+        const successDiv = modal.querySelector('#reset-success');
+        const submitBtn = modal.querySelector('#send-reset-btn');
+
+        // Back to login buttons
+        modal.querySelectorAll('#back-to-login, #back-to-login-2').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.closeModal();
+                this.showLoginModal();
             });
+        });
+
+        // Resend email
+        modal.querySelector('#resend-reset-link')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            const email = modal.querySelector('#reset-email').value;
+            this.handlePasswordReset(email, formContainer, sentContainer, errorDiv, successDiv, submitBtn);
+        });
+
+        // Form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            const email = formData.get('email');
+
+            await this.handlePasswordReset(email, formContainer, sentContainer, errorDiv, successDiv, submitBtn);
+        });
+    }
+
+    async handlePasswordReset(email, formContainer, sentContainer, errorDiv, successDiv, submitBtn) {
+        // Validate email
+        if (!email || !this.validateEmail(email)) {
+            this.showError(errorDiv, 'Please enter a valid email address');
+            return;
         }
+
+        // Show loading
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitBtn.disabled = true;
+        errorDiv.style.display = 'none';
+        successDiv.style.display = 'none';
+
+        try {
+            // Call auth system reset password
+            const result = await authSystem.resetPassword(email);
+
+            if (result.success) {
+                // Show success container
+                formContainer.style.display = 'none';
+                sentContainer.style.display = 'block';
+                
+                // Update email display
+                document.getElementById('reset-email-display').textContent = email;
+
+                // Show toast
+                this.showToast('Password reset email sent!', 'success');
+            } else {
+                throw new Error(result.error || 'Failed to send reset email');
+            }
+        } catch (error) {
+            this.showError(errorDiv, error.message);
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    }
+
+    validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    showVerificationNotice(email) {
+        // Create verification notice modal
+        const modal = this.createModal('verification-notice', `
+            <div class="auth-modal-content verification-notice-modal">
+                <div class="verification-icon">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+                <div class="auth-modal-header">
+                    <h2>Verify Your Email</h2>
+                    <p>We've sent a verification link to</p>
+                    <strong class="verification-email">${email}</strong>
+                </div>
+
+                <div class="verification-instructions">
+                    <h4>📧 What's next?</h4>
+                    <ul>
+                        <li>✓ Check your inbox (and spam folder)</li>
+                        <li>✓ Click the verification link in the email</li>
+                        <li>✓ Your account will be activated</li>
+                        <li>✓ Come back and start using Ultimate Sports AI!</li>
+                    </ul>
+                    <div class="verification-tip">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>In dev mode, check the console for the verification link!</span>
+                    </div>
+                </div>
+
+                <button class="auth-submit-btn" id="verification-ok-btn">
+                    <i class="fas fa-check"></i>
+                    Got It!
+                </button>
+
+                <button class="text-link resend-verification-link" id="resend-verification-btn">
+                    Didn't receive it? Resend email
+                </button>
+
+                <div class="verification-help">
+                    <p><i class="fas fa-info-circle"></i> Having trouble? <a href="/support">Contact support</a></p>
+                </div>
+            </div>
+        `);
+
+        // Setup handlers
+        modal.querySelector('#verification-ok-btn')?.addEventListener('click', () => {
+            this.closeModal();
+        });
+
+        modal.querySelector('#resend-verification-btn')?.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const btn = e.target;
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+
+            const result = await authSystem.resendVerificationEmail(email);
+            
+            if (result.success) {
+                this.showToast('Verification email sent!', 'success');
+                btn.textContent = 'Sent! ✓';
+                setTimeout(() => {
+                    btn.textContent = 'Didn\'t receive it? Resend email';
+                    btn.disabled = false;
+                }, 3000);
+            } else {
+                this.showToast(result.message || 'Failed to resend', 'error');
+                btn.textContent = 'Didn\'t receive it? Resend email';
+                btn.disabled = false;
+            }
+        });
     }
 
     // ============================================

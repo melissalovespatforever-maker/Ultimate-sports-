@@ -17,7 +17,7 @@ const CONFIG = {
     // WebSocket URL for real-time updates
     WS_URL: window.location.hostname === 'localhost'
       ? 'ws://localhost:3001'
-      : (window.ENV?.WS_URL || 'wss://ultimate-sports-ai-backend-production.up.railway.app'),
+      : 'wss://ultimate-sports-ai-backend-production.up.railway.app',
     
     // API timeout (milliseconds)
     TIMEOUT: 30000,

@@ -89,8 +89,8 @@ class NotificationSystem {
 
         try {
             const defaultOptions = {
-                icon: 'https://play.rosebud.ai/assets/Super intelligent AI high res icon by pridictmaster Ai.png?5eN6',
-                badge: 'https://play.rosebud.ai/assets/Super intelligent AI high res icon by pridictmaster Ai.png?5eN6',
+                icon: 'https://play.rosebud.ai/assets/Ultimate sports logo match app layout.png?lZrN',
+                badge: 'https://play.rosebud.ai/assets/Ultimate sports logo match app layout.png?lZrN',
                 vibrate: [200, 100, 200],
                 requireInteraction: false,
                 tag: 'sports-ai-notification'

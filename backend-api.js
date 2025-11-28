@@ -14,13 +14,33 @@ const BackendAPI = {
     // Test backend connection
     async testConnection() {
         try {
-            const response = await fetch(`${this.apiUrl}/health`);
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+            
+            const response = await fetch(`${this.apiUrl}/health`, {
+                signal: controller.signal,
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                console.warn(`⚠️ Backend health check returned ${response.status}`);
+                return { status: 'unknown', statusCode: response.status };
+            }
+            
             const data = await response.json();
             console.log('✅ Backend connection successful:', data);
             return data;
         } catch (error) {
-            console.error('❌ Backend connection failed:', error);
-            throw error;
+            if (error.name === 'AbortError') {
+                console.warn('⚠️ Backend connection timeout - backend may be starting');
+            } else {
+                console.warn('⚠️ Backend connection failed (will use demo data):', error.message);
+            }
+            // Return a safe fallback instead of throwing
+            return { status: 'disconnected', message: 'Using demo data' };
         }
     },
     
