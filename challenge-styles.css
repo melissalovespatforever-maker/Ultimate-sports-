@@ -1,0 +1,1293 @@
+/**
+ * PHASE 6: EXPERT CHALLENGES STYLES
+ * Beautiful, responsive challenge interface
+ */
+
+/* ==================== CONTAINER ==================== */
+
+.challenges-container {
+    padding: 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ==================== HEADER ==================== */
+
+.challenges-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.challenges-title h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0 0 0.25rem 0;
+}
+
+.challenges-title p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.btn-create-challenge {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+}
+
+.btn-create-challenge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* ==================== TABS ==================== */
+
+.challenges-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.challenge-tab {
+    background: white;
+    border: 2px solid #e5e7eb;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    position: relative;
+}
+
+.challenge-tab:hover {
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.challenge-tab.active {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-color: #10b981;
+    color: white;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+}
+
+.challenge-tab i {
+    font-size: 1.1rem;
+}
+
+.tab-badge {
+    background: #ef4444;
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    font-weight: 700;
+    display: none;
+    min-width: 20px;
+    text-align: center;
+}
+
+.challenge-tab.active .tab-badge {
+    background: white;
+    color: #10b981;
+}
+
+/* ==================== CONTENT ==================== */
+
+.challenges-content {
+    position: relative;
+}
+
+.challenge-tab-content {
+    display: none;
+}
+
+.challenge-tab-content.active {
+    display: block;
+}
+
+/* ==================== LOADING & EMPTY STATES ==================== */
+
+.challenges-loading,
+.challenges-error,
+.challenges-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #6b7280;
+}
+
+.challenges-loading i,
+.challenges-error i,
+.challenges-empty i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+}
+
+.challenges-loading i {
+    color: #10b981;
+    opacity: 1;
+}
+
+.challenges-error i {
+    color: #ef4444;
+    opacity: 1;
+}
+
+.challenges-empty h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 1rem 0 0.5rem;
+}
+
+.challenges-empty p {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+
+.btn-retry {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-retry:hover {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+/* ==================== SECTION HEADERS ==================== */
+
+.challenge-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    color: #10b981;
+}
+
+.section-title .count {
+    color: #6b7280;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* ==================== CHALLENGE CARDS ==================== */
+
+.challenges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.challenge-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.challenge-card:hover {
+    border-color: #10b981;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+}
+
+.challenge-card.completed {
+    opacity: 0.9;
+}
+
+.challenge-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.challenge-info {
+    flex: 1;
+}
+
+.challenge-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 0.5rem 0;
+}
+
+.expert-badge {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.expert-badge i {
+    font-size: 0.8rem;
+}
+
+/* ==================== STATUS BADGES ==================== */
+
+.challenge-status {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.challenge-status.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.challenge-status.active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.challenge-status.completed {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.challenge-status.completed.won {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: white;
+}
+
+.challenge-status.completed.lost {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.challenge-status.completed.tie {
+    background: #e5e7eb;
+    color: #4b5563;
+}
+
+/* ==================== MATCHUP ==================== */
+
+.challenge-matchup {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border-radius: 12px;
+}
+
+.challenger,
+.opponent {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.opponent {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.player-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.player-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.player-avatar.large {
+    width: 80px;
+    height: 80px;
+    font-size: 2.5rem;
+}
+
+.player-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.player-name {
+    font-weight: 700;
+    color: #1f2937;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 0.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.you-badge {
+    background: #10b981;
+    color: white;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    display: inline-block;
+    margin-left: 0.5rem;
+}
+
+.opponent .you-badge {
+    margin-left: 0;
+    margin-right: 0.5rem;
+}
+
+.player-score {
+    color: #10b981;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: block;
+}
+
+.player-score.large {
+    font-size: 2.5rem;
+    color: #1f2937;
+    margin: 0.5rem 0;
+}
+
+.score-label {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.is-you .player-avatar {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.vs-indicator {
+    font-weight: 900;
+    color: #9ca3af;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.vs-large {
+    font-weight: 900;
+    color: #9ca3af;
+    font-size: 2rem;
+    text-align: center;
+}
+
+/* ==================== CHALLENGE DETAILS ==================== */
+
+.challenge-description {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+    line-height: 1.5;
+}
+
+.challenge-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.detail-item i {
+    color: #10b981;
+    font-size: 1rem;
+}
+
+/* ==================== PROGRESS BAR ==================== */
+
+.challenge-progress {
+    margin: 1rem 0;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: #6b7280;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ==================== ACTIONS ==================== */
+
+.challenge-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.challenge-actions button {
+    flex: 1;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-accept {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.btn-accept:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+.btn-decline,
+.btn-cancel {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.btn-decline:hover,
+.btn-cancel:hover {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.btn-view-details {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.btn-view-details:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+/* ==================== MODALS ==================== */
+
+.challenge-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 1rem;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.challenge-modal {
+    background: white;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.challenge-details-modal {
+    max-width: 900px;
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 2px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-header i {
+    color: #10b981;
+}
+
+.btn-close-modal {
+    background: #f3f4f6;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #6b7280;
+}
+
+.btn-close-modal:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+}
+
+.modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-footer {
+    padding: 1.5rem;
+    border-top: 2px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+/* ==================== FORM ELEMENTS ==================== */
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ==================== OPPONENT SELECTOR ==================== */
+
+.opponent-selector {
+    position: relative;
+}
+
+.btn-select-opponent {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    background: white;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.btn-select-opponent:hover {
+    border-color: #10b981;
+}
+
+.btn-select-opponent i {
+    color: #10b981;
+    font-size: 1.25rem;
+}
+
+#selected-opponent-name {
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.opponent-selector-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    border-radius: 16px;
+    z-index: 10;
+    padding: 1.5rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.opponent-selector-modal h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.opponent-search {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.opponent-search:focus {
+    outline: none;
+    border-color: #10b981;
+}
+
+.opponent-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.opponent-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.opponent-option:hover {
+    background: #f9fafb;
+    border-color: #10b981;
+}
+
+.opponent-option .opponent-avatar {
+    width: 50px;
+    height: 50px;
+}
+
+.opponent-option .opponent-info {
+    flex: 1;
+}
+
+.opponent-option .opponent-name {
+    font-weight: 700;
+    color: #1f2937;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.opponent-option .opponent-stats {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+/* ==================== MODAL ACTIONS ==================== */
+
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+.btn-primary,
+.btn-secondary {
+    flex: 1;
+    padding: 0.875rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.btn-secondary:hover {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+/* ==================== CHALLENGE DETAILS MODAL ==================== */
+
+.challenge-detail-matchup {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border-radius: 16px;
+    margin-bottom: 2rem;
+}
+
+.detail-player {
+    text-align: center;
+}
+
+.detail-player h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 1rem 0 0.5rem;
+}
+
+.picks-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.picks-column h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 1rem 0;
+}
+
+.no-picks {
+    color: #9ca3af;
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+}
+
+.pick-detail {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s;
+}
+
+.pick-detail:hover {
+    border-color: #10b981;
+}
+
+.pick-detail.won {
+    background: #f0fdf4;
+    border-color: #86efac;
+}
+
+.pick-detail.lost {
+    background: #fef2f2;
+    border-color: #fca5a5;
+}
+
+.pick-status {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.pick-detail.won .pick-status {
+    color: #16a34a;
+}
+
+.pick-detail.lost .pick-status {
+    color: #dc2626;
+}
+
+.pick-detail.pending .pick-status {
+    color: #9ca3af;
+}
+
+.pick-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.pick-game {
+    font-weight: 600;
+    color: #1f2937;
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.pick-selection {
+    color: #6b7280;
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
+}
+
+.pick-odds {
+    color: #10b981;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.challenge-result {
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    border-radius: 16px;
+    color: white;
+    margin-top: 2rem;
+}
+
+.challenge-result i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.challenge-result h3 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+}
+
+.challenge-result p {
+    font-size: 1.1rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* ==================== COMPLETION MODAL ==================== */
+
+.completion-modal {
+    max-width: 500px;
+}
+
+.completion-content {
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.completion-icon {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+}
+
+.completion-content.won .completion-icon {
+    color: #fbbf24;
+}
+
+.completion-content.tie .completion-icon {
+    color: #6b7280;
+}
+
+.completion-content.lost .completion-icon {
+    color: #ef4444;
+}
+
+.completion-content h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0 0 0.5rem 0;
+}
+
+.completion-subtitle {
+    color: #6b7280;
+    margin-bottom: 2rem;
+}
+
+.final-score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    font-size: 3rem;
+    font-weight: 900;
+    color: #1f2937;
+    margin: 2rem 0;
+}
+
+.final-score .vs {
+    font-size: 1.5rem;
+    color: #9ca3af;
+}
+
+.reward-info {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+}
+
+.reward-info i {
+    font-size: 2rem;
+    color: #f59e0b;
+    margin-bottom: 0.5rem;
+}
+
+.reward-info p {
+    color: #92400e;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.reward-info strong {
+    color: #78350f;
+}
+
+/* ==================== UPGRADE MODAL ==================== */
+
+.upgrade-modal {
+    max-width: 450px;
+    text-align: center;
+}
+
+.upgrade-modal .modal-body {
+    padding: 2rem;
+}
+
+.upgrade-modal p {
+    color: #6b7280;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.btn-upgrade {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* ==================== TOAST NOTIFICATIONS ==================== */
+
+.challenge-toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 10001;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.challenge-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.challenge-toast i {
+    font-size: 1.5rem;
+}
+
+.challenge-toast.success {
+    border-left: 4px solid #10b981;
+}
+
+.challenge-toast.success i {
+    color: #10b981;
+}
+
+.challenge-toast.error {
+    border-left: 4px solid #ef4444;
+}
+
+.challenge-toast.error i {
+    color: #ef4444;
+}
+
+.challenge-toast.info {
+    border-left: 4px solid #3b82f6;
+}
+
+.challenge-toast.info i {
+    color: #3b82f6;
+}
+
+.challenge-toast span {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+    .challenges-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-create-challenge {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .challenges-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .challenge-matchup {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .vs-indicator {
+        transform: rotate(90deg);
+    }
+
+    .opponent {
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .challenge-actions {
+        flex-direction: column;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .picks-comparison {
+        grid-template-columns: 1fr;
+    }
+
+    .challenge-detail-matchup {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .vs-large {
+        transform: rotate(90deg);
+    }
+
+    .challenge-toast {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+    }
+}
+
+/* ==================== DARK MODE SUPPORT ==================== */
+
+@media (prefers-color-scheme: dark) {
+    .challenges-title h2,
+    .challenge-title,
+    .player-name,
+    .section-title,
+    .modal-header h2,
+    .completion-content h2,
+    .detail-player h3,
+    .picks-column h4,
+    .pick-game,
+    .challenge-toast span {
+        color: #f9fafb;
+    }
+
+    .challenges-title p,
+    .challenge-description,
+    .detail-item,
+    .progress-text,
+    .completion-subtitle,
+    .pick-selection,
+    .opponent-option .opponent-stats {
+        color: #d1d5db;
+    }
+
+    .challenge-card,
+    .challenge-modal,
+    .btn-select-opponent,
+    .opponent-search,
+    .pick-detail,
+    .challenge-toast {
+        background: #1f2937;
+        border-color: #374151;
+    }
+
+    .challenge-tab {
+        background: #1f2937;
+        border-color: #374151;
+        color: #d1d5db;
+    }
+
+    .challenge-matchup,
+    .challenge-detail-matchup {
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    }
+
+    .btn-decline,
+    .btn-cancel,
+    .btn-secondary,
+    .btn-close-modal {
+        background: #374151;
+        color: #d1d5db;
+    }
+
+    .btn-decline:hover,
+    .btn-cancel:hover,
+    .btn-secondary:hover,
+    .btn-close-modal:hover {
+        background: #4b5563;
+        color: #f9fafb;
+    }
+
+    .opponent-option:hover {
+        background: #111827;
+    }
+}

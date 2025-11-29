@@ -1,0 +1,1615 @@
+/**
+ * ADVANCED ANALYTICS DASHBOARD STYLES
+ * Professional analytics interface with ROI tracking
+ */
+
+/* ==================== CONTAINER ==================== */
+
+.advanced-analytics-container {
+    padding: 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ==================== HEADER ==================== */
+
+.analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.analytics-title h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0 0 0.25rem 0;
+}
+
+.analytics-title p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.analytics-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn-set-bankroll,
+.btn-export-data {
+    background: white;
+    border: 2px solid #e5e7eb;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-set-bankroll:hover,
+.btn-export-data:hover {
+    border-color: #10b981;
+    color: #10b981;
+}
+
+/* ==================== TABS ==================== */
+
+.analytics-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.analytics-tab {
+    background: white;
+    border: 2px solid #e5e7eb;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.analytics-tab:hover {
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.analytics-tab.active {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-color: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+}
+
+/* ==================== TIMEFRAME SELECTOR ==================== */
+
+.analytics-timeframe {
+    margin-bottom: 1.5rem;
+}
+
+.timeframe-selector {
+    padding: 0.75rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    background: white;
+    color: #1f2937;
+    transition: all 0.2s;
+}
+
+.timeframe-selector:hover {
+    border-color: #10b981;
+}
+
+.timeframe-selector:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* ==================== CONTENT ==================== */
+
+.analytics-content {
+    min-height: 400px;
+}
+
+.analytics-loading,
+.analytics-error {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #6b7280;
+}
+
+.analytics-loading i {
+    font-size: 4rem;
+    color: #3b82f6;
+    margin-bottom: 1rem;
+}
+
+.analytics-error i {
+    font-size: 4rem;
+    color: #ef4444;
+    margin-bottom: 1rem;
+}
+
+.analytics-error h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 1rem 0 0.5rem;
+}
+
+.btn-retry {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+}
+
+.btn-retry:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+/* ==================== METRICS GRID ==================== */
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.metric-card.bankroll-card {
+    border-left: 4px solid #10b981;
+}
+
+.metric-card.profit-card {
+    border-left: 4px solid #f59e0b;
+}
+
+.metric-card.winrate-card {
+    border-left: 4px solid #3b82f6;
+}
+
+.metric-card.roi-card {
+    border-left: 4px solid #8b5cf6;
+}
+
+.metric-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+.metric-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.metric-label {
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+.metric-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+}
+
+.metric-value.positive {
+    color: #10b981;
+}
+
+.metric-value.negative {
+    color: #ef4444;
+}
+
+.metric-change,
+.metric-sublabel {
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.metric-change {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.metric-change.positive {
+    color: #10b981;
+}
+
+.metric-change.negative {
+    color: #ef4444;
+}
+
+/* ==================== STREAK BANNER ==================== */
+
+.streak-banner {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+.streak-banner.loss {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.streak-icon {
+    font-size: 3rem;
+}
+
+.streak-info h3 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.streak-info p {
+    margin: 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+}
+
+/* ==================== SECTION CARD ==================== */
+
+.section-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 1.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    color: #3b82f6;
+}
+
+.section-description {
+    color: #6b7280;
+    margin: -0.5rem 0 1rem 0;
+}
+
+.trend-indicator {
+    margin-left: auto;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.trend-indicator.up {
+    color: #10b981;
+}
+
+.trend-indicator.down {
+    color: #ef4444;
+}
+
+.trend-indicator.flat {
+    color: #6b7280;
+}
+
+/* ==================== SPORT PERFORMANCE GRID ==================== */
+
+.sport-performance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.sport-card {
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.sport-card:hover {
+    border-color: #3b82f6;
+    background: white;
+}
+
+.sport-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.sport-name {
+    font-weight: 700;
+    color: #1f2937;
+    font-size: 1.1rem;
+}
+
+.sport-roi {
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.sport-roi.positive {
+    color: #10b981;
+}
+
+.sport-roi.negative {
+    color: #ef4444;
+}
+
+.sport-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.sport-progress {
+    margin-top: 1rem;
+}
+
+.progress-bar {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    transition: width 0.3s ease;
+}
+
+/* ==================== QUICK STATS GRID ==================== */
+
+.quick-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.quick-stat {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.2s;
+}
+
+.quick-stat:hover {
+    border-color: #3b82f6;
+}
+
+.quick-stat i {
+    font-size: 2rem;
+    color: #3b82f6;
+}
+
+.quick-stat-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1f2937;
+}
+
+.quick-stat-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+/* ==================== ROI SPECIFIC STYLES ==================== */
+
+.roi-summary {
+    margin-bottom: 2rem;
+}
+
+.roi-main-card {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 20px;
+    padding: 2.5rem;
+    color: white;
+    text-align: center;
+}
+
+.roi-header {
+    margin-bottom: 1rem;
+}
+
+.roi-header h2 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.roi-period {
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.roi-main-value {
+    font-size: 4rem;
+    font-weight: 900;
+    margin: 1rem 0;
+}
+
+.roi-main-value.positive {
+    color: #86efac;
+}
+
+.roi-main-value.negative {
+    color: #fca5a5;
+}
+
+.roi-breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.roi-item {
+    text-align: center;
+}
+
+.roi-item-label {
+    display: block;
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+}
+
+.roi-item-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* ==================== TREND CHART ==================== */
+
+.trend-chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    gap: 1rem;
+    min-height: 250px;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border-radius: 12px;
+}
+
+.trend-bar-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.trend-bar {
+    width: 100%;
+    min-height: 40px;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 0.5rem;
+    transition: all 0.3s;
+}
+
+.trend-bar.positive {
+    background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+}
+
+.trend-bar.negative {
+    background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
+}
+
+.trend-value {
+    color: white;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.trend-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* ==================== ROI SPORT LIST ==================== */
+
+.roi-sport-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.roi-sport-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.roi-sport-item:hover {
+    background: #f3f4f6;
+}
+
+.roi-sport-rank {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: #6b7280;
+}
+
+.roi-sport-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.roi-sport-name {
+    font-weight: 700;
+    color: #1f2937;
+    font-size: 1.05rem;
+}
+
+.roi-sport-picks {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.roi-sport-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.roi-sport-winrate {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.roi-sport-roi {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.roi-sport-profit {
+    font-size: 1.25rem;
+    font-weight: 800;
+    min-width: 80px;
+    text-align: right;
+}
+
+/* ==================== BANKROLL STYLES ==================== */
+
+.bankroll-summary {
+    margin-bottom: 2rem;
+}
+
+.bankroll-main-card {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    color: white;
+    text-align: center;
+}
+
+.bankroll-icon-large {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.bankroll-main-card h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.bankroll-value {
+    font-size: 4rem;
+    font-weight: 900;
+    margin: 1rem 0;
+}
+
+.bankroll-change {
+    font-size: 1.25rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.bankroll-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.bankroll-stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bankroll-stat-card i {
+    font-size: 2rem;
+    color: #3b82f6;
+    margin-bottom: 0.75rem;
+}
+
+.bankroll-stat-label {
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.bankroll-stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1f2937;
+}
+
+/* ==================== BANKROLL CHART ==================== */
+
+.bankroll-chart {
+    position: relative;
+    height: 250px;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.bankroll-chart-bar {
+    flex: 1;
+    position: relative;
+    height: 100%;
+}
+
+.bankroll-chart-point {
+    position: absolute;
+    width: 100%;
+    height: 8px;
+    background: #3b82f6;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.bankroll-chart-point:hover {
+    background: #2563eb;
+    height: 12px;
+    transform: translateY(-2px);
+}
+
+.bankroll-chart-legend {
+    text-align: center;
+    margin-top: 1rem;
+    color: #6b7280;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ==================== TRANSACTION LIST ==================== */
+
+.transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.transaction-item:hover {
+    background: #f3f4f6;
+}
+
+.transaction-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.transaction-icon.positive {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.transaction-icon.negative {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.transaction-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction-reason {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.transaction-date {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.transaction-amount {
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+/* ==================== PERFORMANCE STYLES ==================== */
+
+.performance-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.performance-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+}
+
+.performance-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.performance-card.best {
+    border-top: 4px solid #f59e0b;
+}
+
+.performance-card.streak {
+    border-top: 4px solid #ef4444;
+}
+
+.performance-card.consistency {
+    border-top: 4px solid #3b82f6;
+}
+
+.performance-card i {
+    font-size: 3rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+.performance-card h3 {
+    font-size: 1rem;
+    color: #6b7280;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+}
+
+.performance-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.performance-stat {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+/* ==================== PERFORMERS LIST ==================== */
+
+.performers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.performer-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.performer-item:hover {
+    background: #f3f4f6;
+}
+
+.performer-rank {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+.performer-rank.gold {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: white;
+}
+
+.performer-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.performer-name {
+    font-weight: 700;
+    color: #1f2937;
+    font-size: 1.05rem;
+}
+
+.performer-picks {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.performer-stats {
+    display: flex;
+    gap: 1rem;
+}
+
+.performer-winrate {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.performer-roi {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.performer-profit {
+    font-size: 1.25rem;
+    font-weight: 800;
+    min-width: 80px;
+    text-align: right;
+}
+
+/* ==================== TIPS & RECOMMENDATIONS ==================== */
+
+.tips-card,
+.recommendations-card {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.tips-card h3,
+.recommendations-card h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #78350f;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.tips-list li {
+    color: #92400e;
+    line-height: 1.6;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.tip-item {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.tip-item i {
+    font-size: 2rem;
+    color: #f59e0b;
+    flex-shrink: 0;
+}
+
+.tip-item strong {
+    display: block;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+}
+
+.tip-item p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.recommendations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.recommendation-item {
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    border-left: 4px solid #3b82f6;
+}
+
+.recommendation-item.success {
+    border-left-color: #10b981;
+}
+
+.recommendation-item.warning {
+    border-left-color: #f59e0b;
+}
+
+.recommendation-item.info {
+    border-left-color: #3b82f6;
+}
+
+.recommendation-item i {
+    font-size: 1.5rem;
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+.recommendation-item.success i {
+    color: #10b981;
+}
+
+.recommendation-item.warning i {
+    color: #f59e0b;
+}
+
+.recommendation-item strong {
+    display: block;
+    color: #1f2937;
+    margin-bottom: 0.25rem;
+}
+
+.recommendation-item p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* ==================== INSIGHTS STYLES ==================== */
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.insight-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+}
+
+.insight-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.insight-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: #3b82f6;
+    margin: 0 auto 1rem;
+}
+
+.insight-card h3 {
+    font-size: 1rem;
+    color: #6b7280;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    text-transform: uppercase;
+}
+
+.insight-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.insight-card p {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* ==================== KELLY CALCULATOR ==================== */
+
+.kelly-calculator {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border-radius: 12px;
+}
+
+.kelly-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-group label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.9rem;
+}
+
+.input-group input {
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-calculate-kelly {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-calculate-kelly:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.kelly-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.kelly-result-value {
+    font-size: 3rem;
+    font-weight: 900;
+    color: #3b82f6;
+    margin-bottom: 0.5rem;
+}
+
+.kelly-result p {
+    color: #6b7280;
+    margin: 0 0 1rem 0;
+}
+
+.kelly-explanation {
+    font-size: 0.9rem;
+    color: #6b7280;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* ==================== VALUE BETS ==================== */
+
+.value-bets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.value-bet-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 12px;
+    border-left: 4px solid #10b981;
+}
+
+.value-bet-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.value-bet-sport {
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.value-bet-type {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.value-bet-ev {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #10b981;
+}
+
+.value-bet-odds {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #6b7280;
+    min-width: 60px;
+    text-align: right;
+}
+
+.no-data {
+    text-align: center;
+    color: #9ca3af;
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* ==================== MODALS ==================== */
+
+.analytics-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 1rem;
+    animation: fadeIn 0.2s ease;
+}
+
+.analytics-modal {
+    background: white;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 2px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1f2937;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-close-modal {
+    background: #f3f4f6;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #6b7280;
+}
+
+.btn-close-modal:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-body p {
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn-primary,
+.btn-secondary {
+    flex: 1;
+    padding: 0.875rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.btn-secondary:hover {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+/* ==================== TOAST NOTIFICATIONS ==================== */
+
+.analytics-toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 10001;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.analytics-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.analytics-toast i {
+    font-size: 1.5rem;
+}
+
+.analytics-toast.success {
+    border-left: 4px solid #10b981;
+}
+
+.analytics-toast.success i {
+    color: #10b981;
+}
+
+.analytics-toast.error {
+    border-left: 4px solid #ef4444;
+}
+
+.analytics-toast.error i {
+    color: #ef4444;
+}
+
+.analytics-toast.info {
+    border-left: 4px solid #3b82f6;
+}
+
+.analytics-toast.info i {
+    color: #3b82f6;
+}
+
+.analytics-toast span {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+    .analytics-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .analytics-actions {
+        width: 100%;
+    }
+
+    .btn-set-bankroll,
+    .btn-export-data {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .roi-breakdown {
+        grid-template-columns: 1fr;
+    }
+
+    .kelly-calculator {
+        grid-template-columns: 1fr;
+    }
+
+    .performance-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .analytics-toast {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+    }
+}
+
+/* ==================== UTILITY CLASSES ==================== */
+
+.positive {
+    color: #10b981 !important;
+}
+
+.negative {
+    color: #ef4444 !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
