@@ -1,32 +1,45 @@
 /**
- * Live Leaderboard System for Ultimate Sports AI
- * Community pick competitions with real-time rankings
- * 
- * Features:
- * - Multiple leaderboard types (accuracy, streak, consistency)
- * - Daily/Weekly/Monthly/All-Time competitions
- * - Sport-specific leaderboards
- * - Real-time updates with WebSocket
- * - User profiles and stats
- * - Achievement badges and rewards
- * - Educational focus (no money involved)
+ * Real-time Leaderboard System
+ * Live rankings with instant updates and position tracking
  */
 
 class LeaderboardSystem {
-    constructor() {
-        this.currentLeaderboard = 'overall';
-        this.currentTimeframe = 'weekly';
-        this.currentSport = 'all';
-        this.refreshInterval = 30000; // 30 seconds
-        this.autoRefreshEnabled = true;
-        
-        // Mock data - replace with real API
-        this.leaderboards = this.generateMockLeaderboards();
-        
-        this.init();
+  constructor() {
+    this.currentUserId = 'user1';
+    
+    // Leaderboard types
+    this.leaderboards = new Map(); // leaderboardId -> LeaderboardData
+    this.userRankings = new Map(); // leaderboardId_period -> userId -> Ranking
+    this.leaderboardScores = new Map(); // leaderboardId -> userId -> Score
+    
+    // Time periods
+    this.periods = ['allTime', 'thisMonth', 'thisWeek', 'today'];
+    
+    // Ranking update history
+    this.rankingHistory = new Map(); // userId -> RankChange[]
+    
+    // Event listeners
+    this.listeners = new Map();
+    
+    // Real-time update settings
+    this.autoUpdateInterval = 5000; // Update every 5 seconds
+    this.updateTimers = new Map(); // leaderboardId -> timer
+    
+    this.init();
     }
 
-    init() {
+    async init() {
+        // Set API URL
+        this.apiUrl = window.APP_CONFIG?.API?.BASE_URL || 
+                     window.CONFIG?.API?.BASE_URL || 
+                     'https://ultimate-sports-ai-backend-production.up.railway.app';
+        
+        console.log('🏆 Leaderboard System initialized');
+        console.log('📡 API URL:', this.apiUrl);
+        
+        // Load initial leaderboard data
+        await this.loadLeaderboardData();
+        
         // Start auto-refresh
         if (this.autoRefreshEnabled) {
             this.startAutoRefresh();
@@ -36,7 +49,51 @@ class LeaderboardSystem {
         this.listenForPickUpdates();
     }
 
+    // Load real leaderboard data from backend
+    async loadLeaderboardData() {
+        try {
+            // Check cache first
+            const cacheKey = `${this.currentLeaderboard}_${this.currentTimeframe}_${this.currentSport}`;
+            const cached = this.cache.get(cacheKey);
+            
+            if (cached && (Date.now() - cached.timestamp < this.cacheExpiry)) {
+                console.log('📦 Using cached leaderboard data');
+                this.leaderboards = cached.data;
+                return;
+            }
+            
+            console.log('🔄 Loading leaderboard data from backend...');
+            
+            // Try to fetch from backend
+            const response = await fetch(`${this.apiUrl}/api/leaderboards?type=${this.currentLeaderboard}&timeframe=${this.currentTimeframe}&sport=${this.currentSport}`);
+            
+            if (response.ok) {
+                const data = await response.json();
+                this.leaderboards = data;
+                
+                // Cache the result
+                this.cache.set(cacheKey, {
+                    data: data,
+                    timestamp: Date.now()
+                });
+                
+                console.log('✅ Leaderboard data loaded from backend');
+            } else {
+                throw new Error('Backend returned non-200 status');
+            }
+        } catch (error) {
+            console.warn('⚠️ Backend leaderboard not available, using demo data:', error.message);
+            // Fallback to demo data
+            this.leaderboards = this.generateMockLeaderboards();
+        }
+    }
+    
     generateMockLeaderboards() {
+        console.log('🎭 Generating demo leaderboard data');
+        
+        // Get current user if available
+        const currentUser = window.AuthService?.getUser();
+        
         const userNames = [
             'SharpShooter', 'DataDrivenDan', 'AnalyticsAce', 'TrendMaster', 'ValueHunter',
             'StatGenius', 'TheContrarian', 'PickExpert', 'BettingBrain', 'OddsWhisperer',
@@ -47,12 +104,24 @@ class LeaderboardSystem {
         const avatars = ['🎯', '🧠', '📊', '🔥', '⭐', '💎', '🏆', '👑', '⚡', '🚀', '💪', '🎰', '📈', '🎲', '🃏', '🎪', '🌟', '💫', '✨', '🎨'];
 
         const users = userNames.map((name, index) => ({
-            id: `user_${index + 1}`,
+            id: `demo_user_${index + 1}`,
             username: name,
             avatar: avatars[index % avatars.length],
             tier: ['FREE', 'PRO', 'VIP'][Math.floor(Math.random() * 3)],
             verified: Math.random() > 0.7
         }));
+        
+        // Add current user if logged in
+        if (currentUser) {
+            const subscription = window.PayPalService?.getSubscription();
+            users.unshift({
+                id: currentUser.id,
+                username: currentUser.username || currentUser.email.split('@')[0],
+                avatar: '👤',
+                tier: subscription?.tier || 'FREE',
+                verified: currentUser.email_verified || false
+            });
+        }
 
         return {
             overall: this.generateOverallLeaderboard(users),
@@ -193,10 +262,27 @@ class LeaderboardSystem {
         return sportSpecs[Math.floor(Math.random() * sportSpecs.length)];
     }
 
-    getLeaderboard(type, timeframe = 'weekly', sport = 'all') {
+    async getLeaderboard(type, timeframe = 'weekly', sport = 'all') {
+        // Reload data if parameters changed
+        if (type !== this.currentLeaderboard || 
+            timeframe !== this.currentTimeframe || 
+            sport !== this.currentSport) {
+            
+            this.currentLeaderboard = type;
+            this.currentTimeframe = timeframe;
+            this.currentSport = sport;
+            
+            await this.loadLeaderboardData();
+        }
+        
+        if (!this.leaderboards) {
+            console.warn('⚠️ No leaderboard data available');
+            return [];
+        }
+        
         let data;
 
-        if (sport !== 'all' && this.leaderboards.sportSpecific[sport.toLowerCase()]) {
+        if (sport !== 'all' && this.leaderboards.sportSpecific && this.leaderboards.sportSpecific[sport.toLowerCase()]) {
             data = this.leaderboards.sportSpecific[sport.toLowerCase()];
         } else {
             data = this.leaderboards[type] || this.leaderboards.overall;
@@ -222,8 +308,23 @@ class LeaderboardSystem {
         }
     }
 
-    getCurrentUserRank(userId) {
-        const leaderboard = this.getLeaderboard(this.currentLeaderboard, this.currentTimeframe, this.currentSport);
+    async getCurrentUserRank(userId) {
+        // If no userId provided, get from AuthService
+        if (!userId && window.AuthService?.isAuthenticated()) {
+            const user = window.AuthService.getUser();
+            userId = user?.id;
+        }
+        
+        if (!userId) {
+            return {
+                rank: '—',
+                outOf: 0,
+                percentile: 0,
+                stats: null
+            };
+        }
+        
+        const leaderboard = await this.getLeaderboard(this.currentLeaderboard, this.currentTimeframe, this.currentSport);
         const userIndex = leaderboard.findIndex(entry => entry.id === userId);
         
         if (userIndex === -1) {
@@ -244,23 +345,14 @@ class LeaderboardSystem {
         };
     }
 
-    updateLeaderboard() {
-        // Simulate real-time updates
-        const types = ['overall', 'accuracy', 'streak', 'consistency'];
-        types.forEach(type => {
-            if (this.leaderboards[type]) {
-                this.leaderboards[type] = this.leaderboards[type].map(entry => ({
-                    ...entry,
-                    change: Math.floor(Math.random() * 5) - 2,
-                    stats: {
-                        ...entry.stats,
-                        currentStreak: entry.stats.currentStreak ? 
-                            entry.stats.currentStreak + (Math.random() > 0.5 ? 1 : -1) : 
-                            entry.stats.currentStreak
-                    }
-                }));
-            }
-        });
+    async updateLeaderboard() {
+        console.log('🔄 Refreshing leaderboard data...');
+        
+        // Clear cache to force refresh
+        this.cache.clear();
+        
+        // Reload from backend
+        await this.loadLeaderboardData();
 
         // Dispatch update event
         window.dispatchEvent(new CustomEvent('leaderboardUpdated', {
@@ -270,6 +362,13 @@ class LeaderboardSystem {
                 timestamp: Date.now()
             }
         }));
+        
+        console.log('✅ Leaderboard refreshed');
+    }
+    
+    // Manually refresh leaderboard (called by user action)
+    async refresh() {
+        return this.updateLeaderboard();
     }
 
     startAutoRefresh() {
@@ -288,14 +387,22 @@ class LeaderboardSystem {
     listenForPickUpdates() {
         // Listen for when users track new picks
         window.addEventListener('pickTracked', (event) => {
-            console.log('Pick tracked, updating leaderboards:', event.detail);
-            this.updateLeaderboard();
+            console.log('🔔 Pick tracked, invalidating leaderboard cache:', event.detail);
+            // Clear cache so next load gets fresh data
+            this.cache.clear();
         });
 
-        // Listen for pick results
+        // Listen for pick results (from pick-settlement-service.js)
+        window.addEventListener('pickSettled', (event) => {
+            console.log('🔔 Pick settled, invalidating leaderboard cache:', event.detail);
+            // Clear cache so next load gets fresh data
+            this.cache.clear();
+        });
+        
+        // Listen for pick results (legacy event)
         window.addEventListener('pickResult', (event) => {
-            console.log('Pick result recorded:', event.detail);
-            this.updateLeaderboard();
+            console.log('🔔 Pick result recorded, invalidating leaderboard cache:', event.detail);
+            this.cache.clear();
         });
     }
 
@@ -478,23 +585,54 @@ class LeaderboardSystem {
     // Public API methods
     setLeaderboardType(type) {
         this.currentLeaderboard = type;
+        return this.loadLeaderboardData();
     }
 
     setTimeframe(timeframe) {
         this.currentTimeframe = timeframe;
+        return this.loadLeaderboardData();
     }
 
     setSport(sport) {
         this.currentSport = sport;
+        return this.loadLeaderboardData();
     }
 
     destroy() {
         this.stopAutoRefresh();
+        this.cache.clear();
     }
 }
 
-// Create singleton instance
-const leaderboardSystem = new LeaderboardSystem();
+// Initialize and export singleton instance
+let leaderboardSystemInstance = null;
 
-// Export for use in other modules
-export default leaderboardSystem;
+// Wait for DOM to be ready and dependencies to load
+const initLeaderboardSystem = () => {
+    if (!leaderboardSystemInstance) {
+        console.log('🏆 Creating LeaderboardSystem instance...');
+        leaderboardSystemInstance = new LeaderboardSystem();
+    }
+    return leaderboardSystemInstance;
+};
+
+// Auto-initialize when dependencies are ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(initLeaderboardSystem, 500); // Wait for other services
+    });
+} else {
+    setTimeout(initLeaderboardSystem, 500);
+}
+
+// Make available globally
+if (typeof window !== 'undefined') {
+    window.LeaderboardSystem = {
+        getInstance: () => leaderboardSystemInstance || initLeaderboardSystem()
+    };
+}
+
+// Export for module usage
+export default {
+    getInstance: () => leaderboardSystemInstance || initLeaderboardSystem()
+};

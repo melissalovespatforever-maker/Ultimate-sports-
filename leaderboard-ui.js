@@ -3,34 +3,57 @@
  * Visual interface for community pick competitions
  */
 
-import leaderboardSystem from './leaderboard-system.js';
-
 class LeaderboardUI {
     constructor(options = {}) {
         this.container = options.container || document.getElementById('leaderboard-container');
-        this.currentUserId = options.userId || 'user_1'; // Mock current user
+        this.leaderboardSystem = null;
+        this.currentUserId = null;
         this.compactMode = options.compactMode || false;
+        this.loading = false;
+        
+        this.init();
+    }
+    
+    async init() {
+        // Get LeaderboardSystem instance
+        this.leaderboardSystem = window.LeaderboardSystem?.getInstance();
+        
+        if (!this.leaderboardSystem) {
+            console.warn('⚠️ LeaderboardSystem not available yet, retrying...');
+            setTimeout(() => this.init(), 500);
+            return;
+        }
+        
+        // Get current user ID
+        if (window.AuthService?.isAuthenticated()) {
+            const user = window.AuthService.getUser();
+            this.currentUserId = user?.id;
+        }
         
         if (this.container) {
-            this.render();
+            await this.render();
             this.attachEventListeners();
             this.startLiveUpdates();
         }
     }
 
-    render() {
-        if (!this.container) return;
+    async render() {
+        if (!this.container || !this.leaderboardSystem) return;
+        
+        this.loading = true;
 
         this.container.innerHTML = `
             <div class="leaderboard-ui">
                 ${this.renderHeader()}
                 ${this.renderFilters()}
-                ${this.renderCurrentUserCard()}
+                ${await this.renderCurrentUserCard()}
                 ${this.renderCompetitionInfo()}
-                ${this.renderLeaderboardTable()}
+                ${await this.renderLeaderboardTable()}
                 ${this.renderTopMovers()}
             </div>
         `;
+        
+        this.loading = false;
     }
 
     renderHeader() {
@@ -115,8 +138,25 @@ class LeaderboardUI {
         `;
     }
 
-    renderCurrentUserCard() {
-        const userRank = leaderboardSystem.getCurrentUserRank(this.currentUserId);
+    async renderCurrentUserCard() {
+        if (!this.currentUserId) {
+            return `
+                <div class="current-user-card">
+                    <div class="user-card-content" style="text-align: center; padding: 30px;">
+                        <p style="color: #64748b; margin-bottom: 16px;">
+                            <i class="fas fa-user-circle" style="font-size: 48px; opacity: 0.5;"></i>
+                        </p>
+                        <p style="color: #64748b; margin-bottom: 16px;">Sign in to see your ranking and compete!</p>
+                        <button class="view-profile-btn" onclick="window.location.href='#profile'">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Sign In
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        const userRank = await this.leaderboardSystem.getCurrentUserRank(this.currentUserId);
         
         return `
             <div class="current-user-card">
@@ -159,7 +199,7 @@ class LeaderboardUI {
     }
 
     renderCompetitionInfo() {
-        const competition = leaderboardSystem.getCompetitionDetails(leaderboardSystem.currentTimeframe);
+        const competition = this.leaderboardSystem.getCompetitionDetails(this.leaderboardSystem.currentTimeframe);
         
         return `
             <div class="competition-info">
@@ -194,11 +234,11 @@ class LeaderboardUI {
         `;
     }
 
-    renderLeaderboardTable() {
-        const leaderboard = leaderboardSystem.getLeaderboard(
-            leaderboardSystem.currentLeaderboard,
-            leaderboardSystem.currentTimeframe,
-            leaderboardSystem.currentSport
+    async renderLeaderboardTable() {
+        const leaderboard = await this.leaderboardSystem.getLeaderboard(
+            this.leaderboardSystem.currentLeaderboard,
+            this.leaderboardSystem.currentTimeframe,
+            this.leaderboardSystem.currentSport
         );
 
         return `
@@ -227,7 +267,7 @@ class LeaderboardUI {
     }
 
     renderTableHeader() {
-        const type = leaderboardSystem.currentLeaderboard;
+        const type = this.leaderboardSystem.currentLeaderboard;
         
         return `
             <div class="table-header-row">
@@ -303,7 +343,7 @@ class LeaderboardUI {
     }
 
     renderStatsCells(entry) {
-        const type = leaderboardSystem.currentLeaderboard;
+        const type = this.leaderboardSystem.currentLeaderboard;
         const stats = entry.stats;
         
         const templates = {
@@ -342,7 +382,7 @@ class LeaderboardUI {
     }
 
     renderTopMovers() {
-        const movers = leaderboardSystem.getTopMovers(5);
+        const movers = this.leaderboardSystem.getTopMovers(5);
         
         if (movers.length === 0) return '';
         
@@ -414,22 +454,22 @@ class LeaderboardUI {
         }
     }
 
-    handleTypeChange(type) {
-        leaderboardSystem.setLeaderboardType(type);
+    async handleTypeChange(type) {
+        await this.leaderboardSystem.setLeaderboardType(type);
         this.updateActiveButton('[data-type]', type);
-        this.refreshLeaderboard();
+        await this.refreshLeaderboard();
     }
 
-    handleTimeframeChange(timeframe) {
-        leaderboardSystem.setTimeframe(timeframe);
+    async handleTimeframeChange(timeframe) {
+        await this.leaderboardSystem.setTimeframe(timeframe);
         this.updateActiveButton('[data-timeframe]', timeframe);
-        this.refreshLeaderboard();
+        await this.refreshLeaderboard();
     }
 
-    handleSportChange(sport) {
-        leaderboardSystem.setSport(sport);
+    async handleSportChange(sport) {
+        await this.leaderboardSystem.setSport(sport);
         this.updateActiveButton('[data-sport]', sport);
-        this.refreshLeaderboard();
+        await this.refreshLeaderboard();
     }
 
     updateActiveButton(selector, value) {
@@ -441,18 +481,20 @@ class LeaderboardUI {
         });
     }
 
-    refreshLeaderboard() {
+    async refreshLeaderboard() {
+        if (this.loading) return;
+        
         // Update only the table, not the entire UI
         const tableContainer = this.container.querySelector('.leaderboard-table-container');
         const userCard = this.container.querySelector('.current-user-card');
         const competitionInfo = this.container.querySelector('.competition-info');
         
         if (tableContainer) {
-            tableContainer.outerHTML = this.renderLeaderboardTable();
+            tableContainer.outerHTML = await this.renderLeaderboardTable();
         }
         
         if (userCard) {
-            userCard.outerHTML = this.renderCurrentUserCard();
+            userCard.outerHTML = await this.renderCurrentUserCard();
         }
         
         if (competitionInfo) {
@@ -470,7 +512,7 @@ class LeaderboardUI {
     }
 
     showUserProfile(userId) {
-        const profile = leaderboardSystem.getUserProfile(userId);
+        const profile = this.leaderboardSystem.getUserProfile(userId);
         
         if (!profile) {
             console.error('User not found:', userId);
@@ -566,11 +608,11 @@ class LeaderboardUI {
         return `${Math.floor(seconds / 86400)}d ago`;
     }
 
-    exportLeaderboard() {
-        const leaderboard = leaderboardSystem.getLeaderboard(
-            leaderboardSystem.currentLeaderboard,
-            leaderboardSystem.currentTimeframe,
-            leaderboardSystem.currentSport
+    async exportLeaderboard() {
+        const leaderboard = await this.leaderboardSystem.getLeaderboard(
+            this.leaderboardSystem.currentLeaderboard,
+            this.leaderboardSystem.currentTimeframe,
+            this.leaderboardSystem.currentSport
         );
 
         const csv = this.convertToCSV(leaderboard);
@@ -608,6 +650,11 @@ class LeaderboardUI {
             this.container.innerHTML = '';
         }
     }
+}
+
+// Make available globally
+if (typeof window !== 'undefined') {
+    window.LeaderboardUI = LeaderboardUI;
 }
 
 export default LeaderboardUI;
