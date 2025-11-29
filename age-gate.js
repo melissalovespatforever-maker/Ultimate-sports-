@@ -65,20 +65,27 @@ const AgeGate = {
                 align-items: center;
                 justify-content: center;
                 padding: 20px;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             ">
                 <div style="
                     background: linear-gradient(135deg, #151922 0%, #1f2937 100%);
-                    padding: 50px 40px;
+                    padding: 40px 30px;
                     border-radius: 20px;
                     max-width: 600px;
+                    width: 100%;
                     text-align: center;
                     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
                     border: 2px solid #10b981;
                     animation: slideUp 0.4s ease-out;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    -webkit-overflow-scrolling: touch;
+                    my: auto;
                 ">
                     <h1 style="
                         color: #10b981;
-                        font-size: 3rem;
+                        font-size: clamp(2rem, 5vw, 3rem);
                         margin: 0 0 20px 0;
                         font-weight: 800;
                         letter-spacing: -0.02em;
@@ -89,9 +96,9 @@ const AgeGate = {
                     <div style="
                         background: rgba(16, 185, 129, 0.1);
                         border-left: 4px solid #10b981;
-                        padding: 20px;
+                        padding: 16px;
                         border-radius: 12px;
-                        margin: 30px 0;
+                        margin: 20px 0;
                         text-align: left;
                     ">
                         <p style="
@@ -116,9 +123,9 @@ const AgeGate = {
                     <div style="
                         background: rgba(239, 68, 68, 0.1);
                         border-left: 4px solid #ef4444;
-                        padding: 20px;
+                        padding: 16px;
                         border-radius: 12px;
-                        margin: 30px 0;
+                        margin: 20px 0;
                         text-align: left;
                     ">
                         <p style="
@@ -136,7 +143,7 @@ const AgeGate = {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        margin: 30px 0;
+                        margin: 20px 0;
                         cursor: pointer;
                         gap: 12px;
                     ">
