@@ -91,19 +91,10 @@ const PayPalService = {
     },
     
     loadPayPalSDK() {
-        // Load PayPal SDK (using sandbox for now)
-        if (!document.getElementById('paypal-sdk')) {
-            const script = document.createElement('script');
-            script.id = 'paypal-sdk';
-            script.src = 'https://www.paypal.com/sdk/js?client-id=sb&currency=USD&intent=subscription&vault=true';
-            script.onload = () => {
-                console.log('✅ PayPal SDK loaded');
-            };
-            script.onerror = () => {
-                console.error('❌ Failed to load PayPal SDK');
-            };
-            document.head.appendChild(script);
-        }
+        // PayPal SDK not needed - using PayPal.me direct links
+        // SDK would be used for embedded checkout buttons
+        // But we're redirecting to PayPal.me for simpler integration
+        console.log('💳 Using PayPal.me links (no SDK needed)');
     },
     
     getTier() {
@@ -152,13 +143,7 @@ const PayPalService = {
             return false;
         }
         
-        if (!window.paypal) {
-            console.error('PayPal SDK not loaded');
-            alert('PayPal is loading, please try again in a moment.');
-            return false;
-        }
-        
-        // Show PayPal button modal
+        // Show PayPal button modal (using PayPal.me links)
         this.showPayPalModal(tier);
         
         return true;
