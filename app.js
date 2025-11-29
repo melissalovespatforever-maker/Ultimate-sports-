@@ -121,31 +121,7 @@ import { subscriptionNotificationCenter } from './subscription-notification-cent
 // ============================================
 
 const state = {
-    user: {
-        username: 'Player',
-        avatar: '👤',
-        level: 5,
-        xp: 3000,
-        xpToNext: 5000,
-        virtualBudget: 1000,
-        points: 15420,
-        subscription: 'FREE', // FREE, PRO, VIP
-        winStreak: 7,
-        stats: {
-            totalPicks: 124,
-            wins: 84,
-            losses: 40,
-            winRate: 0.68,
-            bestStreak: 12,
-            currentStreak: 7,
-            accuracy: 68,
-            loginStreak: 7,
-            challengesJoined: 3,
-            challengesWon: 1,
-            aiConversations: 15,
-            perfectWeeks: 0
-        }
-    },
+    user: null, // Loaded from backend auth
     pickSlip: {
         picks: [],
         pickType: 'parlay',
@@ -156,16 +132,13 @@ const state = {
         theme: 'dark',
         notifications: true
     },
-    leaderboard: [],
-    achievements: [],
-    dailyRewards: {
-        streak: 7,
-        lastClaim: null,
-        claimedDays: [1, 2, 3, 4, 5, 6, 7]
-    }
+    leaderboard: [], // Loaded from backend
+    achievements: [], // Loaded from backend
+    dailyRewards: null // Loaded from backend
 };
 
-// Mock data for games
+// Mock data for games (FALLBACK ONLY - use live API data when available)
+// These are only used if backend/API is unavailable
 const mockGames = [
     {
         id: 1,
