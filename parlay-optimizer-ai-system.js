@@ -118,10 +118,8 @@ class ParlayOptimizerAI {
         // Combine factors
         const baseConfidence = Object.values(factors).reduce((a, b) => a + b, 0) / Object.keys(factors).length;
         
-        // Add randomness for demo (remove in production)
-        const randomAdjustment = (Math.random() * 0.2) - 0.1; // ±10%
-        
-        return Math.max(0.3, Math.min(0.95, baseConfidence + randomAdjustment));
+        // Return deterministic confidence (NO RANDOM ADJUSTMENTS!)
+        return Math.max(0.3, Math.min(0.95, baseConfidence));
     }
     
     calculateEV(leg) {
@@ -1012,8 +1010,117 @@ class ParlayOptimizerAI {
     // ============================================
     
     async fetchGamesForSport(sport, date) {
-        // In production, fetch from API
-        return this.generateDemoGames(sport);
+        console.log(`🔍 Fetching REAL games for ${sport}...`);
+        
+        try {
+            // Call backend which uses The Odds API
+            const response = await fetch(
+                `${window.APP_CONFIG.API.BASE_URL}/api/odds/live?sport=${sport}`
+            );
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data.success && data.odds && data.odds.length > 0) {
+                console.log(`✅ Loaded ${data.odds.length} REAL games from The Odds API`);
+                return this.transformOddsAPIGames(data.odds);
+            }
+            
+            throw new Error('No games returned from API');
+            
+        } catch (error) {
+            console.warn(`⚠️ Failed to fetch real games: ${error.message}`);
+            console.warn('📊 Using demo data as fallback');
+            return this.generateDemoGames(sport);
+        }
+    }
+    
+    transformOddsAPIGames(oddsData) {
+        console.log(`🔄 Transforming ${oddsData.length} games from The Odds API format...`);
+        
+        return oddsData.map(game => {
+            // Extract best odds from all bookmakers
+            const bestOdds = this.extractBestOdds(game.bookmakers || []);
+            
+            return {
+                id: game.id,
+                sport: game.sport_key,
+                homeTeam: game.home_team,
+                awayTeam: game.away_team,
+                startTime: new Date(game.commence_time).getTime(),
+                bookmakers: game.bookmakers,
+                bestOdds: bestOdds,
+                // Store raw data for advanced analysis
+                _raw: game
+            };
+        });
+    }
+    
+    extractBestOdds(bookmakers) {
+        const odds = {
+            h2h: { home: null, away: null },
+            spreads: { home: null, away: null, line: null },
+            totals: { over: null, under: null, line: null }
+        };
+        
+        if (!bookmakers || bookmakers.length === 0) {
+            return odds;
+        }
+        
+        bookmakers.forEach(book => {
+            if (!book.markets) return;
+            
+            book.markets.forEach(market => {
+                if (market.key === 'h2h') {
+                    market.outcomes.forEach(outcome => {
+                        if (outcome.name === outcome.name && outcome.price) {
+                            // Store best (highest) odds for each side
+                            const isHome = outcome.name.toLowerCase().includes('home') || 
+                                          market.outcomes.indexOf(outcome) === 0;
+                            
+                            if (isHome) {
+                                if (!odds.h2h.home || outcome.price > odds.h2h.home) {
+                                    odds.h2h.home = outcome.price;
+                                }
+                            } else {
+                                if (!odds.h2h.away || outcome.price > odds.h2h.away) {
+                                    odds.h2h.away = outcome.price;
+                                }
+                            }
+                        }
+                    });
+                } else if (market.key === 'spreads') {
+                    market.outcomes.forEach(outcome => {
+                        if (outcome.point && outcome.price) {
+                            if (!odds.spreads.line) {
+                                odds.spreads.line = Math.abs(outcome.point);
+                            }
+                            if (outcome.point < 0) {
+                                odds.spreads.home = outcome.price;
+                            } else {
+                                odds.spreads.away = outcome.price;
+                            }
+                        }
+                    });
+                } else if (market.key === 'totals') {
+                    market.outcomes.forEach(outcome => {
+                        if (outcome.point && outcome.price) {
+                            odds.totals.line = outcome.point;
+                            if (outcome.name === 'Over') {
+                                odds.totals.over = outcome.price;
+                            } else {
+                                odds.totals.under = outcome.price;
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        
+        return odds;
     }
     
     generateDemoGames(sport) {
@@ -1038,22 +1145,50 @@ class ParlayOptimizerAI {
         let legId = 0;
         
         games.forEach(game => {
-            // Moneyline legs
-            legs.push(this.createLeg(legId++, game, 'moneyline', game.homeTeam, -150, true));
-            legs.push(this.createLeg(legId++, game, 'moneyline', game.awayTeam, 130, false));
+            // Use REAL odds if available from The Odds API
+            const useRealOdds = game.bestOdds && game.bestOdds.h2h.home;
             
-            // Spread legs
-            legs.push(this.createLeg(legId++, game, 'spread', game.homeTeam, -110, true, -3.5));
-            legs.push(this.createLeg(legId++, game, 'spread', game.awayTeam, -110, false, 3.5));
-            
-            // Total legs
-            const total = 215 + (Math.random() * 30);
-            legs.push(this.createLeg(legId++, game, 'total', 'Over', -110, null, total));
-            legs.push(this.createLeg(legId++, game, 'total', 'Under', -110, null, total));
-            
-            // Player props
-            legs.push(this.createLeg(legId++, game, 'player_prop', `${game.homeTeam} Star`, -115, true, 25.5, 'points'));
-            legs.push(this.createLeg(legId++, game, 'player_prop', `${game.awayTeam} Star`, -115, false, 22.5, 'points'));
+            if (useRealOdds) {
+                console.log(`✅ Using REAL odds for ${game.homeTeam} vs ${game.awayTeam}`);
+                
+                // Moneyline legs - REAL ODDS
+                if (game.bestOdds.h2h.home) {
+                    legs.push(this.createLeg(legId++, game, 'moneyline', game.homeTeam, game.bestOdds.h2h.home, true));
+                }
+                if (game.bestOdds.h2h.away) {
+                    legs.push(this.createLeg(legId++, game, 'moneyline', game.awayTeam, game.bestOdds.h2h.away, false));
+                }
+                
+                // Spread legs - REAL ODDS
+                if (game.bestOdds.spreads.line) {
+                    const spreadLine = game.bestOdds.spreads.line;
+                    legs.push(this.createLeg(legId++, game, 'spread', game.homeTeam, game.bestOdds.spreads.home || -110, true, -spreadLine));
+                    legs.push(this.createLeg(legId++, game, 'spread', game.awayTeam, game.bestOdds.spreads.away || -110, false, spreadLine));
+                }
+                
+                // Total legs - REAL ODDS
+                if (game.bestOdds.totals.line) {
+                    const totalLine = game.bestOdds.totals.line;
+                    legs.push(this.createLeg(legId++, game, 'total', 'Over', game.bestOdds.totals.over || -110, null, totalLine));
+                    legs.push(this.createLeg(legId++, game, 'total', 'Under', game.bestOdds.totals.under || -110, null, totalLine));
+                }
+            } else {
+                // Fallback to demo odds only if real data not available
+                console.warn(`⚠️ No real odds for ${game.homeTeam} vs ${game.awayTeam}, using demo`);
+                
+                // Moneyline legs - DEMO
+                legs.push(this.createLeg(legId++, game, 'moneyline', game.homeTeam, -150, true));
+                legs.push(this.createLeg(legId++, game, 'moneyline', game.awayTeam, 130, false));
+                
+                // Spread legs - DEMO
+                legs.push(this.createLeg(legId++, game, 'spread', game.homeTeam, -110, true, -3.5));
+                legs.push(this.createLeg(legId++, game, 'spread', game.awayTeam, -110, false, 3.5));
+                
+                // Total legs - DEMO
+                const total = 215 + (Math.random() * 30);
+                legs.push(this.createLeg(legId++, game, 'total', 'Over', -110, null, total));
+                legs.push(this.createLeg(legId++, game, 'total', 'Under', -110, null, total));
+            }
         });
         
         return legs;

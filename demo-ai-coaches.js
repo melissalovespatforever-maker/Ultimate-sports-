@@ -200,19 +200,32 @@ async function renderAICoaches(coaches = null) {
         return;
     }
     
-    // User has access - show coaches
-    // Fetch coaches from backend if not provided
-    if (!coaches && window.BackendAPI) {
+    // User has access - fetch REAL coaches with REAL picks!
+    if (!coaches) {
         try {
-            coaches = await window.BackendAPI.getAICoaches();
+            console.log('🤖 Fetching REAL AI coaches from backend...');
+            const response = await fetch(
+                `${window.APP_CONFIG.API.BASE_URL}/api/ai-coaches/picks`
+            );
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data.success && data.coaches && data.coaches.length > 0) {
+                console.log(`✅ Loaded ${data.coaches.length} AI coaches with REAL picks!`);
+                coaches = data.coaches;
+            } else {
+                throw new Error('No coaches returned');
+            }
+            
         } catch (error) {
-            console.error('Failed to fetch coaches, using demo data');
+            console.warn(`⚠️ Failed to fetch real coaches: ${error.message}`);
+            console.warn('📊 Using demo coaches as fallback');
             coaches = DEMO_AI_COACHES;
         }
-    }
-    
-    if (!coaches) {
-        coaches = DEMO_AI_COACHES;
     }
     
     // Filter coaches based on tier
