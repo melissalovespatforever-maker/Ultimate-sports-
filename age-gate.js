@@ -175,7 +175,10 @@ const AgeGate = {
                         opacity: 0.5;
                         transition: all 0.3s ease;
                         width: 100%;
-                        margin-bottom: 15px;
+                        margin: 20px 0 15px 0;
+                        position: relative;
+                        z-index: 10001;
+                        pointer-events: auto;
                     ">
                         ✓ Confirm & Enter Site
                     </button>
@@ -255,34 +258,50 @@ const AgeGate = {
      * Setup event listeners for age gate
      */
     setupEventListeners() {
-        const checkbox = document.getElementById('age-confirm-checkbox');
-        const confirmBtn = document.getElementById('age-confirm-btn');
-        
-        // Toggle button state when checkbox changes
-        checkbox.addEventListener('change', (e) => {
-            if (e.target.checked) {
-                confirmBtn.disabled = false;
-                confirmBtn.style.cursor = 'pointer';
-                confirmBtn.style.opacity = '1';
-            } else {
-                confirmBtn.disabled = true;
-                confirmBtn.style.cursor = 'not-allowed';
-                confirmBtn.style.opacity = '0.5';
+        // Use setTimeout to ensure elements are fully rendered
+        setTimeout(() => {
+            const checkbox = document.getElementById('age-confirm-checkbox');
+            const confirmBtn = document.getElementById('age-confirm-btn');
+            
+            if (!checkbox || !confirmBtn) {
+                console.error('❌ Age gate elements not found');
+                return;
             }
-        });
-        
-        // Handle confirm button click
-        confirmBtn.addEventListener('click', () => {
-            this.verifyAge();
-        });
-        
-        // Allow pressing Enter on checkbox
-        checkbox.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                checkbox.checked = !checkbox.checked;
-                checkbox.dispatchEvent(new Event('change'));
-            }
-        });
+            
+            // Toggle button state when checkbox changes
+            checkbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    confirmBtn.disabled = false;
+                    confirmBtn.style.cursor = 'pointer';
+                    confirmBtn.style.opacity = '1';
+                    confirmBtn.style.pointerEvents = 'auto';
+                } else {
+                    confirmBtn.disabled = true;
+                    confirmBtn.style.cursor = 'not-allowed';
+                    confirmBtn.style.opacity = '0.5';
+                    confirmBtn.style.pointerEvents = 'auto';
+                }
+                console.log('✅ Checkbox toggled, button enabled:', !e.target.checked);
+            });
+            
+            // Handle confirm button click with proper binding
+            confirmBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🎯 Confirm button clicked');
+                this.verifyAge();
+            });
+            
+            // Allow pressing Enter on checkbox
+            checkbox.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change'));
+                }
+            });
+            
+            console.log('✅ Age gate event listeners attached');
+        }, 0);
     },
     
     /**
