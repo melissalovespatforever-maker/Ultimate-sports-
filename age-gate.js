@@ -62,14 +62,15 @@ const AgeGate = {
                 backdrop-filter: blur(4px);
                 z-index: 10000;
                 display: flex;
-                flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 padding: 20px;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             ">
                 <div style="
                     background: linear-gradient(135deg, #151922 0%, #1f2937 100%);
-                    padding: 40px 30px 30px 30px;
+                    padding: 40px 30px;
                     border-radius: 20px;
                     max-width: 600px;
                     width: 100%;
@@ -77,10 +78,10 @@ const AgeGate = {
                     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
                     border: 2px solid #10b981;
                     animation: slideUp 0.4s ease-out;
-                    max-height: calc(90vh - 100px);
+                    max-height: 90vh;
                     overflow-y: auto;
                     -webkit-overflow-scrolling: touch;
-                    flex-shrink: 1;
+                    my: auto;
                 ">
                     <h1 style="
                         color: #10b981;
@@ -162,13 +163,30 @@ const AgeGate = {
                         </span>
                     </label>
                     
+                    <button id="age-confirm-btn" disabled style="
+                        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                        color: white;
+                        padding: 16px 50px;
+                        border: none;
+                        border-radius: 12px;
+                        font-size: 1.1rem;
+                        font-weight: 600;
+                        cursor: not-allowed;
+                        opacity: 0.5;
+                        transition: all 0.3s ease;
+                        width: 100%;
+                        margin-bottom: 15px;
+                    ">
+                        ✓ Confirm & Enter Site
+                    </button>
+                    
                     <p style="
                         color: #6b7280;
                         font-size: 0.95rem;
                         margin: 20px 0 0 0;
                         line-height: 1.6;
                     ">
-                        By confirming, you agree to our 
+                        By clicking "Confirm & Enter Site", you agree to our 
                         <a href="/terms-of-service.html" target="_blank" style="
                             color: #6366f1;
                             text-decoration: none;
@@ -183,28 +201,6 @@ const AgeGate = {
                         ">Privacy Policy</a>.
                     </p>
                 </div>
-                
-                <button id="age-confirm-btn" disabled style="
-                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                    color: white;
-                    padding: 16px 50px;
-                    border: none;
-                    border-radius: 12px;
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                    cursor: not-allowed;
-                    opacity: 0.5;
-                    transition: all 0.3s ease;
-                    width: calc(100% - 40px);
-                    max-width: 560px;
-                    margin: 20px 0 0 0;
-                    position: relative;
-                    z-index: 10001;
-                    pointer-events: auto;
-                    margin-top: 20px;
-                ">
-                    ✓ Confirm & Enter Site
-                </button>
                 
                 <style>
                     @keyframes slideUp {
@@ -259,71 +255,34 @@ const AgeGate = {
      * Setup event listeners for age gate
      */
     setupEventListeners() {
-        // Use setTimeout to ensure elements are fully rendered
-        setTimeout(() => {
-            const checkbox = document.getElementById('age-confirm-checkbox');
-            const confirmBtn = document.getElementById('age-confirm-btn');
-            
-            if (!checkbox || !confirmBtn) {
-                console.error('❌ Age gate elements not found');
-                return;
+        const checkbox = document.getElementById('age-confirm-checkbox');
+        const confirmBtn = document.getElementById('age-confirm-btn');
+        
+        // Toggle button state when checkbox changes
+        checkbox.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                confirmBtn.disabled = false;
+                confirmBtn.style.cursor = 'pointer';
+                confirmBtn.style.opacity = '1';
+            } else {
+                confirmBtn.disabled = true;
+                confirmBtn.style.cursor = 'not-allowed';
+                confirmBtn.style.opacity = '0.5';
             }
-            
-            // Function to enable/disable button
-            const updateButtonState = (isChecked) => {
-                if (isChecked) {
-                    confirmBtn.disabled = false;
-                    confirmBtn.style.cursor = 'pointer';
-                    confirmBtn.style.opacity = '1';
-                    confirmBtn.style.pointerEvents = 'auto';
-                    confirmBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-                } else {
-                    confirmBtn.disabled = true;
-                    confirmBtn.style.cursor = 'not-allowed';
-                    confirmBtn.style.opacity = '0.5';
-                    confirmBtn.style.pointerEvents = 'none';
-                    confirmBtn.style.background = 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)';
-                }
-                console.log('✅ Button state updated, enabled:', isChecked);
-            };
-            
-            // Toggle button state when checkbox changes
-            checkbox.addEventListener('change', (e) => {
-                updateButtonState(e.target.checked);
-            });
-            
-            // Also listen to click on checkbox for iOS
-            checkbox.addEventListener('click', (e) => {
-                setTimeout(() => {
-                    updateButtonState(checkbox.checked);
-                }, 10);
-            });
-            
-            // Handle confirm button click with proper binding
-            const handleConfirm = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!confirmBtn.disabled && checkbox.checked) {
-                    console.log('🎯 Confirm button clicked - verifying age');
-                    this.verifyAge();
-                } else {
-                    console.log('⚠️ Button clicked but disabled or checkbox not checked');
-                }
-            };
-            
-            confirmBtn.addEventListener('click', handleConfirm);
-            confirmBtn.addEventListener('touchend', handleConfirm);
-            
-            // Allow pressing Enter on checkbox
-            checkbox.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    checkbox.checked = !checkbox.checked;
-                    checkbox.dispatchEvent(new Event('change'));
-                }
-            });
-            
-            console.log('✅ Age gate event listeners attached');
-        }, 0);
+        });
+        
+        // Handle confirm button click
+        confirmBtn.addEventListener('click', () => {
+            this.verifyAge();
+        });
+        
+        // Allow pressing Enter on checkbox
+        checkbox.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change'));
+            }
+        });
     },
     
     /**
