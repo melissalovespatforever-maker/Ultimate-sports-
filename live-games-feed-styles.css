@@ -656,6 +656,86 @@
 }
 
 /* ========================================
+   REAL-TIME ODDS UPDATES
+   ======================================== */
+
+/* Animate when odds update */
+.game-card.odds-updated {
+    animation: odds-pulse 0.5s ease-out;
+}
+
+@keyframes odds-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    }
+}
+
+/* Highlight odds values when updating */
+.odds-value {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.game-card.odds-updated .odds-value {
+    color: #22c55e;
+    text-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+    font-weight: 700;
+}
+
+/* Odds movement indicator */
+.odds-movement {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.odds-movement.up {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.odds-movement.down {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* Real-time indicator dot */
+.odds-sync-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.odds-sync-indicator::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(0.8);
+    }
+}
+
+/* ========================================
    RESPONSIVE
    ======================================== */
 

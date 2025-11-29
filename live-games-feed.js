@@ -3,6 +3,8 @@
  * Displays live and upcoming games with real-time odds updates
  */
 
+import { realTimeOddsSync } from './real-time-odds-sync.js';
+
 export class LiveGamesFeed {
     constructor() {
         this.games = [];
@@ -13,6 +15,9 @@ export class LiveGamesFeed {
         };
         this.updateInterval = null;
         this.oddsUpdateInterval = null;
+        this.oddsSync = realTimeOddsSync;
+        this.currentSport = null;
+        this.oddsUnsubscribers = new Map();
     }
 
     // ============================================
@@ -333,29 +338,38 @@ export class LiveGamesFeed {
 
     async loadGames() {
         try {
-            // Try to fetch from API first
-            const apiUrl = `${CONFIG.API.BASE_URL}/api/test/games`;
-            console.log('📡 Fetching games from:', apiUrl);
+            // Import ESPN integration
+            const { liveScoresESPN } = await import('./live-scores-espn-integration.js');
             
-            const response = await fetch(apiUrl, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-                timeout: 5000
-            });
+            console.log('📡 Fetching real games from ESPN...');
             
-            if (response.ok) {
-                const result = await response.json();
-                console.log('✅ Games loaded from API:', result);
-                // API connection successful - logged to console
+            // Fetch from all major sports
+            const sports = ['basketball', 'football', 'baseball', 'hockey'];
+            const allGames = [];
+            
+            for (const sport of sports) {
+                try {
+                    const games = await liveScoresESPN.fetchLiveGames(sport);
+                    if (games && games.length > 0) {
+                        allGames.push(...games);
+                    }
+                } catch (error) {
+                    console.warn(`⚠️ Could not fetch ${sport}:`, error.message);
+                }
+            }
+            
+            if (allGames.length > 0) {
+                console.log(`✅ Loaded ${allGames.length} real games from ESPN`);
+                this.games = this.transformESPNGames(allGames);
+                return;
             } else {
-                console.warn('API returned status:', response.status);
+                console.warn('⚠️ No live games found from ESPN, using placeholder data');
             }
         } catch (error) {
-            console.error('❌ API fetch failed:', error.message);
-            // API connection failed - logged to console
+            console.error('❌ Failed to load ESPN games:', error.message);
         }
         
-        // Load mock data for display
+        // Fallback to minimal placeholder data ONLY if ESPN is unavailable
         this.games = [
             {
                 id: 'nfl-1',
@@ -562,6 +576,62 @@ export class LiveGamesFeed {
         this.updateLiveGameCount();
     }
 
+    // ============================================
+    // TRANSFORM ESPN DATA
+    // ============================================
+
+    transformESPNGames(espnGames) {
+        return espnGames.map(game => ({
+            id: game.id || `game-${Math.random()}`,
+            league: game.league || 'Unknown',
+            status: game.status || 'upcoming',
+            period: game.period,
+            clock: game.time,
+            startTime: game.startTime,
+            trending: false,
+            awayTeam: {
+                name: game.awayTeam?.name || 'Away',
+                abbr: game.awayTeam?.abbreviation || game.awayTeam?.shortName || 'AWY',
+                logo: this.getLeagueLogo(game.league),
+                record: game.awayTeam?.record || '',
+                score: game.awayTeam?.score || 0
+            },
+            homeTeam: {
+                name: game.homeTeam?.name || 'Home',
+                abbr: game.homeTeam?.abbreviation || game.homeTeam?.shortName || 'HOM',
+                logo: this.getLeagueLogo(game.league),
+                record: game.homeTeam?.record || '',
+                score: game.homeTeam?.score || 0
+            },
+            odds: {
+                awayML: game.odds?.awayML || 0,
+                homeML: game.odds?.homeML || 0,
+                awaySpread: game.odds?.awaySpread || 0,
+                homeSpread: game.odds?.homeSpread || 0,
+                total: game.odds?.total || 0
+            },
+            oddsMovement: 0,
+            liveStats: game.liveStats || null,
+            aiPrediction: game.aiPrediction || { pick: '', confidence: 0 }
+        }));
+    }
+
+    getLeagueLogo(league) {
+        const logos = {
+            'NBA': '🏀',
+            'NFL': '🏈',
+            'MLB': '⚾',
+            'NHL': '🏒',
+            'MLS': '⚽',
+            'basketball': '🏀',
+            'football': '🏈',
+            'baseball': '⚾',
+            'hockey': '🏒',
+            'soccer': '⚽'
+        };
+        return logos[league] || '🎯';
+    }
+
     getFilteredGames() {
         return this.games.filter(game => {
             const leagueMatch = this.filters.league === 'all' || game.league === this.filters.league;
@@ -579,6 +649,145 @@ export class LiveGamesFeed {
     }
 
     // ============================================
+    // REAL-TIME ODDS SYNCING
+    // ============================================
+
+    /**
+     * Start syncing odds for a specific sport
+     */
+    async startOddsSync(sport) {
+        try {
+            console.log(`🚀 Starting odds sync for ${sport}...`);
+            this.currentSport = sport;
+            
+            // Start odds sync
+            await this.oddsSync.startSyncSport(sport);
+            
+            // Subscribe to odds updates for each game
+            this.games.forEach(game => {
+                if (game.league === sport.toUpperCase()) {
+                    this.subscribeToOddsUpdates(game.id);
+                }
+            });
+            
+            console.log(`✅ Odds sync started for ${sport}`);
+        } catch (error) {
+            console.error(`❌ Error starting odds sync:`, error);
+        }
+    }
+
+    /**
+     * Subscribe to odds updates for a specific game
+     */
+    subscribeToOddsUpdates(gameId) {
+        // Unsubscribe from old updates
+        if (this.oddsUnsubscribers.has(gameId)) {
+            this.oddsUnsubscribers.get(gameId)();
+        }
+        
+        // Subscribe to new updates
+        const unsubscribe = this.oddsSync.onOddsUpdate(gameId, (update) => {
+            this.handleOddsUpdate(gameId, update);
+        });
+        
+        this.oddsUnsubscribers.set(gameId, unsubscribe);
+    }
+
+    /**
+     * Handle odds update from sync system
+     */
+    handleOddsUpdate(gameId, update) {
+        const game = this.games.find(g => g.id === gameId);
+        if (!game) return;
+        
+        // Update game odds
+        game.odds = {
+            awayML: update.newOdds.awayML,
+            homeML: update.newOdds.homeML,
+            awaySpread: update.newOdds.awaySpread,
+            homeSpread: update.newOdds.homeSpread,
+            total: update.newOdds.total
+        };
+        
+        // Update odds movement indicator
+        game.oddsMovement = update.movement.homeML;
+        
+        // Update in DOM
+        const gameCard = document.querySelector(`[data-game-id="${gameId}"]`);
+        if (gameCard) {
+            this.updateGameCardOdds(gameCard, game);
+        }
+        
+        console.log(`📊 Odds updated for game ${gameId}`);
+    }
+
+    /**
+     * Update odds display in game card
+     */
+    updateGameCardOdds(gameCard, game) {
+        // Update moneyline
+        const homeMlBtn = gameCard.querySelector('.home-odds[data-bet-type="ml"]');
+        const awayMlBtn = gameCard.querySelector('.away-odds[data-bet-type="ml"]');
+        
+        if (homeMlBtn) {
+            homeMlBtn.querySelector('.odds-value').textContent = 
+                `${game.odds.homeML > 0 ? '+' : ''}${game.odds.homeML}`;
+        }
+        if (awayMlBtn) {
+            awayMlBtn.querySelector('.odds-value').textContent = 
+                `${game.odds.awayML > 0 ? '+' : ''}${game.odds.awayML}`;
+        }
+        
+        // Update spread
+        const homeSpreadBtn = gameCard.querySelector('.home-odds[data-bet-type="spread"]');
+        const awaySpreadBtn = gameCard.querySelector('.away-odds[data-bet-type="spread"]');
+        
+        if (homeSpreadBtn) {
+            homeSpreadBtn.querySelector('.odds-value').textContent = 
+                `${game.odds.homeSpread > 0 ? '+' : ''}${game.odds.homeSpread}`;
+        }
+        if (awaySpreadBtn) {
+            awaySpreadBtn.querySelector('.odds-value').textContent = 
+                `${game.odds.awaySpread > 0 ? '+' : ''}${game.odds.awaySpread}`;
+        }
+        
+        // Update total
+        const overBtn = gameCard.querySelector('.over-odds[data-bet-type="total"]');
+        const underBtn = gameCard.querySelector('.under-odds[data-bet-type="total"]');
+        
+        if (overBtn) {
+            overBtn.querySelector('.odds-value').textContent = game.odds.total;
+        }
+        if (underBtn) {
+            underBtn.querySelector('.odds-value').textContent = game.odds.total;
+        }
+        
+        // Add animation to updated elements
+        gameCard.classList.add('odds-updated');
+        setTimeout(() => gameCard.classList.remove('odds-updated'), 500);
+    }
+
+    /**
+     * Get real-time odds for a game
+     */
+    getRealTimeOdds(gameId) {
+        return this.oddsSync.getGameOdds(gameId);
+    }
+
+    /**
+     * Stop odds syncing and cleanup
+     */
+    cleanup() {
+        this.oddsSync.stopSync();
+        
+        // Unsubscribe from all odds updates
+        for (const unsubscribe of this.oddsUnsubscribers.values()) {
+            unsubscribe();
+        }
+        this.oddsUnsubscribers.clear();
+    }
+
+    // ============================================
     // EVENT HANDLERS
     // ============================================
 
@@ -588,6 +797,14 @@ export class LiveGamesFeed {
             chip.addEventListener('click', (e) => {
                 const league = e.currentTarget.dataset.league;
                 this.filters.league = league;
+                
+                // Start syncing odds for selected sport
+                if (league !== 'all') {
+                    this.startOddsSync(league.toLowerCase());
+                } else {
+                    this.oddsSync.stopSync();
+                }
+                
                 this.updateView();
             });
         });
