@@ -30,7 +30,7 @@ const PayPalService = {
             id: 'pro',
             name: 'PRO',
             price: 49.99,
-            paypalMeUrl: 'https://www.paypal.com/paypalme/mikewill898/49.99',
+            paypalMeUrl: 'https://www.paypal.com/paypalme/mikewill898/49.99?utm_source=ultimatesportsai&utm_medium=upgrade',
             features: [
                 'Unlimited picks',
                 '10+ AI Coaches',
@@ -51,7 +51,7 @@ const PayPalService = {
             id: 'vip',
             name: 'VIP',
             price: 99.99,
-            paypalMeUrl: 'https://www.paypal.com/paypalme/mikewill898/99.99',
+            paypalMeUrl: 'https://www.paypal.com/paypalme/mikewill898/99.99?utm_source=ultimatesportsai&utm_medium=upgrade',
             features: [
                 'Everything in PRO',
                 'Exclusive AI models',
@@ -324,19 +324,30 @@ const PayPalService = {
         };
         localStorage.setItem('pending_subscription', JSON.stringify(pendingSubscription));
         
-        // Open PayPal.me in new window
+        // Get return URL (redirect back to app after payment)
+        const returnUrl = `${window.location.origin}/?subscription_success=true&tier=${tier}`;
+        
+        // Build PayPal URL with return parameter
+        const paypalUrl = `${plan.paypalMeUrl}&return=${encodeURIComponent(returnUrl)}`;
+        
+        console.log('💰 Opening PayPal payment gateway');
+        
+        // Open PayPal.me in new window on desktop, same window on mobile
         const isMobile = window.innerWidth <= 768;
         const paypalWindow = window.open(
-            plan.paypalMeUrl, 
+            paypalUrl, 
             isMobile ? '_self' : '_blank', 
             'width=600,height=700'
         );
         
         // Close modal
-        document.getElementById('paypal-modal').remove();
+        const modal = document.getElementById('paypal-modal');
+        if (modal) modal.remove();
         
-        // Start checking for payment completion
-        this.startPaymentCheck(tier, paypalWindow);
+        // Only start checking on desktop
+        if (!isMobile && paypalWindow) {
+            this.startPaymentCheck(tier, paypalWindow);
+        }
     },
     
     startPaymentCheck(tier, paypalWindow) {

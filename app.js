@@ -243,6 +243,9 @@ class SportAIApp {
         console.log('🚀 SportAIApp setup() called');
         console.log('📱 Navigation system:', this.navigation);
         
+        // Handle PayPal return from payment
+        this.handlePayPalReturn();
+        
         // Initialize authentication system
         authUI.init();
         
@@ -1565,6 +1568,28 @@ class SportAIApp {
                 container.removeChild(toast);
             }, 300);
         }, 3000);
+    }
+
+    // ============================================
+    // PAYPAL RETURN HANDLER
+    // ============================================
+    handlePayPalReturn() {
+        // Check for PayPal return parameters in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const subscriptionSuccess = urlParams.get('subscription_success');
+        const tier = urlParams.get('tier');
+        
+        if (subscriptionSuccess === 'true' && tier) {
+            console.log('✅ PayPal payment completed for tier:', tier);
+            
+            // Activate the subscription
+            if (window.PayPalService && window.PayPalService.activateSubscription) {
+                window.PayPalService.activateSubscription(tier);
+            }
+            
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
     }
 }
 
