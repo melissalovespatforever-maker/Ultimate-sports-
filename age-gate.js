@@ -62,15 +62,14 @@ const AgeGate = {
                 backdrop-filter: blur(4px);
                 z-index: 10000;
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 padding: 20px;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
             ">
                 <div style="
                     background: linear-gradient(135deg, #151922 0%, #1f2937 100%);
-                    padding: 40px 30px;
+                    padding: 40px 30px 30px 30px;
                     border-radius: 20px;
                     max-width: 600px;
                     width: 100%;
@@ -78,10 +77,10 @@ const AgeGate = {
                     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
                     border: 2px solid #10b981;
                     animation: slideUp 0.4s ease-out;
-                    max-height: 90vh;
+                    max-height: calc(90vh - 100px);
                     overflow-y: auto;
                     -webkit-overflow-scrolling: touch;
-                    my: auto;
+                    flex-shrink: 1;
                 ">
                     <h1 style="
                         color: #10b981;
@@ -163,33 +162,13 @@ const AgeGate = {
                         </span>
                     </label>
                     
-                    <button id="age-confirm-btn" disabled style="
-                        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-                        color: white;
-                        padding: 16px 50px;
-                        border: none;
-                        border-radius: 12px;
-                        font-size: 1.1rem;
-                        font-weight: 600;
-                        cursor: not-allowed;
-                        opacity: 0.5;
-                        transition: all 0.3s ease;
-                        width: 100%;
-                        margin: 20px 0 15px 0;
-                        position: relative;
-                        z-index: 10001;
-                        pointer-events: auto;
-                    ">
-                        ✓ Confirm & Enter Site
-                    </button>
-                    
                     <p style="
                         color: #6b7280;
                         font-size: 0.95rem;
                         margin: 20px 0 0 0;
                         line-height: 1.6;
                     ">
-                        By clicking "Confirm & Enter Site", you agree to our 
+                        By confirming, you agree to our 
                         <a href="/terms-of-service.html" target="_blank" style="
                             color: #6366f1;
                             text-decoration: none;
@@ -204,6 +183,28 @@ const AgeGate = {
                         ">Privacy Policy</a>.
                     </p>
                 </div>
+                
+                <button id="age-confirm-btn" disabled style="
+                    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                    color: white;
+                    padding: 16px 50px;
+                    border: none;
+                    border-radius: 12px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    cursor: not-allowed;
+                    opacity: 0.5;
+                    transition: all 0.3s ease;
+                    width: calc(100% - 40px);
+                    max-width: 560px;
+                    margin: 20px 0 0 0;
+                    position: relative;
+                    z-index: 10001;
+                    pointer-events: auto;
+                    margin-top: 20px;
+                ">
+                    ✓ Confirm & Enter Site
+                </button>
                 
                 <style>
                     @keyframes slideUp {
