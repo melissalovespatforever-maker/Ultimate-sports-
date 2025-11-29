@@ -269,29 +269,50 @@ const AgeGate = {
                 return;
             }
             
-            // Toggle button state when checkbox changes
-            checkbox.addEventListener('change', (e) => {
-                if (e.target.checked) {
+            // Function to enable/disable button
+            const updateButtonState = (isChecked) => {
+                if (isChecked) {
                     confirmBtn.disabled = false;
                     confirmBtn.style.cursor = 'pointer';
                     confirmBtn.style.opacity = '1';
                     confirmBtn.style.pointerEvents = 'auto';
+                    confirmBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
                 } else {
                     confirmBtn.disabled = true;
                     confirmBtn.style.cursor = 'not-allowed';
                     confirmBtn.style.opacity = '0.5';
-                    confirmBtn.style.pointerEvents = 'auto';
+                    confirmBtn.style.pointerEvents = 'none';
+                    confirmBtn.style.background = 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)';
                 }
-                console.log('✅ Checkbox toggled, button enabled:', !e.target.checked);
+                console.log('✅ Button state updated, enabled:', isChecked);
+            };
+            
+            // Toggle button state when checkbox changes
+            checkbox.addEventListener('change', (e) => {
+                updateButtonState(e.target.checked);
+            });
+            
+            // Also listen to click on checkbox for iOS
+            checkbox.addEventListener('click', (e) => {
+                setTimeout(() => {
+                    updateButtonState(checkbox.checked);
+                }, 10);
             });
             
             // Handle confirm button click with proper binding
-            confirmBtn.addEventListener('click', (e) => {
+            const handleConfirm = (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('🎯 Confirm button clicked');
-                this.verifyAge();
-            });
+                if (!confirmBtn.disabled && checkbox.checked) {
+                    console.log('🎯 Confirm button clicked - verifying age');
+                    this.verifyAge();
+                } else {
+                    console.log('⚠️ Button clicked but disabled or checkbox not checked');
+                }
+            };
+            
+            confirmBtn.addEventListener('click', handleConfirm);
+            confirmBtn.addEventListener('touchend', handleConfirm);
             
             // Allow pressing Enter on checkbox
             checkbox.addEventListener('keypress', (e) => {
