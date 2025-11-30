@@ -24,35 +24,57 @@ class LiveScoresESPNIntegration {
             'college-basketball': 'college-basketball'
         };
         
-        // Sport endpoints
+        // Sport endpoints (with fallback options for different API structures)
         this.sportEndpoints = {
             'basketball': {
                 league: 'nba',
-                url: 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/events'
+                urls: [
+                    'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/events',
+                    'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard'
+                ]
             },
             'football': {
                 league: 'nfl',
-                url: 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/events'
+                urls: [
+                    'https://site.api.espn.com/apis/site/v2/sports/football/nfl/events',
+                    'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard'
+                ]
             },
             'baseball': {
                 league: 'mlb',
-                url: 'https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/events'
+                urls: [
+                    'https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/events',
+                    'https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard'
+                ]
             },
             'hockey': {
                 league: 'nhl',
-                url: 'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/events'
+                urls: [
+                    'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/events',
+                    'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard',
+                    'https://site.api.espn.com/apis/site/v2/sports/hockey/nhl'
+                ]
             },
             'soccer': {
                 league: 'mls',
-                url: 'https://site.api.espn.com/apis/site/v2/sports/soccer/mls/events'
+                urls: [
+                    'https://site.api.espn.com/apis/site/v2/sports/soccer/mls/events',
+                    'https://site.api.espn.com/apis/site/v2/sports/soccer/mls/scoreboard'
+                ]
             },
             'college-football': {
                 league: 'college-football',
-                url: 'https://site.api.espn.com/apis/site/v2/sports/football/college-football/events'
+                urls: [
+                    'https://site.api.espn.com/apis/site/v2/sports/football/college-football/events',
+                    'https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard'
+                ]
             },
             'college-basketball': {
                 league: 'college-basketball',
-                url: 'https://site.api.espn.com/apis/site/v2/sports/basketball/college-basketball/events'
+                urls: [
+                    'https://site.api.espn.com/apis/site/v2/sports/basketball/college-basketball/events',
+                    'https://site.api.espn.com/apis/site/v2/sports/basketball/college-basketball/scoreboard'
+                ]
             }
         };
         
@@ -73,16 +95,19 @@ class LiveScoresESPNIntegration {
         
         try {
             const data = await fetchFn();
-            this.cache.set(key, { data, timestamp: Date.now() });
+            if (data) {
+                this.cache.set(key, { data, timestamp: Date.now() });
+            }
             return data;
         } catch (error) {
-            console.error(`❌ Fetch error for ${key}:`, error);
+            console.error(`❌ Fetch error for ${key}:`, error.message);
             // Return cached data even if expired, better than nothing
             if (cached) {
                 console.warn(`⚠️ Returning stale cache for ${key}`);
                 return cached.data;
             }
-            throw error;
+            // Return empty structure to prevent crashes
+            return { events: [], competitions: [] };
         }
     }
 
@@ -103,19 +128,50 @@ class LiveScoresESPNIntegration {
             const data = await this.fetchWithCache(
                 `espn_games_${sport}`,
                 async () => {
-                    const response = await fetch(endpoint);
+                    // Try multiple endpoints for this sport
+                    let lastError = null;
                     
-                    if (!response.ok) {
-                        throw new Error(`ESPN API error: ${response.status}`);
+                    for (const url of endpoint.urls) {
+                        try {
+                            console.log(`  🔗 Trying: ${url.split('/').slice(-2).join('/')}`);
+                            
+                            // Fetch with timeout
+                            const controller = new AbortController();
+                            const timeoutId = setTimeout(() => controller.abort(), 8000);
+                            
+                            const response = await fetch(url, {
+                                method: 'GET',
+                                signal: controller.signal,
+                                headers: {
+                                    'Accept': 'application/json'
+                                }
+                            });
+                            
+                            clearTimeout(timeoutId);
+                            
+                            if (response.ok) {
+                                const data = await response.json();
+                                console.log(`  ✅ Loaded: ${url.split('/').slice(-2).join('/')}`);
+                                return data;
+                            }
+                            
+                            lastError = `HTTP ${response.status}`;
+                        } catch (error) {
+                            lastError = error.name === 'AbortError' ? 'Timeout' : error.message;
+                            console.log(`  ⚠️ Failed (${lastError})`);
+                        }
                     }
                     
-                    return await response.json();
-                }
+                    // If all endpoints failed
+                    throw new Error(`ESPN API unavailable for ${sport}: ${lastError || 'Network error'}`);
+                },
+                60000 // Cache for 1 minute since ESPN updates slowly
             );
             
-            return this.processGames(data.events || [], sport);
+            return this.processGames(data.events || data.competitions || [], sport);
         } catch (error) {
-            console.error(`❌ Error fetching live games for ${sport}:`, error);
+            console.error(`❌ Error fetching ${sport}:`, error.message);
+            // Return empty array but don't crash
             return [];
         }
     }

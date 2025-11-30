@@ -26,8 +26,8 @@ export class LiveGamesFeed {
 
     render(container) {
         this.container = container;
-        this.loadGames();
-
+        
+        // Render UI immediately with placeholder
         container.innerHTML = `
             <div class="live-games-feed">
                 ${this.renderHeader()}
@@ -38,6 +38,15 @@ export class LiveGamesFeed {
 
         this.attachEventListeners();
         this.startLiveUpdates();
+        
+        // Load games asynchronously
+        this.loadGames().then(() => {
+            this.updateView();
+            console.log('✅ Games loaded and view updated');
+        }).catch(error => {
+            console.error('❌ Error loading games:', error);
+            this.updateView();
+        });
     }
 
     renderHeader() {
@@ -343,13 +352,22 @@ export class LiveGamesFeed {
             
             console.log('📡 Fetching real games from ESPN...');
             
-            // Fetch from all major sports
+            // Fetch from all major sports with timeout
             const sports = ['basketball', 'football', 'baseball', 'hockey'];
             const allGames = [];
             
             for (const sport of sports) {
                 try {
-                    const games = await liveScoresESPN.fetchLiveGames(sport);
+                    const gamesPromise = liveScoresESPN.fetchLiveGames(sport);
+                    
+                    // Add timeout protection
+                    const games = await Promise.race([
+                        gamesPromise,
+                        new Promise((_, reject) => 
+                            setTimeout(() => reject(new Error('Fetch timeout')), 5000)
+                        )
+                    ]);
+                    
                     if (games && games.length > 0) {
                         allGames.push(...games);
                     }
@@ -366,7 +384,7 @@ export class LiveGamesFeed {
                 console.warn('⚠️ No live games found from ESPN, using placeholder data');
             }
         } catch (error) {
-            console.error('❌ Failed to load ESPN games:', error.message);
+            console.error('❌ Error fetching ESPN games:', error.message);
         }
         
         // Fallback to minimal placeholder data ONLY if ESPN is unavailable
