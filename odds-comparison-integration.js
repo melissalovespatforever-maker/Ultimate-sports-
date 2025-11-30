@@ -4,17 +4,20 @@
  */
 
 import { OddsComparisonUI } from './odds-comparison-ui.js';
-import { oddsComparison } from './live-odds-comparison.js';
+import { OddsComparisonEngine } from './odds-comparison-engine.js';
 import { betSlipBuilder } from './ai-bet-slip-builder.js';
 
 // ===== Setup =====
 
-// 1. Create container
+// 1. Create engine instance
+const oddsComparison = new OddsComparisonEngine();
+
+// 2. Create container
 const oddsContainer = document.createElement('div');
 oddsContainer.id = 'odds-comparison';
 document.body.appendChild(oddsContainer);
 
-// 2. Initialize UI
+// 3. Initialize UI
 const oddsUI = new OddsComparisonUI(oddsContainer);
 
 // ===== Integration with Bet Slip Builder =====

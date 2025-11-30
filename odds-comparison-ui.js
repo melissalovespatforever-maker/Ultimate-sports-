@@ -3,7 +3,7 @@
  * Beautiful interface for comparing odds across sportsbooks
  */
 
-import { oddsComparison } from './live-odds-comparison.js';
+import { OddsComparisonEngine } from './odds-comparison-engine.js';
 
 export class OddsComparisonUI {
     constructor(container) {

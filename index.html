@@ -32,22 +32,19 @@
     <!-- Main Styles -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="ui-enhancements.css">
-    <link rel="stylesheet" href="oauth-styles.css">
+    <link rel="stylesheet" href="unified-auth-styles.css">
     <link rel="stylesheet" href="live-scores-styles.css">
     <link rel="stylesheet" href="leaderboard-styles.css">
     <link rel="stylesheet" href="expert-follow-styles.css">
     <link rel="stylesheet" href="challenge-styles.css">
     <link rel="stylesheet" href="advanced-analytics-styles.css">
-    <link rel="stylesheet" href="odds-comparison-v2-styles.css">
     <link rel="stylesheet" href="parlay-optimizer-ai-styles.css">
     <link rel="stylesheet" href="arbitrage-scanner-styles.css">
     <link rel="stylesheet" href="bankroll-tracker-styles.css">
     <link rel="stylesheet" href="injury-impact-tracker-styles.css">
     <link rel="stylesheet" href="social-feed-styles.css">
-    <link rel="stylesheet" href="user-profile-page-styles.css">
     <link rel="stylesheet" href="direct-messages-styles.css">
-    <link rel="stylesheet" href="notifications-styles.css">
-    <link rel="stylesheet" href="leaderboard-realtime-styles.css">
+    <link rel="stylesheet" href="notification-styles.css">
     <link rel="stylesheet" href="competitions-styles.css">
     <link rel="stylesheet" href="trophy-showcase-styles.css">
     <link rel="stylesheet" href="live-games-feed-styles.css">
@@ -686,9 +683,7 @@
     <script src="age-gate.js?v=23.0.0"></script>
     
     <!-- Load OAuth System (Phase 22: OAuth Authentication) -->
-    <script src="oauth-config.js?v=22.0.0"></script>
-    <script src="oauth-service.js?v=22.0.0"></script>
-    <script src="oauth-ui.js?v=22.0.0"></script>
+
     
     <!-- Load Services -->
     <script src="auth-service.js?v=3.0.4"></script>
@@ -701,8 +696,6 @@
     
     <!-- Load UI Modules -->
     <script src="demo-ai-coaches.js?v=3.0.5"></script>
-    <script src="profile-ui.js?v=3.0.5"></script>
-    <script src="live-odds-ui.js?v=3.0.5"></script>
     <script src="analytics-ui.js?v=3.0.5"></script>
     <script src="bet-slip-ui.js?v=4.0.0"></script>
     <script src="pick-history-ui.js?v=3.0.5"></script>
@@ -728,10 +721,10 @@
     <script type="module" src="advanced-analytics-ui.js?v=6.1.0"></script>
     <script src="advanced-analytics-page-init.js?v=6.1.0"></script>
     
-    <!-- Odds Comparison V2 System (Phase 7: 30+ Sportsbooks) -->
-    <script type="module" src="odds-comparison-v2-system.js?v=7.0.0"></script>
-    <script type="module" src="odds-comparison-v2-ui.js?v=7.0.0"></script>
-    <script src="odds-comparison-v2-page-init.js?v=7.0.0"></script>
+    <!-- Odds Comparison System (Phase 7: 30+ Sportsbooks) -->
+    <script type="module" src="odds-comparison-engine.js?v=7.0.0"></script>
+    <script type="module" src="odds-comparison-ui.js?v=7.0.0"></script>
+    <script src="odds-comparison-integration.js?v=7.0.0"></script>
     
     <!-- Parlay Optimizer AI System (Phase 8: AI Parlay Builder) -->
     <script type="module" src="parlay-optimizer-ai-system.js?v=8.0.0"></script>
@@ -776,10 +769,11 @@
     <script type="module" src="social-feed-ui.js?v=12.0.0"></script>
     <script src="social-feed-page-init.js?v=12.0.0"></script>
     
-    <!-- User Profile Page System (Phase 13: User Profiles with Post History) -->
-    <script type="module" src="user-profile-page-system.js?v=13.0.0"></script>
-    <script type="module" src="user-profile-page-ui.js?v=13.0.0"></script>
-    <script src="user-profile-page-init.js?v=13.0.0"></script>
+    <!-- Unified Auth & Profile System (Phase 27: Complete Auth + Profile) -->
+    <script type="module" src="unified-auth-system.js?v=27.0.0"></script>
+    <script type="module" src="unified-auth-ui.js?v=27.0.0"></script>
+    <script type="module" src="unified-profile-page.js?v=27.0.0"></script>
+    <script type="module" src="complete-auth-integration.js?v=27.1.0"></script>
     
     <!-- Direct Messages System (Phase 14: Real-Time Messaging) -->
     <script type="module" src="direct-messages-system.js?v=14.0.0"></script>
@@ -787,14 +781,9 @@
     <script src="direct-messages-page-init.js?v=14.0.0"></script>
     
     <!-- Notifications System (Phase 15: Notifications & Activity Feed) -->
-    <script type="module" src="notifications-system.js?v=15.0.0"></script>
-    <script type="module" src="notifications-ui.js?v=15.0.0"></script>
+    <script type="module" src="notification-system.js?v=15.0.0"></script>
+    <script type="module" src="notification-ui.js?v=15.0.0"></script>
     <script src="notifications-page-init.js?v=15.0.0"></script>
-    
-    <!-- Real-time Leaderboard System (Phase 16: Live Rankings) -->
-    <script type="module" src="leaderboard-system-new.js?v=16.0.0"></script>
-    <script type="module" src="leaderboard-ui-realtime.js?v=16.0.0"></script>
-    <script src="leaderboard-realtime-init.js?v=16.0.0"></script>
     
     <!-- Competitions & Matchmaking System (Phase 17/18: Live Challenges + WebSocket) -->
     <script type="module" src="competitions-system.js?v=18.0.0"></script>
@@ -808,7 +797,7 @@
     <script type="module" src="trophy-showcase-page-init.js?v=21.0.0"></script>
     
     <!-- Security Configuration (Phase 21: Frontend Security) -->
-    <script type="module" src="security-config.js?v=21.1.0"></script>
+
     
     <!-- VERSION 3.0 - CLEAN NAVIGATION SCRIPT -->
     <script>
