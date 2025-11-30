@@ -168,6 +168,11 @@ class LiveScoresDisplay {
     // ============================================
     
     updateDisplay() {
+        if (!this.container) {
+            console.warn('⚠️ Live Scores Display: No container available for updateDisplay');
+            return;
+        }
+        
         let games = Array.from(this.games.values());
 
         // Filter by sport
@@ -203,6 +208,12 @@ class LiveScoresDisplay {
     renderGames(games) {
         const container = document.getElementById('games-container');
         const placeholder = document.getElementById('placeholder');
+
+        // Safety check - if elements don't exist, this might be the wrong page
+        if (!container || !placeholder) {
+            console.warn('⚠️ Live Scores Display: Container elements not found. This page may use a different display system.');
+            return;
+        }
 
         if (games.length === 0) {
             container.style.display = 'none';
@@ -343,8 +354,15 @@ class LiveScoresDisplay {
     // ============================================
     
     updateStats() {
+        if (!this.container) return; // Safety check
+        
         const stats = this.getStats();
         const statCards = document.querySelectorAll('.stat-card');
+        
+        if (statCards.length < 4) {
+            console.warn('⚠️ Not all stat cards found');
+            return;
+        }
         
         statCards[0].querySelector('.stat-value').textContent = stats.live;
         statCards[1].querySelector('.stat-value').textContent = stats.total;
@@ -408,6 +426,7 @@ class LiveScoresDisplay {
     // ============================================
     
     emit(event, data) {
+        if (!this.container) return; // Safety check
         const customEvent = new CustomEvent(`scores:${event}`, { detail: data });
         this.container.dispatchEvent(customEvent);
     }

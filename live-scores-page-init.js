@@ -201,15 +201,9 @@ class LiveScoresPageInit {
     }
 }
 
-// Auto-initialize when page loads
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        window.liveScoresPage = new LiveScoresPageInit();
-        window.liveScoresPage.initialize();
-    });
-} else {
-    window.liveScoresPage = new LiveScoresPageInit();
-    window.liveScoresPage.initialize();
-}
+// Note: This module is no longer auto-initialized.
+// The Live Games Feed system has replaced this with live-games-page-init.js
+// This is kept for backwards compatibility only.
 
+// Export for manual use if needed
 export { LiveScoresPageInit };

@@ -1,0 +1,638 @@
+/* ========================================
+   INJURY ALERTS STYLES
+   Real-time Injury Notifications & Impact Scoring
+   ======================================== */
+
+/* ========================================
+   WIDGET CONTAINER
+   ======================================== */
+
+.injury-alerts-widget {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    max-height: 600px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.injury-alerts-widget.expanded {
+    max-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 0;
+    z-index: 1000;
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+
+.injury-alerts-header {
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.header-title i {
+    font-size: 18px;
+    color: #ef4444;
+}
+
+.alert-badge {
+    background: #ef4444;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.injury-btn-icon {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.injury-btn-icon:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* ========================================
+   FILTERS
+   ======================================== */
+
+.injury-filters {
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.injury-filter-btn {
+    padding: 6px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.injury-filter-btn:hover {
+    background: var(--bg-elevated);
+    border-color: var(--primary);
+}
+
+.injury-filter-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* ========================================
+   ALERTS LIST
+   ======================================== */
+
+.injury-alerts-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.injury-alerts-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.injury-alerts-list::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+.injury-alerts-list::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+.injury-alerts-list::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+.injury-alerts-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.injury-alerts-empty i {
+    font-size: 48px;
+    color: #10b981;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+
+.injury-alerts-empty p {
+    font-size: 14px;
+    margin: 0;
+}
+
+/* ========================================
+   ALERT CARDS
+   ======================================== */
+
+.injury-alert-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.injury-alert-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+}
+
+/* Severity borders */
+.injury-alert-card.out {
+    border-left: 4px solid #ef4444;
+}
+
+.injury-alert-card.doubtful {
+    border-left: 4px solid #f97316;
+}
+
+.injury-alert-card.day_to_day {
+    border-left: 4px solid #eab308;
+}
+
+.injury-alert-card.probable {
+    border-left: 4px solid #3b82f6;
+}
+
+.injury-alert-card.questionable {
+    border-left: 4px solid #8b5cf6;
+}
+
+/* ========================================
+   SEVERITY BADGE
+   ======================================== */
+
+.injury-severity-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    width: fit-content;
+    animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.severity-label {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ========================================
+   PLAYER INFO
+   ======================================== */
+
+.injury-player-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.player-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.player-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.player-position {
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.player-team {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ========================================
+   INJURY DETAILS
+   ======================================== */
+
+.injury-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.detail-value {
+    color: var(--text-primary);
+    text-align: right;
+    flex: 1;
+}
+
+/* ========================================
+   IMPACT SCORE
+   ======================================== */
+
+.injury-impact-section {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    border-radius: 6px;
+}
+
+.impact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+
+.impact-header span:first-child {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.impact-value {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.impact-bar {
+    height: 6px;
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.impact-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.5s ease;
+    animation: impact-pulse 2s ease-in-out infinite;
+}
+
+@keyframes impact-pulse {
+    0%, 100% {
+        box-shadow: 0 0 8px currentColor;
+    }
+    50% {
+        box-shadow: 0 0 12px currentColor;
+    }
+}
+
+.impact-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ========================================
+   PLAYER STATS
+   ======================================== */
+
+.injury-player-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+}
+
+.stats-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 6px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px;
+    background: var(--bg-elevated);
+    border-radius: 4px;
+}
+
+.stat-num {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.stat-name {
+    font-size: 10px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+/* ========================================
+   TIMESTAMP
+   ======================================== */
+
+.injury-timestamp {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: right;
+    padding-top: 4px;
+    border-top: 1px solid var(--border);
+}
+
+/* ========================================
+   STATS SECTION
+   ======================================== */
+
+.injury-stats {
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* ========================================
+   TOAST NOTIFICATIONS
+   ======================================== */
+
+.injury-toast {
+    position: fixed;
+    bottom: 80px;
+    right: 24px;
+    background: var(--bg-elevated);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all 0.3s ease;
+    z-index: 999;
+    max-width: 300px;
+}
+
+.injury-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.injury-toast i {
+    font-size: 16px;
+}
+
+.injury-toast-warning {
+    border-left-color: #f59e0b;
+}
+
+.injury-toast-warning i {
+    color: #f59e0b;
+}
+
+.injury-toast-critical {
+    border-left-color: #ef4444;
+}
+
+.injury-toast-critical i {
+    color: #ef4444;
+}
+
+.injury-toast-info {
+    border-left-color: #3b82f6;
+}
+
+.injury-toast-info i {
+    color: #3b82f6;
+}
+
+/* ========================================
+   IMPACT MATRIX (for game impact view)
+   ======================================== */
+
+.injury-impact-matrix {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 16px;
+}
+
+.team-impact-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.team-impact-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.team-impact-score {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.team-health-bar {
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.team-health-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);
+    border-radius: 4px;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 640px) {
+    .injury-alerts-widget {
+        max-height: 80vh;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .injury-alerts-widget.expanded {
+        position: fixed;
+        inset: 0;
+        border-radius: 0;
+    }
+
+    .injury-impact-matrix {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .injury-toast {
+        bottom: 20px;
+        right: 12px;
+        left: 12px;
+        max-width: none;
+    }
+
+    .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .detail-value {
+        text-align: left;
+    }
+}
