@@ -5,14 +5,10 @@
 
 // Core Systems
 import { modernNav } from './navigation.js';
-import { authSystem } from './auth-system.js';
-import { authUI } from './auth-ui.js';
-import { SkeletonLoader } from './skeleton-loader.js';
 
 // Analytics & Data
 import { analyticsDashboard } from './analytics-dashboard.js';
 import { betAnalyticsUI } from './bet-analytics-ui.js';
-import { lineMovementUI } from './line-movement-ui.js';
 
 // Social & Community
 import { socialSystem } from './social-system.js';
@@ -71,14 +67,6 @@ import * as luckyWheelUI from './lucky-wheel-ui.js';
 import { activityFeedSystem } from './activity-feed-system.js';
 import { activityFeedUI } from './activity-feed-ui.js';
 
-// Collaborative Analysis System
-import { collaborativeAnalysis } from './collaborative-analysis-system.js';
-import { collaborativeAnalysisUI } from './collaborative-analysis-ui.js';
-
-// AI Intelligence Engine (V2 - Groundbreaking)
-import { aiIntelligenceV2 } from './ai-intelligence-engine-v2.js';
-import { meetingRoomImproved } from './meeting-room-improved.js';
-
 // Parlay Builder System
 import { parlayBuilder } from './parlay-builder-engine.js';
 import { parlayBuilderUI } from './parlay-builder-ui.js';
@@ -93,23 +81,6 @@ import { injuryTrackerUI } from './injury-tracker-ui.js';
 
 // Live Odds Comparison System
 import { liveOddsComparison } from './live-odds-comparison-engine.js';
-import { liveOddsComparisonUI } from './live-odds-comparison-ui.js';
-
-// Friend System
-import { friendSystem } from './friend-system.js';
-import { friendSystemUI } from './friend-system-ui.js';
-
-// Community Chat
-import { communityChatSystem } from './community-chat-system.js';
-import { communityChatUI } from './community-chat-ui.js';
-
-// User Profile System
-import { userProfileSystem } from './user-profile-system.js';
-import { userProfileUI } from './user-profile-ui.js';
-
-// Live Odds Matrix
-import { liveOddsMatrix } from './live-odds-matrix.js';
-import { liveOddsMatrixUI } from './live-odds-matrix-ui.js';
 
 // Payment & Subscriptions
 import { paypalPaymentSystem } from './paypal-payment-system.js';
