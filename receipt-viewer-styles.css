@@ -1,0 +1,634 @@
+/* ============================================
+   EMAIL RECEIPTS & INVOICE VIEWER STYLES
+   ============================================ */
+
+/* Container */
+#receipt-viewer-container {
+    padding: 24px;
+    background: #f9fafb;
+    border-radius: 12px;
+}
+
+/* Section Header */
+.section-header {
+    margin-bottom: 32px;
+}
+
+.section-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.02em;
+}
+
+.section-header p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Tab Navigation */
+.receipt-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 16px;
+}
+
+.receipt-tab-btn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -17px;
+}
+
+.receipt-tab-btn:hover {
+    color: #10b981;
+}
+
+.receipt-tab-btn.active {
+    color: #10b981;
+    border-bottom-color: #10b981;
+}
+
+/* Receipt Cards */
+.receipts-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+}
+
+.receipt-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.receipt-card:hover {
+    border-color: #10b981;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Receipt Header */
+.receipt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #f0f9ff 100%);
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.receipt-number {
+    font-size: 14px;
+    font-weight: 700;
+    color: #10b981;
+    font-family: 'Courier New', monospace;
+}
+
+.receipt-date {
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.invoice-number {
+    font-size: 14px;
+    font-weight: 700;
+    color: #059669;
+    font-family: 'Courier New', monospace;
+}
+
+/* Status Badges */
+.receipt-status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.badge-sent {
+    background: #dbeafe;
+    color: #0369a1;
+}
+
+.badge-delivered {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.badge-failed,
+.badge-bounced {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* Receipt Body */
+.receipt-body {
+    padding: 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.receipt-email {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+
+.receipt-email i {
+    color: #10b981;
+    font-size: 14px;
+}
+
+.receipt-subject {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Invoice Card Specific */
+.invoice-card .receipt-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.invoice-detail {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.invoice-detail .label {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.invoice-detail .value {
+    color: #374151;
+    font-weight: 600;
+}
+
+/* Receipt Actions */
+.receipt-actions {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    background: #f9fafb;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    color: #374151;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.btn-action:hover {
+    background: #f3f4f6;
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.btn-action i {
+    font-size: 12px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 64px 24px;
+    color: #6b7280;
+}
+
+.empty-state i {
+    font-size: 48px;
+    color: #d1d5db;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.empty-state h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 8px 0;
+}
+
+.empty-state p {
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Spinner */
+.spinner {
+    text-align: center;
+    padding: 48px 24px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.spinner::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #10b981;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Billing History Table */
+.billing-history-table {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.billing-history-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.billing-history-table thead {
+    background: #f9fafb;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.billing-history-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.billing-history-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+    color: #374151;
+}
+
+.billing-history-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.billing-history-table .badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.billing-history-table .view-invoice {
+    color: #10b981;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.billing-history-table .view-invoice:hover {
+    text-decoration: underline;
+}
+
+/* Modal Styles */
+.receipt-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.receipt-modal {
+    background: white;
+    border-radius: 12px;
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: #f3f4f6;
+    color: #1f2937;
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.receipt-html-content {
+    color: #374151;
+}
+
+.receipt-html-content h1,
+.receipt-html-content h2,
+.receipt-html-content h3 {
+    color: #1f2937;
+    margin-bottom: 12px;
+}
+
+.receipt-html-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+}
+
+.receipt-html-content td,
+.receipt-html-content th {
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    padding: 20px 24px;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+}
+
+.modal-footer button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.btn-secondary:hover {
+    background: #d1d5db;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    flex: 1;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .receipts-list {
+        grid-template-columns: 1fr;
+    }
+
+    .receipt-tabs {
+        flex-wrap: wrap;
+    }
+
+    .billing-history-table {
+        font-size: 12px;
+    }
+
+    .billing-history-table th,
+    .billing-history-table td {
+        padding: 8px 12px;
+    }
+
+    .receipt-modal {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+    }
+
+    .modal-footer button {
+        width: 100%;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    #receipt-viewer-container {
+        background: #111827;
+    }
+
+    .receipt-card {
+        background: #1f2937;
+        border-color: #374151;
+    }
+
+    .receipt-card:hover {
+        border-color: #10b981;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+
+    .receipt-header {
+        background: rgba(16, 185, 129, 0.1);
+        border-bottom-color: #374151;
+    }
+
+    .section-header h2 {
+        color: #f3f4f6;
+    }
+
+    .section-header p {
+        color: #9ca3af;
+    }
+
+    .receipt-body {
+        border-bottom-color: #374151;
+    }
+
+    .receipt-subject {
+        color: #e5e7eb;
+    }
+
+    .receipt-actions {
+        background: #111827;
+    }
+
+    .btn-action {
+        background: #1f2937;
+        border-color: #374151;
+        color: #d1d5db;
+    }
+
+    .btn-action:hover {
+        background: #374151;
+        color: #10b981;
+    }
+
+    .billing-history-table {
+        background: #1f2937;
+        border-color: #374151;
+    }
+
+    .billing-history-table thead {
+        background: #111827;
+        border-bottom-color: #374151;
+    }
+
+    .billing-history-table td {
+        border-bottom-color: #374151;
+        color: #e5e7eb;
+    }
+
+    .billing-history-table tbody tr:hover {
+        background: #111827;
+    }
+
+    .receipt-modal {
+        background: #1f2937;
+        color: #e5e7eb;
+    }
+
+    .modal-header {
+        border-bottom-color: #374151;
+    }
+
+    .modal-header h3 {
+        color: #f3f4f6;
+    }
+
+    .modal-close:hover {
+        background: #374151;
+        color: #f3f4f6;
+    }
+
+    .modal-footer {
+        border-top-color: #374151;
+        background: #111827;
+    }
+
+    .receipt-html-content h1,
+    .receipt-html-content h2,
+    .receipt-html-content h3 {
+        color: #f3f4f6;
+    }
+
+    .receipt-html-content table {
+        border-color: #374151;
+    }
+
+    .receipt-html-content td,
+    .receipt-html-content th {
+        border-color: #374151;
+    }
+}

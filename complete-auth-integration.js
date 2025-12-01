@@ -31,8 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // 4. Handle page navigation
         setupPageNavigation();
         
-        // 5. Update UI based on auth state
-        updateUIForAuthState();
+        // 5. Wait for auth system to restore session
+        setTimeout(() => {
+            // Update UI based on auth state
+            updateUIForAuthState();
+        }, 100);
         
         console.log('✅ Complete Auth System Ready!');
         

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Autopilot - Ultimate Sports AI</title>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="ai-parlay-autopilot-styles.css">
+    
+    <style>
+        body {
+            background: #0f0f1e;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .page-container {
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .page-header {
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            color: white;
+            font-size: 42px;
+            font-weight: 800;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .page-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 18px;
+            margin: 0;
+        }
+        
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 12px 24px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .nav-back:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- Navigation -->
+        <a href="index.html" class="nav-back">
+            <span>←</span>
+            <span>Back to Dashboard</span>
+        </a>
+        
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>🤖 AI Autopilot</h1>
+            <p>Let our AI coaches build a winning parlay for you</p>
+        </div>
+        
+        <!-- Autopilot Container -->
+        <div id="ai-autopilot-container"></div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="ai-parlay-autopilot.js"></script>
+    <script src="ai-parlay-autopilot-ui.js"></script>
+    
+    <!-- Optional: Bet Slip Integration -->
+    <script src="bet-slip-ui.js"></script>
+    
+    <script>
+        // Track page view
+        console.log('📊 AI Autopilot page loaded');
+        
+        // Check authentication
+        const user = JSON.parse(localStorage.getItem('ultimate_sports_user') || '{}');
+        
+        if (!user.id) {
+            console.log('⚠️ User not logged in, redirecting...');
+            // Optionally redirect to login
+            // window.location.href = '/login.html';
+        } else {
+            console.log('✅ User authenticated:', user.username);
+        }
+    </script>
+</body>
+</html>

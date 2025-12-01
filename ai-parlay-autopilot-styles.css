@@ -1,0 +1,840 @@
+/* ============================================
+   AI PARLAY AUTOPILOT STYLES
+   Beautiful, modern interface for autopilot mode
+   ============================================ */
+
+/* Container */
+#ai-autopilot-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* ============================================
+   WELCOME SCREEN
+   ============================================ */
+
+.autopilot-welcome {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 40px;
+    color: white;
+}
+
+.autopilot-hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.hero-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.autopilot-hero h1 {
+    font-size: 42px;
+    font-weight: 800;
+    margin: 0 0 10px 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.hero-subtitle {
+    font-size: 18px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* Benefits */
+.autopilot-benefits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.benefit {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.benefit:hover {
+    transform: translateY(-5px);
+    background: rgba(255,255,255,0.2);
+}
+
+.benefit-icon {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.benefit h3 {
+    font-size: 18px;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+}
+
+.benefit p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* Preferences */
+.autopilot-preferences {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.autopilot-preferences h2 {
+    font-size: 24px;
+    margin: 0 0 25px 0;
+    font-weight: 700;
+}
+
+.pref-group {
+    margin-bottom: 30px;
+}
+
+.pref-group:last-child {
+    margin-bottom: 0;
+}
+
+.pref-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Risk Buttons */
+.risk-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.risk-btn {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 20px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    text-align: center;
+}
+
+.risk-btn:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+    transform: scale(1.02);
+}
+
+.risk-btn.active {
+    background: rgba(255,255,255,0.25);
+    border-color: white;
+    box-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+
+.risk-btn .risk-icon {
+    display: block;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.risk-btn span:nth-child(2) {
+    display: block;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.risk-btn small {
+    display: block;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* Sport Checkboxes */
+.sport-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.sport-checkbox {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sport-checkbox:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+}
+
+.sport-checkbox input {
+    margin: 0;
+    cursor: pointer;
+}
+
+.sport-checkbox input:checked + span {
+    font-weight: 700;
+}
+
+.sport-checkbox input:checked {
+    accent-color: #10b981;
+}
+
+/* Payout Slider */
+.payout-slider {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.payout-slider input[type="range"] {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 5px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.payout-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: white;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.payout-slider input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: white;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+}
+
+.payout-display {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+#payout-value {
+    font-size: 36px;
+    color: #10b981;
+}
+
+/* Build Button */
+.autopilot-build-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: none;
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.autopilot-build-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(16, 185, 129, 0.4);
+}
+
+.autopilot-build-btn:active {
+    transform: translateY(0);
+}
+
+.btn-icon {
+    font-size: 28px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.autopilot-disclaimer {
+    text-align: center;
+    font-size: 14px;
+    opacity: 0.8;
+    margin: 15px 0 0 0;
+}
+
+/* ============================================
+   BUILDING STATE
+   ============================================ */
+
+.autopilot-building {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 60px 40px;
+    color: white;
+    text-align: center;
+}
+
+.building-animation {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 30px;
+}
+
+.spinner {
+    position: absolute;
+    inset: 0;
+    border: 4px solid rgba(255,255,255,0.2);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.ai-brain {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+}
+
+.autopilot-building h2 {
+    font-size: 28px;
+    margin: 0 0 30px 0;
+    font-weight: 700;
+}
+
+.building-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.step {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    opacity: 0.5;
+    transition: all 0.5s ease;
+}
+
+.step.active {
+    opacity: 1;
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.02);
+}
+
+.step-icon {
+    font-size: 24px;
+}
+
+/* ============================================
+   RESULT SCREEN
+   ============================================ */
+
+.autopilot-result {
+    background: #1a1a2e;
+    border-radius: 20px;
+    padding: 30px;
+    color: white;
+}
+
+/* Header */
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.back-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    padding: 10px 20px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+.coach-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 12px 20px;
+}
+
+.coach-avatar {
+    font-size: 32px;
+}
+
+.coach-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.coach-name {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.coach-specialty {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* Headline */
+.result-headline {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.result-headline h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 0 0 15px 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.result-headline p {
+    font-size: 16px;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* Stats */
+.result-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stat {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.6;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 28px;
+    font-weight: 800;
+    color: #10b981;
+}
+
+.stat-value.negative {
+    color: #ef4444;
+}
+
+.stat-value.positive {
+    color: #10b981;
+}
+
+/* Legs */
+.result-legs {
+    margin-bottom: 30px;
+}
+
+.result-legs h2 {
+    font-size: 22px;
+    margin: 0 0 20px 0;
+    font-weight: 700;
+}
+
+.leg-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.leg-card:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateX(5px);
+}
+
+.leg-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.leg-number {
+    background: rgba(102, 126, 234, 0.2);
+    color: #667eea;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.leg-confidence {
+    font-size: 14px;
+    color: #10b981;
+    font-weight: 600;
+}
+
+.leg-pick {
+    margin-bottom: 15px;
+}
+
+.leg-pick h3 {
+    font-size: 20px;
+    margin: 0 0 8px 0;
+    font-weight: 700;
+}
+
+.leg-game {
+    font-size: 14px;
+    opacity: 0.7;
+    margin: 0 0 8px 0;
+}
+
+.leg-odds {
+    display: inline-block;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    padding: 5px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.leg-reasoning {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 15px;
+}
+
+.reasoning-label {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+    opacity: 0.8;
+}
+
+.leg-reasoning ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.leg-reasoning li {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-bottom: 5px;
+}
+
+/* Explanation Sections */
+.result-explanation,
+.result-vs-vegas,
+.result-strategy {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+.result-explanation h2,
+.result-vs-vegas h2 {
+    font-size: 20px;
+    margin: 0 0 15px 0;
+    font-weight: 700;
+}
+
+.explanation-points {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.explanation-points li {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 15px;
+}
+
+.explanation-points li:last-child {
+    border-bottom: none;
+}
+
+.vegas-comparison {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 15px;
+}
+
+.comparison-item {
+    text-align: center;
+}
+
+.comparison-label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 8px;
+}
+
+.comparison-value {
+    display: block;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.comparison-vs {
+    font-size: 18px;
+    opacity: 0.5;
+}
+
+.vegas-verdict {
+    text-align: center;
+    font-size: 16px;
+    margin: 0;
+}
+
+.result-strategy h3 {
+    font-size: 18px;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+}
+
+.result-strategy p {
+    font-size: 14px;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* Actions */
+.result-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.action-btn {
+    padding: 15px 20px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.action-btn.primary {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.action-btn.secondary {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.action-btn.secondary:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+}
+
+/* ============================================
+   ERROR STATE
+   ============================================ */
+
+.autopilot-error {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border-radius: 20px;
+    padding: 60px 40px;
+    color: white;
+    text-align: center;
+}
+
+.error-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.autopilot-error h2 {
+    font-size: 28px;
+    margin: 0 0 15px 0;
+    font-weight: 700;
+}
+
+.autopilot-error p {
+    font-size: 16px;
+    opacity: 0.9;
+    margin: 0 0 30px 0;
+}
+
+.retry-btn {
+    background: white;
+    color: #ef4444;
+    border: none;
+    border-radius: 12px;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.retry-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+
+.autopilot-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #1a1a2e;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    font-size: 16px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 10000;
+}
+
+.autopilot-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    #ai-autopilot-container {
+        padding: 15px;
+    }
+    
+    .autopilot-welcome {
+        padding: 30px 20px;
+    }
+    
+    .autopilot-hero h1 {
+        font-size: 32px;
+    }
+    
+    .risk-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .result-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .result-actions {
+        grid-template-columns: 1fr;
+    }
+    
+    .vegas-comparison {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+/* Dark mode already built-in */

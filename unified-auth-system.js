@@ -360,6 +360,51 @@ class UnifiedAuthSystem {
         return this.currentUser?.subscription?.tier || 'FREE';
     }
 
+    async updateSubscription(tier, paymentDetails) {
+        if (!this.isAuthenticated()) {
+            return { success: false, message: 'Not authenticated' };
+        }
+
+        try {
+            console.log(`💳 Updating subscription to ${tier}...`);
+
+            // Update subscription
+            this.currentUser.subscription = {
+                tier: tier,
+                status: 'active',
+                startDate: Date.now(),
+                endDate: null,
+                paymentMethod: paymentDetails?.method || 'paypal',
+                lastPayment: Date.now()
+            };
+
+            // Also update top-level subscription_tier for compatibility
+            this.currentUser.subscription_tier = tier;
+
+            // Save to localStorage
+            localStorage.setItem('ultimate_sports_user', JSON.stringify(this.currentUser));
+
+            // Call backend to update subscription
+            if (window.BackendAPI) {
+                try {
+                    await window.BackendAPI.updateSubscription(this.currentUser.id, tier);
+                } catch (error) {
+                    console.warn('Backend subscription update failed:', error.message);
+                }
+            }
+
+            // Notify listeners
+            this.notify('subscriptionChanged', this.currentUser);
+
+            console.log(`✅ Subscription updated to ${tier}`);
+            return { success: true, tier };
+
+        } catch (error) {
+            console.error('❌ Subscription update error:', error);
+            return { success: false, message: error.message };
+        }
+    }
+
     getDefaultAvatar() {
         // Generate consistent avatar based on user ID
         const colors = ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#ec4899'];
