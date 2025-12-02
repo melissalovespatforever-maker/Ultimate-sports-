@@ -80,7 +80,7 @@ class APIService {
     async request(endpoint, options = {}) {
         try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+            const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
             const response = await fetch(`${this.baseURL}${endpoint}`, {
                 ...options,
@@ -89,14 +89,24 @@ class APIService {
             });
 
             clearTimeout(timeoutId);
-            const data = await response.json();
+            
+            let data;
+            try {
+                data = await response.json();
+            } catch (e) {
+                throw new Error('Invalid response from server');
+            }
 
             if (!response.ok) {
-                throw new Error(data.message || 'Request failed');
+                // Use backend error message if available
+                throw new Error(data.message || data.error || `Request failed with status ${response.status}`);
             }
 
             return data;
         } catch (error) {
+            if (error.name === 'AbortError') {
+                throw new Error('Request timeout - please check your connection');
+            }
             console.error('API Error:', error);
             throw error;
         }
@@ -192,12 +202,15 @@ class AuthManager {
 
     async signup(email, password, name) {
         try {
+            console.log('🔐 Attempting signup:', { email, username: name });
             const response = await api.signup(email, password, name);
-            localStorage.setItem('auth_token', response.token);
+            console.log('✅ Signup successful:', response);
+            localStorage.setItem('auth_token', response.accessToken); // Backend returns accessToken
             appState.setUser(response.user);
             showToast('Account created successfully!', 'success');
             return true;
         } catch (error) {
+            console.error('❌ Signup failed:', error);
             showToast(error.message || 'Signup failed', 'error');
             return false;
         }
@@ -205,12 +218,15 @@ class AuthManager {
 
     async login(email, password) {
         try {
+            console.log('🔐 Attempting login:', { email });
             const response = await api.login(email, password);
-            localStorage.setItem('auth_token', response.token);
+            console.log('✅ Login successful:', response);
+            localStorage.setItem('auth_token', response.accessToken); // Backend returns accessToken
             appState.setUser(response.user);
             showToast('Welcome back!', 'success');
             return true;
         } catch (error) {
+            console.error('❌ Login failed:', error);
             showToast(error.message || 'Login failed', 'error');
             return false;
         }
@@ -368,7 +384,7 @@ class Navigation {
 const navigation = new Navigation();
 
 // ============================================
-// AUTH UI
+// AUTH UI (OAuth only - form handling in auth.js)
 // ============================================
 
 class AuthUI {
@@ -377,44 +393,6 @@ class AuthUI {
     }
 
     init() {
-        // Toggle between login and signup
-        document.getElementById('show-signup')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('login-form').style.display = 'none';
-            document.getElementById('signup-form').style.display = 'block';
-        });
-
-        document.getElementById('show-login')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('signup-form').style.display = 'none';
-            document.getElementById('login-form').style.display = 'block';
-        });
-
-        // Login form
-        document.getElementById('login-form-element')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-
-            const success = await authManager.login(email, password);
-            if (success) {
-                navigation.navigateTo('home');
-            }
-        });
-
-        // Signup form
-        document.getElementById('signup-form-element')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('signup-name').value;
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-
-            const success = await authManager.signup(email, password, name);
-            if (success) {
-                navigation.navigateTo('home');
-            }
-        });
-
         // OAuth buttons
         const setupOAuthButton = (buttonId, provider) => {
             document.getElementById(buttonId)?.addEventListener('click', () => {
@@ -427,7 +405,7 @@ class AuthUI {
         setupOAuthButton('apple-login-btn', 'apple');
         setupOAuthButton('apple-signup-btn', 'apple');
 
-        console.log('✅ Auth UI initialized');
+        console.log('✅ Auth UI (OAuth) initialized');
     }
 }
 

@@ -232,8 +232,8 @@
                                 <input type="email" id="login-email" placeholder="your@email.com" required>
                             </div>
                             <div class="form-group">
-                                <label for="login-password">Password</label>
-                                <input type="password" id="login-password" placeholder="••••••••" required>
+                                <label for="login-password">Password (min 8 characters)</label>
+                                <input type="password" id="login-password" placeholder="••••••••" required minlength="8">
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Sign In</button>
                         </form>
@@ -261,16 +261,16 @@
                         <h2>Create Account</h2>
                         <form id="signup-form-element">
                             <div class="form-group">
-                                <label for="signup-username">Username</label>
-                                <input type="text" id="signup-username" placeholder="johndoe123" required>
+                                <label for="signup-username">Username (min 3 characters, letters & numbers)</label>
+                                <input type="text" id="signup-username" placeholder="johndoe123" required minlength="3" pattern="[a-zA-Z0-9]+">
                             </div>
                             <div class="form-group">
                                 <label for="signup-email">Email</label>
                                 <input type="email" id="signup-email" placeholder="your@email.com" required>
                             </div>
                             <div class="form-group">
-                                <label for="signup-password">Password</label>
-                                <input type="password" id="signup-password" placeholder="••••••••" required>
+                                <label for="signup-password">Password (min 8 characters)</label>
+                                <input type="password" id="signup-password" placeholder="••••••••" required minlength="8">
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Create Account</button>
                         </form>
