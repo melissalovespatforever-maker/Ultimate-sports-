@@ -386,6 +386,11 @@ class Navigation {
             case 'profile':
                 await profileModule.load();
                 break;
+            case 'subscription':
+                if (typeof subscriptionManager !== 'undefined') {
+                    await subscriptionManager.loadSubscriptionPage();
+                }
+                break;
         }
     }
 }
