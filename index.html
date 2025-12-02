@@ -5,16 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Ultimate Sports AI - Master Sports Analytics</title>
     
-    <!-- Cache Control -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    <!-- Build: Phase 27.4 - Auth + Tiers + PayPal ($49.99 PRO | $99.99 VIP) -->
-    
     <!-- Primary Meta Tags -->
-    <meta name="title" content="Ultimate Sports AI - Sports Analytics Education Platform">
-    <meta name="description" content="Learn sports analytics with AI-powered coaching. Educational platform for tracking picks, mastering data analysis, and joining a community of sports enthusiasts.">
+    <meta name="title" content="Ultimate Sports AI - Sports Analytics Platform">
+    <meta name="description" content="AI-powered sports analytics with live scores, expert coaching, and real-time predictions. Join the ultimate sports intelligence platform.">
     <meta name="theme-color" content="#10b981">
     
     <!-- Icons -->
@@ -27,121 +20,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
     
     <!-- Main Styles -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="ui-enhancements.css">
-    <link rel="stylesheet" href="unified-auth-styles.css">
-    <link rel="stylesheet" href="live-scores-styles.css">
-    <link rel="stylesheet" href="leaderboard-styles.css">
-    <link rel="stylesheet" href="expert-follow-styles.css">
-    <link rel="stylesheet" href="challenge-styles.css">
-    <link rel="stylesheet" href="advanced-analytics-styles.css">
-    <link rel="stylesheet" href="parlay-optimizer-ai-styles.css">
-    <link rel="stylesheet" href="arbitrage-scanner-styles.css">
-    <link rel="stylesheet" href="bankroll-tracker-styles.css">
-    <link rel="stylesheet" href="injury-impact-tracker-styles.css">
-    <link rel="stylesheet" href="social-feed-styles.css">
-    <link rel="stylesheet" href="direct-messages-styles.css">
-    <link rel="stylesheet" href="notification-styles.css">
-    <link rel="stylesheet" href="competitions-styles.css">
-    <link rel="stylesheet" href="trophy-showcase-styles.css">
-    <link rel="stylesheet" href="live-games-feed-styles.css">
-
-    <link rel="stylesheet" href="player-props-marketplace-styles.css">
-    
-    <style>
-        /* Override for page display */
-        .page {
-            display: none;
-        }
-        
-        .page.active {
-            display: block !important;
-        }
-        
-        /* Ensure drawer works */
-        #drawer-nav {
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
-        
-        #drawer-nav.active {
-            transform: translateX(0);
-        }
-        
-        #drawer-overlay {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        
-        #drawer-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        
-        /* Bottom nav active state */
-        .bottom-nav-item.active {
-            color: #10b981;
-        }
-        
-        .bottom-nav-item.active i {
-            color: #10b981;
-        }
-        
-        /* Navigation unread badge */
-        .nav-unread-badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 10px;
-            min-width: 18px;
-            text-align: center;
-        }
-        
-        .menu-item {
-            position: relative;
-        }
-    </style>
 </head>
 <body>
     <!-- Loading Overlay -->
-    <div id="app-loader" style="position: fixed; inset: 0; background: linear-gradient(135deg, #0a0e14 0%, #151922 100%); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s ease;">
-        <div style="text-align: center;">
-            <div style="width: 60px; height: 60px; border: 4px solid rgba(16, 185, 129, 0.1); border-top-color: #10b981; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 24px;"></div>
-            <h2 style="color: #10b981; font-size: 24px; font-weight: 800; margin: 0; letter-spacing: -0.02em;">Ultimate Sports AI</h2>
-            <p style="color: #a8b3cf; font-size: 14px; margin: 8px 0 0; font-weight: 500;">Loading your experience...</p>
+    <div id="app-loader" class="app-loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <h2>Ultimate Sports AI</h2>
+            <p>Loading your experience...</p>
         </div>
     </div>
-    
-    <style>
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        #app-loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-    </style>
 
     <!-- App Container -->
     <div id="app">
         <!-- Toast Container -->
-        <div id="toast-container" style="
-            position: fixed;
-            bottom: 24px;
-            left: 24px;
-            z-index: 1000;
-            max-width: 400px;
-        "></div>
+        <div id="toast-container"></div>
         
         <!-- Top App Bar -->
         <header class="app-bar">
@@ -157,7 +54,7 @@
             <div class="app-bar-actions">
                 <button class="icon-button" id="notifications-btn" aria-label="Notifications">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+                    <span class="notification-badge" style="display: none;">0</span>
                 </button>
                 <button class="icon-button profile-btn" data-page="profile" aria-label="Profile">
                     <i class="fas fa-user-circle"></i>
@@ -166,7 +63,7 @@
         </header>
 
         <!-- Drawer Overlay -->
-        <div id="drawer-overlay"></div>
+        <div id="drawer-overlay" class="drawer-overlay"></div>
 
         <!-- Drawer Navigation -->
         <nav id="drawer-nav" class="drawer">
@@ -176,8 +73,8 @@
                         <i class="fas fa-user-circle"></i>
                     </div>
                     <div class="user-info">
-                        <h3>Guest User</h3>
-                        <p class="user-tier">FREE TIER</p>
+                        <h3 id="user-display-name">Guest User</h3>
+                        <p class="user-tier" id="user-tier-badge">FREE TIER</p>
                     </div>
                 </div>
                 <button id="upgrade-btn" class="upgrade-button">
@@ -189,130 +86,53 @@
                 <!-- Dashboard -->
                 <div class="menu-section">
                     <h4 class="menu-section-title">Dashboard</h4>
-                    <button class="menu-item" data-page="home">
+                    <button class="menu-item active" data-page="home">
                         <i class="fas fa-home"></i>
                         <span>Home</span>
                     </button>
-                    <button class="menu-item" data-page="live-games">
+                    <button class="menu-item" data-page="live-scores">
                         <i class="fas fa-play-circle"></i>
-                        <span>Live Games</span>
-                        <span class="premium-badge live-badge">LIVE</span>
+                        <span>Live Scores</span>
+                        <span class="badge badge-live">LIVE</span>
                     </button>
-
                 </div>
 
                 <!-- AI Predictions -->
                 <div class="menu-section">
                     <h4 class="menu-section-title">AI Predictions</h4>
-                    <button class="menu-item" data-page="coaching">
+                    <button class="menu-item" data-page="ai-coaches">
                         <i class="fas fa-robot"></i>
                         <span>AI Coaches</span>
-                        <span class="premium-badge">PRO</span>
+                        <span class="badge badge-pro">PRO</span>
                     </button>
-                    <button class="menu-item" data-page="parlay-builder">
-                        <i class="fas fa-layer-group"></i>
-                        <span>Parlay Builder</span>
-                        <span class="premium-badge">AI</span>
-                    </button>
-                    <button class="menu-item" data-page="arbitrage">
-                        <i class="fas fa-balance-scale"></i>
-                        <span>Arbitrage Detector</span>
-                        <span class="premium-badge">LIVE</span>
-                    </button>
-                    <button class="menu-item" data-page="injuries">
-                        <i class="fas fa-plus-circle"></i>
-                        <span>Injury Tracker</span>
-                        <span class="premium-badge">LIVE</span>
-                    </button>
-                    <button class="menu-item" data-page="odds-comparison">
-                        <i class="fas fa-exchange-alt"></i>
-                        <span>Odds Comparison</span>
-                        <span class="premium-badge">LIVE</span>
-                    </button>
-                    <button class="menu-item" data-page="player-props">
-                        <i class="fas fa-layer-group"></i>
-                        <span>Player Props</span>
-                        <span class="premium-badge">LIVE</span>
-                    </button>
-                </div>
-
-                <!-- Intelligence -->
-                <div class="menu-section">
-                    <h4 class="menu-section-title">Intelligence</h4>
                     <button class="menu-item" data-page="analytics">
                         <i class="fas fa-chart-line"></i>
                         <span>Analytics</span>
                     </button>
-                    <button class="menu-item" data-page="bet-history">
-                        <i class="fas fa-history"></i>
-                        <span>Pick History</span>
-                    </button>
-
-
-                    <button class="menu-item" data-page="social">
-                        <i class="fas fa-users"></i>
-                        <span>Social</span>
-                    </button>
                 </div>
 
-                <!-- Community -->
+                <!-- Account -->
                 <div class="menu-section">
-                    <h4 class="menu-section-title">Community</h4>
-                    <button class="menu-item" data-page="activity-feed">
-                        <i class="fas fa-stream"></i>
-                        <span>Activity Feed</span>
-                        <span class="premium-badge">NEW</span>
-                    </button>
-                    <button class="menu-item" data-page="direct-messages">
-                        <i class="fas fa-envelope"></i>
-                        <span>Messages</span>
-                    </button>
-                    <button class="menu-item" data-page="chat">
-                        <i class="fas fa-comments"></i>
-                        <span>Live Chat</span>
-                        <span class="premium-badge live-badge">LIVE</span>
-                    </button>
-                    <button class="menu-item" data-page="leaderboard">
-                        <i class="fas fa-medal"></i>
-                        <span>Leaderboard</span>
-                    </button>
-                    <button class="menu-item" data-page="challenges">
-                        <i class="fas fa-trophy"></i>
-                        <span>Challenges</span>
-                        <span class="premium-badge">NEW</span>
-                    </button>
-                    <button class="menu-item" data-page="trophy-showcase">
-                        <i class="fas fa-award"></i>
-                        <span>Trophy Showcase</span>
-                        <span class="premium-badge">NEW</span>
-                    </button>
-                    <button class="menu-item" data-page="friends">
-                        <i class="fas fa-user-friends"></i>
-                        <span>Friends</span>
-                    </button>
-                    <button class="menu-item" data-page="rewards">
-                        <i class="fas fa-gift"></i>
-                        <span>Rewards</span>
-                    </button>
-                    <button class="menu-item" data-page="shop">
-                        <i class="fas fa-store"></i>
-                        <span>Shop</span>
-                    </button>
+                    <h4 class="menu-section-title">Account</h4>
                     <button class="menu-item" data-page="profile">
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
                     </button>
-                </div>
-
-                <!-- Settings -->
-                <div class="menu-section">
+                    <button class="menu-item" data-page="subscription">
+                        <i class="fas fa-crown"></i>
+                        <span>Subscription</span>
+                    </button>
                     <button class="menu-item" data-page="settings">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
                     </button>
-                    <button class="menu-item" data-page="help">
-                        <i class="fas fa-question-circle"></i>
-                        <span>Help & FAQ</span>
+                </div>
+
+                <!-- Actions -->
+                <div class="menu-section">
+                    <button class="menu-item" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
                     </button>
                 </div>
             </div>
@@ -322,13 +142,13 @@
         <main class="main-content">
             <!-- HOME PAGE -->
             <div id="home-page" class="page active">
-                <div class="page-header" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);">
+                <div class="page-header gradient-header">
                     <h1>🏆 Welcome to Ultimate Sports AI</h1>
-                    <p class="page-subtitle">Master sports analytics with AI-powered insights and compete with the best</p>
+                    <p class="page-subtitle">Master sports analytics with AI-powered insights</p>
                 </div>
 
                 <div class="quick-actions">
-                    <div class="quick-action-card" data-action="coaching">
+                    <div class="quick-action-card" data-page="ai-coaches">
                         <div class="quick-action-icon">
                             <i class="fas fa-robot"></i>
                         </div>
@@ -336,15 +156,15 @@
                         <p>Get expert predictions</p>
                     </div>
 
-                    <div class="quick-action-card" data-action="live-games">
+                    <div class="quick-action-card" data-page="live-scores">
                         <div class="quick-action-icon">
                             <i class="fas fa-play-circle"></i>
                         </div>
-                        <h3>Live Games</h3>
-                        <p>Track games in real-time</p>
+                        <h3>Live Scores</h3>
+                        <p>Real-time game tracking</p>
                     </div>
 
-                    <div class="quick-action-card" data-action="analytics">
+                    <div class="quick-action-card" data-page="analytics">
                         <div class="quick-action-icon">
                             <i class="fas fa-chart-line"></i>
                         </div>
@@ -352,38 +172,150 @@
                         <p>View your stats</p>
                     </div>
 
-                    <div class="quick-action-card" data-action="odds-comparison">
+                    <div class="quick-action-card" data-page="subscription">
                         <div class="quick-action-icon">
-                            <i class="fas fa-exchange-alt"></i>
+                            <i class="fas fa-crown"></i>
                         </div>
-                        <h3>Best Odds</h3>
-                        <p>Compare 30+ sportsbooks</p>
+                        <h3>Upgrade</h3>
+                        <p>Unlock premium features</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4 id="total-picks">0</h4>
+                            <p>Total Picks</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4 id="win-rate">0%</h4>
+                            <p>Win Rate</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4 id="current-streak">0</h4>
+                            <p>Current Streak</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- COACHING PAGE -->
-            <div id="coaching-page" class="page">
+            <!-- AUTH PAGE -->
+            <div id="auth-page" class="page">
+                <div class="auth-container">
+                    <div class="auth-header">
+                        <img src="https://play.rosebud.ai/assets/Ultimate sports logo match app layout.png?lZrN" alt="Logo" class="auth-logo">
+                        <h1>Welcome to Ultimate Sports AI</h1>
+                        <p>Master sports analytics with AI-powered insights</p>
+                    </div>
+
+                    <!-- Login Form -->
+                    <div id="login-form" class="auth-form">
+                        <h2>Sign In</h2>
+                        <form id="login-form-element">
+                            <div class="form-group">
+                                <label for="login-email">Email</label>
+                                <input type="email" id="login-email" placeholder="your@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input type="password" id="login-password" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        </form>
+
+                        <div class="auth-divider">
+                            <span>or continue with</span>
+                        </div>
+
+                        <div class="oauth-buttons">
+                            <button class="btn btn-oauth" id="google-login-btn">
+                                <i class="fab fa-google"></i> Google
+                            </button>
+                            <button class="btn btn-oauth" id="apple-login-btn">
+                                <i class="fab fa-apple"></i> Apple
+                            </button>
+                        </div>
+
+                        <p class="auth-switch">
+                            Don't have an account? <a href="#" id="show-signup">Sign up</a>
+                        </p>
+                    </div>
+
+                    <!-- Signup Form -->
+                    <div id="signup-form" class="auth-form" style="display: none;">
+                        <h2>Create Account</h2>
+                        <form id="signup-form-element">
+                            <div class="form-group">
+                                <label for="signup-name">Full Name</label>
+                                <input type="text" id="signup-name" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-email">Email</label>
+                                <input type="email" id="signup-email" placeholder="your@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-password">Password</label>
+                                <input type="password" id="signup-password" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                        </form>
+
+                        <div class="auth-divider">
+                            <span>or continue with</span>
+                        </div>
+
+                        <div class="oauth-buttons">
+                            <button class="btn btn-oauth" id="google-signup-btn">
+                                <i class="fab fa-google"></i> Google
+                            </button>
+                            <button class="btn btn-oauth" id="apple-signup-btn">
+                                <i class="fab fa-apple"></i> Apple
+                            </button>
+                        </div>
+
+                        <p class="auth-switch">
+                            Already have an account? <a href="#" id="show-login">Sign in</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LIVE SCORES PAGE -->
+            <div id="live-scores-page" class="page">
+                <div class="page-header">
+                    <h1><i class="fas fa-play-circle"></i> Live Scores</h1>
+                    <p class="page-subtitle">Real-time game tracking and scores</p>
+                </div>
+                <div id="live-scores-container" class="content-container">
+                    <p class="loading-text">Loading live scores...</p>
+                </div>
+            </div>
+
+            <!-- AI COACHES PAGE -->
+            <div id="ai-coaches-page" class="page">
                 <div class="page-header">
                     <h1><i class="fas fa-robot"></i> AI Coaches</h1>
-                    <p class="page-subtitle">Get expert AI-powered sports predictions</p>
+                    <p class="page-subtitle">Expert AI-powered predictions</p>
                 </div>
-                <div class="content-placeholder">
-                    <p>AI Coaches content will load here...</p>
+                <div id="ai-coaches-container" class="content-container">
+                    <p class="loading-text">Loading AI coaches...</p>
                 </div>
             </div>
-
-            <!-- LIVE GAMES PAGE -->
-            <div id="live-games-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-play-circle"></i> Live Games</h1>
-                    <p class="page-subtitle">Track live games and scores in real-time</p>
-                </div>
-                <!-- Live Scores Container -->
-                <div id="live-scores-container"></div>
-            </div>
-
-
 
             <!-- ANALYTICS PAGE -->
             <div id="analytics-page" class="page">
@@ -391,212 +323,69 @@
                     <h1><i class="fas fa-chart-line"></i> Analytics</h1>
                     <p class="page-subtitle">Track your performance metrics</p>
                 </div>
-                <div class="content-placeholder">
-                    <p>Analytics dashboard will load here...</p>
-                </div>
-            </div>
-
-            <!-- BET HISTORY PAGE -->
-            <div id="bet-history-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-history"></i> Pick History</h1>
-                    <p class="page-subtitle">Review your past predictions</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Pick history will load here...</p>
-                </div>
-            </div>
-
-
-
-            <!-- PARLAY BUILDER PAGE -->
-            <div id="parlay-builder-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-layer-group"></i> Parlay Builder</h1>
-                    <p class="page-subtitle">Build optimized parlay bets with AI</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Parlay builder will load here...</p>
-                </div>
-            </div>
-
-            <!-- ARBITRAGE PAGE -->
-            <div id="arbitrage-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-balance-scale"></i> Arbitrage Detector</h1>
-                    <p class="page-subtitle">Find arbitrage opportunities across sportsbooks</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Arbitrage detector will load here...</p>
-                </div>
-            </div>
-
-            <!-- PLAYER PROPS PAGE -->
-            <div id="player-props-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-layer-group"></i> Player Props Marketplace</h1>
-                    <p class="page-subtitle">Real-time prop betting with 30+ sportsbooks</p>
-                </div>
-                <div id="player-props-container"></div>
-            </div>
-
-            <!-- INJURIES PAGE -->
-            <div id="injuries-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-heartbeat"></i> Injury Tracker</h1>
-                    <p class="page-subtitle">Real-time player injuries and impact scoring</p>
-                </div>
-                
-                <!-- Injury Alerts Widget -->
-                <div style="padding: 24px;">
-                    <div id="injury-alerts-container"></div>
-                </div>
-                
-                <!-- Game Impact Matrix -->
-                <div style="padding: 24px; margin-top: 24px;">
-                    <div class="page-header" style="margin-bottom: 24px;">
-                        <h2><i class="fas fa-chart-bar"></i> Game Impact Analysis</h2>
-                    </div>
-                    <div id="game-impact-matrix">
-                        <div class="content-placeholder">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <p>Loading game impacts...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ODDS COMPARISON PAGE -->
-            <div id="odds-comparison-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-exchange-alt"></i> Odds Comparison</h1>
-                    <p class="page-subtitle">Compare odds across 30+ sportsbooks</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Odds comparison will load here...</p>
-                </div>
-            </div>
-
-            <!-- ANALYSIS ROOMS PAGE -->
-            <div id="analysis-rooms-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-users-cog"></i> Analysis Rooms</h1>
-                    <p class="page-subtitle">Join collaborative analysis sessions</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Analysis rooms will load here...</p>
-                </div>
-            </div>
-
-            <!-- SOCIAL PAGE -->
-            <div id="social-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-users"></i> Social Feed</h1>
-                    <p class="page-subtitle">Share picks, analysis, and connect with the community</p>
-                    <div class="page-actions">
-                        <button id="refresh-feed-btn" class="btn-secondary btn-sm">
-                            <i class="fas fa-sync-alt"></i>
-                            Refresh
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Social Feed Container -->
-                <div id="social-feed-container"></div>
-                
-                <!-- Trending Tags Sidebar (optional) -->
-                <div id="trending-tags-container" style="margin-top: 24px;"></div>
-            </div>
-
-            <!-- DIRECT MESSAGES PAGE -->
-            <div id="direct-messages-page" class="page">
-                <!-- Direct Messages UI will be rendered here by direct-messages-ui.js -->
-            </div>
-
-            <!-- CHAT PAGE -->
-            <div id="chat-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-comments"></i> Live Chat</h1>
-                    <p class="page-subtitle">Chat with other sports enthusiasts</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Live chat will load here...</p>
-                </div>
-            </div>
-
-            <!-- ACTIVITY FEED PAGE -->
-            <div id="activity-feed-page" class="page">
-                <!-- Activity feed will be rendered here by notifications-ui.js -->
-            </div>
-
-            <!-- LEADERBOARD PAGE -->
-            <div id="leaderboard-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-medal"></i> Leaderboard</h1>
-                    <p class="page-subtitle">See top performers</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Leaderboard will load here...</p>
-                </div>
-            </div>
-
-            <!-- CHALLENGES PAGE (Competitions System) -->
-            <div id="challenges-page" class="page">
-                <!-- Competitions UI will render here via competitions-page-init.js -->
-            </div>
-
-            <!-- TROPHY SHOWCASE PAGE -->
-            <div id="trophy-showcase-page" class="page">
-                <div id="trophy-showcase-container">
-                    <!-- Trophy Showcase UI will render here via trophy-showcase-page-init.js -->
-                </div>
-            </div>
-
-            <!-- FRIENDS PAGE -->
-            <div id="friends-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-user-friends"></i> Friends</h1>
-                    <p class="page-subtitle">Manage your friend connections</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Friends list will load here...</p>
-                </div>
-            </div>
-
-            <!-- REWARDS PAGE -->
-            <div id="rewards-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-gift"></i> Rewards</h1>
-                    <p class="page-subtitle">Claim your rewards and bonuses</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Rewards system will load here...</p>
-                </div>
-            </div>
-
-            <!-- SHOP PAGE -->
-            <div id="shop-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-store"></i> Shop</h1>
-                    <p class="page-subtitle">Purchase items with your points</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Shop will load here...</p>
+                <div id="analytics-container" class="content-container">
+                    <p class="loading-text">Loading analytics...</p>
                 </div>
             </div>
 
             <!-- PROFILE PAGE -->
             <div id="profile-page" class="page">
                 <div class="page-header">
-                    <h1><i class="fas fa-user-circle"></i> User Profile</h1>
-                    <p class="page-subtitle">View profile, posts, and activity</p>
+                    <h1><i class="fas fa-user-circle"></i> Profile</h1>
+                    <p class="page-subtitle">Manage your account</p>
                 </div>
-                
-                <!-- User Profile Container -->
-                <div id="user-profile-container"></div>
-                
-                <!-- Profile Suggestions Sidebar (optional) -->
-                <div id="profile-suggestions-container" style="margin-top: 24px;"></div>
+                <div id="profile-container" class="content-container">
+                    <p class="loading-text">Loading profile...</p>
+                </div>
+            </div>
+
+            <!-- SUBSCRIPTION PAGE -->
+            <div id="subscription-page" class="page">
+                <div class="page-header">
+                    <h1><i class="fas fa-crown"></i> Subscription</h1>
+                    <p class="page-subtitle">Choose your plan</p>
+                </div>
+                <div id="subscription-container" class="content-container">
+                    <div class="pricing-grid">
+                        <div class="pricing-card">
+                            <h3>FREE</h3>
+                            <div class="price">$0<span>/month</span></div>
+                            <ul class="features">
+                                <li><i class="fas fa-check"></i> Basic live scores</li>
+                                <li><i class="fas fa-check"></i> Limited AI predictions</li>
+                                <li><i class="fas fa-check"></i> Community access</li>
+                            </ul>
+                            <button class="btn btn-secondary btn-block" disabled>Current Plan</button>
+                        </div>
+
+                        <div class="pricing-card featured">
+                            <div class="featured-badge">MOST POPULAR</div>
+                            <h3>PRO</h3>
+                            <div class="price">$49.99<span>/month</span></div>
+                            <ul class="features">
+                                <li><i class="fas fa-check"></i> All FREE features</li>
+                                <li><i class="fas fa-check"></i> Unlimited AI predictions</li>
+                                <li><i class="fas fa-check"></i> Advanced analytics</li>
+                                <li><i class="fas fa-check"></i> Real-time odds comparison</li>
+                                <li><i class="fas fa-check"></i> Priority support</li>
+                            </ul>
+                            <button class="btn btn-primary btn-block" id="subscribe-pro-btn">Upgrade to PRO</button>
+                        </div>
+
+                        <div class="pricing-card">
+                            <h3>VIP</h3>
+                            <div class="price">$99.99<span>/month</span></div>
+                            <ul class="features">
+                                <li><i class="fas fa-check"></i> All PRO features</li>
+                                <li><i class="fas fa-check"></i> Exclusive AI models</li>
+                                <li><i class="fas fa-check"></i> 1-on-1 coaching sessions</li>
+                                <li><i class="fas fa-check"></i> Early feature access</li>
+                                <li><i class="fas fa-check"></i> VIP community</li>
+                            </ul>
+                            <button class="btn btn-primary btn-block" id="subscribe-vip-btn">Upgrade to VIP</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- SETTINGS PAGE -->
@@ -605,19 +394,8 @@
                     <h1><i class="fas fa-cog"></i> Settings</h1>
                     <p class="page-subtitle">Configure your preferences</p>
                 </div>
-                <div class="content-placeholder">
-                    <p>Settings will load here...</p>
-                </div>
-            </div>
-
-            <!-- HELP PAGE -->
-            <div id="help-page" class="page">
-                <div class="page-header">
-                    <h1><i class="fas fa-question-circle"></i> Help & FAQ</h1>
-                    <p class="page-subtitle">Get help and answers to common questions</p>
-                </div>
-                <div class="content-placeholder">
-                    <p>Help documentation will load here...</p>
+                <div id="settings-container" class="content-container">
+                    <p class="loading-text">Loading settings...</p>
                 </div>
             </div>
         </main>
@@ -628,17 +406,17 @@
                 <i class="fas fa-home"></i>
                 <span>Home</span>
             </button>
-            <button class="bottom-nav-item" data-page="live-games">
+            <button class="bottom-nav-item" data-page="live-scores">
                 <i class="fas fa-play-circle"></i>
                 <span>Live</span>
             </button>
-            <button class="bottom-nav-item" data-page="coaching">
+            <button class="bottom-nav-item" data-page="ai-coaches">
                 <i class="fas fa-robot"></i>
-                <span>AI Picks</span>
+                <span>AI</span>
             </button>
             <button class="bottom-nav-item" data-page="analytics">
                 <i class="fas fa-chart-line"></i>
-                <span>Analytics</span>
+                <span>Stats</span>
             </button>
             <button class="bottom-nav-item" data-page="profile">
                 <i class="fas fa-user"></i>
@@ -647,374 +425,7 @@
         </nav>
     </div>
 
-    <!-- Load Configuration First -->
-    <script src="config.js?v=3.0.4"></script>
-    
-    <!-- Load Age Gate System (Phase 23: Age Verification) -->
-    <script src="age-gate.js?v=23.0.0"></script>
-    
-    <!-- Load OAuth System (Phase 22: OAuth Authentication) -->
-
-    
-    <!-- Load Services -->
-    <script src="auth-service.js?v=3.0.4"></script>
-    <script src="backend-api.js?v=3.0.4"></script>
-    <script src="paypal-service.js?v=4.0.0"></script>
-    <script src="pick-settlement-service.js?v=4.0.0"></script>
-    
-    <!-- Load App Initialization -->
-    <script src="app-init.js?v=3.0.4"></script>
-    
-    <!-- Load UI Modules -->
-    <script src="demo-ai-coaches.js?v=3.0.5"></script>
-    <script src="analytics-ui.js?v=3.0.5"></script>
-    <script src="bet-slip-ui.js?v=4.0.0"></script>
-    <script src="pick-history-ui.js?v=3.0.5"></script>
-    <script src="subscription-ui.js?v=4.0.0"></script>
-    
-    <!-- Leaderboard System (Phase 5: Competition) -->
-    <script type="module" src="leaderboard-system.js?v=5.0.0"></script>
-    <script type="module" src="leaderboard-ui.js?v=5.0.0"></script>
-    <script src="leaderboard-page-init.js?v=5.0.0"></script>
-    
-    <!-- Expert Follow System (Phase 5: Social) -->
-    <script type="module" src="expert-follow-system.js?v=5.0.0"></script>
-    <script type="module" src="expert-follow-ui.js?v=5.0.0"></script>
-    <script src="expert-follow-page-init.js?v=5.0.0"></script>
-    
-    <!-- Challenge System (Phase 6: Expert Challenges) -->
-    <script type="module" src="challenge-system.js?v=6.0.0"></script>
-    <script type="module" src="challenge-ui.js?v=6.0.0"></script>
-    <script src="challenge-page-init.js?v=6.0.0"></script>
-    
-    <!-- Advanced Analytics System (Phase 6B: ROI Tracking) -->
-    <script type="module" src="advanced-analytics-system.js?v=6.1.0"></script>
-    <script type="module" src="advanced-analytics-ui.js?v=6.1.0"></script>
-    <script src="advanced-analytics-page-init.js?v=6.1.0"></script>
-    
-    <!-- Odds Comparison System (Phase 7: 30+ Sportsbooks) -->
-    <script type="module" src="odds-comparison-engine.js?v=7.0.0"></script>
-    <script type="module" src="odds-comparison-ui.js?v=7.0.0"></script>
-    <script src="odds-comparison-integration.js?v=7.0.0"></script>
-    
-    <!-- Parlay Optimizer AI System (Phase 8: AI Parlay Builder) -->
-    <script type="module" src="parlay-optimizer-ai-system.js?v=8.0.0"></script>
-    <script type="module" src="parlay-optimizer-ai-ui.js?v=8.0.0"></script>
-    <script src="parlay-optimizer-ai-page-init.js?v=8.0.0"></script>
-    
-    <!-- Arbitrage Scanner System (Phase 9: Live Arbitrage Scanner) -->
-    <script type="module" src="arbitrage-scanner-system.js?v=9.0.0"></script>
-    <script type="module" src="arbitrage-scanner-ui.js?v=9.0.0"></script>
-    <script src="arbitrage-scanner-page-init.js?v=9.0.0"></script>
-    
-    <!-- Bankroll Tracker System (Phase 10: Profit/Loss Tracking) -->
-    <script type="module" src="bankroll-tracker-system.js?v=10.0.0"></script>
-    <script type="module" src="bankroll-tracker-ui.js?v=10.0.0"></script>
-    <script src="bankroll-tracker-page-init.js?v=10.0.0"></script>
-    
-    <!-- Injury Impact Tracker System (Phase 11: Live Injury Analysis) -->
-    <script type="module" src="injury-impact-tracker-system.js?v=11.0.0"></script>
-    <script type="module" src="injury-impact-tracker-ui.js?v=11.0.0"></script>
-    <script src="injury-impact-tracker-page-init.js?v=11.0.0"></script>
-    
-    <!-- Live Scores ESPN Integration (Shared with Live Games) -->
-    <script type="module" src="live-scores-espn-integration.js?v=11.5.0"></script>
-    
-    <!-- Live Games Feed System (Games with Live Odds) - PRIMARY -->
-    <script type="module" src="real-time-odds-sync.js?v=11.6.0"></script>
-    <script type="module" src="live-games-feed.js?v=11.6.0"></script>
-    <script type="module" src="live-games-page-init.js?v=11.6.0"></script>
-    
-    <!-- Real-Time Injury Alerts System (Phase 24: Injury Tracking & Impact) -->
-
-    
-    <!-- Player Props Marketplace System (Phase 25: Real-Time Player Props) -->
-    <script type="module" src="player-props-marketplace-system.js?v=25.0.0"></script>
-    <script type="module" src="player-props-marketplace-ui.js?v=25.0.0"></script>
-    <script src="player-props-marketplace-page-init.js?v=25.0.0"></script>
-    
-    <!-- Social Feed System (Phase 12: Community Posts & Comments) -->
-    <script type="module" src="social-feed-system.js?v=12.0.0"></script>
-    <script type="module" src="social-feed-ui.js?v=12.0.0"></script>
-    <script src="social-feed-page-init.js?v=12.0.0"></script>
-    
-    <!-- Unified Auth & Profile System (Phase 27: Complete Auth + Profile) -->
-    <script type="module" src="unified-auth-system.js?v=27.0.0"></script>
-    <script type="module" src="unified-auth-ui.js?v=27.0.0"></script>
-    <script type="module" src="unified-profile-page.js?v=27.0.0"></script>
-    <script type="module" src="complete-auth-integration.js?v=27.2.0"></script>
-    <script type="module" src="page-auth-protection.js?v=27.2.0"></script>
-    <script type="module" src="subscription-tier-protection.js?v=27.3.0"></script>
-    <script type="module" src="payment-tier-integration.js?v=27.4.0"></script>
-    
-    <!-- Direct Messages System (Phase 14: Real-Time Messaging) -->
-    <script type="module" src="direct-messages-system.js?v=14.0.0"></script>
-    <script type="module" src="direct-messages-ui.js?v=14.0.0"></script>
-    <script src="direct-messages-page-init.js?v=14.0.0"></script>
-    
-    <!-- Notifications System (Phase 15: Notifications & Activity Feed) -->
-    <script type="module" src="notification-system.js?v=15.0.0"></script>
-    <script type="module" src="notification-ui.js?v=15.0.0"></script>
-    <script src="notifications-page-init.js?v=15.0.0"></script>
-    
-    <!-- Competitions & Matchmaking System (Phase 17/18: Live Challenges + WebSocket) -->
-    <script type="module" src="competitions-system.js?v=18.0.0"></script>
-    <script type="module" src="competitions-ui.js?v=18.0.0"></script>
-    <script type="module" src="competitions-websocket-client.js?v=18.0.0"></script>
-    <script type="module" src="competitions-page-init.js?v=18.0.0"></script>
-    
-    <!-- Trophy Showcase System (Phase 21: Animated Achievement Display) -->
-    <script type="module" src="trophy-showcase-system.js?v=21.0.0"></script>
-    <script type="module" src="trophy-showcase-ui.js?v=21.0.0"></script>
-    <script type="module" src="trophy-showcase-page-init.js?v=21.0.0"></script>
-    
-    <!-- Analysis Rooms Page (Phase 31+: Collaborative Analysis) -->
-    <script src="analysis-rooms-page-init.js?v=1.0.0"></script>
-    
-    <!-- Security Configuration (Phase 21: Frontend Security) -->
-
-    
-    <!-- VERSION 3.0 - CLEAN NAVIGATION SCRIPT -->
-    <script>
-        console.log('🚀 Ultimate Sports AI - Version 3.0');
-        
-        // Simple navigation system
-        const AppNavigation = {
-            currentPage: 'home',
-            
-            init() {
-                console.log('⚙️ Initializing navigation...');
-                this.setupDrawer();
-                this.setupNavButtons();
-                this.setupQuickActions();
-                console.log('✅ Navigation ready!');
-            },
-            
-            setupDrawer() {
-                const menuBtn = document.getElementById('menu-btn');
-                const drawer = document.getElementById('drawer-nav');
-                const overlay = document.getElementById('drawer-overlay');
-                
-                if (menuBtn && drawer && overlay) {
-                    menuBtn.addEventListener('click', () => {
-                        console.log('📂 Toggle drawer');
-                        drawer.classList.toggle('active');
-                        overlay.classList.toggle('active');
-                    });
-                    
-                    overlay.addEventListener('click', () => {
-                        console.log('📤 Close drawer');
-                        drawer.classList.remove('active');
-                        overlay.classList.remove('active');
-                    });
-                }
-            },
-            
-            setupNavButtons() {
-                // Bottom nav
-                document.querySelectorAll('.bottom-nav-item[data-page]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const page = btn.dataset.page;
-                        console.log(`🔘 Bottom nav: ${page}`);
-                        this.navigateTo(page);
-                        
-                        // Update active state
-                        document.querySelectorAll('.bottom-nav-item').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                    });
-                });
-                
-                // Drawer menu
-                document.querySelectorAll('.menu-item[data-page]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const page = btn.dataset.page;
-                        console.log(`📋 Menu: ${page}`);
-                        this.navigateTo(page);
-                        
-                        // Close drawer
-                        document.getElementById('drawer-nav').classList.remove('active');
-                        document.getElementById('drawer-overlay').classList.remove('active');
-                    });
-                });
-                
-                // Top bar profile button
-                document.querySelectorAll('.profile-btn[data-page]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const page = btn.dataset.page;
-                        console.log(`👤 Profile button: ${page}`);
-                        this.navigateTo(page);
-                    });
-                });
-            },
-            
-            setupQuickActions() {
-                document.querySelectorAll('.quick-action-card[data-action]').forEach(card => {
-                    card.addEventListener('click', () => {
-                        const page = card.dataset.action;
-                        console.log(`⚡ Quick action: ${page}`);
-                        this.navigateTo(page);
-                    });
-                });
-            },
-            
-            navigateTo(page) {
-                console.log(`📍 Navigate to: ${page}`);
-                
-                // Hide all pages
-                document.querySelectorAll('.page').forEach(p => {
-                    p.classList.remove('active');
-                });
-                
-                // Show target page
-                const targetPage = document.getElementById(`${page}-page`);
-                if (targetPage) {
-                    targetPage.classList.add('active');
-                    this.currentPage = page;
-                    window.scrollTo(0, 0);
-                    console.log(`✅ Showing: ${page}`);
-                    
-                    // Initialize page-specific functionality
-                    this.initializePage(page);
-                } else {
-                    console.error(`❌ Page not found: ${page}`);
-                }
-            },
-            
-            initializePage(page) {
-                // Call page-specific initialization functions
-                switch(page) {
-                    case 'social':
-                        if (window.initializeSocialFeed) {
-                            window.initializeSocialFeed();
-                        }
-                        break;
-                    case 'leaderboard':
-                        if (window.initializeLeaderboard) {
-                            window.initializeLeaderboard();
-                        }
-                        break;
-                    case 'expert-follow':
-                        if (window.initializeExpertFollow) {
-                            window.initializeExpertFollow();
-                        }
-                        break;
-                    case 'analytics':
-                        if (window.initializeAdvancedAnalytics) {
-                            window.initializeAdvancedAnalytics();
-                        }
-                        break;
-                    case 'odds-comparison':
-                        if (window.initializeOddsComparisonV2) {
-                            window.initializeOddsComparisonV2();
-                        }
-                        break;
-                    case 'parlay-optimizer':
-                        if (window.initializeParlayOptimizer) {
-                            window.initializeParlayOptimizer();
-                        }
-                        break;
-                    case 'arbitrage':
-                        if (window.initializeArbitrageScanner) {
-                            window.initializeArbitrageScanner();
-                        }
-                        break;
-                    case 'bankroll':
-                        if (window.initializeBankrollTracker) {
-                            window.initializeBankrollTracker();
-                        }
-                        break;
-                    case 'injuries':
-                        // Lazy load and initialize Injury Alerts page
-                        import('./injury-alerts-page-init.js').then(module => {
-                            if (module.initializeInjuryAlertsPage) {
-                                module.initializeInjuryAlertsPage();
-                            }
-                        }).catch(error => {
-                            console.error('❌ Failed to load Injury Alerts page:', error);
-                        });
-                        break;
-                    case 'profile':
-                        if (window.initializeUserProfilePage) {
-                            window.initializeUserProfilePage();
-                        }
-                        break;
-                    case 'challenges':
-                        if (window.initializeCompetitions) {
-                            window.initializeCompetitions();
-                        }
-                        break;
-                    case 'trophy-showcase':
-                        // Trophy showcase page initializes itself via module
-                        import('./trophy-showcase-page-init.js').then(module => {
-                            if (module.default && module.default.init) {
-                                module.default.init();
-                            }
-                        });
-                        break;
-                    case 'live-games':
-                        // Lazy load and initialize Live Games page
-                        import('./live-games-page-init.js').then(module => {
-                            if (module.initializeLiveGamesPage) {
-                                module.initializeLiveGamesPage();
-                            }
-                        }).catch(error => {
-                            console.error('❌ Failed to load Live Games page:', error);
-                        });
-                        break;
-                    case 'player-props':
-                        // Lazy load and initialize Player Props Marketplace
-                        import('./player-props-marketplace-page-init.js').then(module => {
-                            if (module.initializePlayerPropsMarketplacePage) {
-                                module.initializePlayerPropsMarketplacePage();
-                            }
-                        }).catch(error => {
-                            console.error('❌ Failed to load Player Props Marketplace:', error);
-                        });
-                        break;
-                    case 'analysis-rooms':
-                        // Lazy load and initialize Analysis Rooms page
-                        if (window.initializeAnalysisRoomsPage) {
-                            window.initializeAnalysisRoomsPage();
-                        } else {
-                            import('./analysis-rooms-page-init.js').then(module => {
-                                if (window.initializeAnalysisRoomsPage) {
-                                    window.initializeAnalysisRoomsPage();
-                                }
-                            }).catch(error => {
-                                console.error('❌ Failed to load Analysis Rooms page:', error);
-                            });
-                        }
-                        break;
-                }
-            }
-        };
-        
-        // Initialize when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                AppNavigation.init();
-                
-                // Hide loader after initialization
-                setTimeout(() => {
-                    const loader = document.getElementById('app-loader');
-                    if (loader) {
-                        loader.classList.add('hidden');
-                        setTimeout(() => loader.remove(), 500);
-                    }
-                }, 600);
-            });
-        } else {
-            AppNavigation.init();
-            
-            // Hide loader after initialization
-            setTimeout(() => {
-                const loader = document.getElementById('app-loader');
-                if (loader) {
-                    loader.classList.add('hidden');
-                    setTimeout(() => loader.remove(), 500);
-                }
-            }, 600);
-        }
-    </script>
+    <!-- Main App Script -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>

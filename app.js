@@ -1,1746 +1,750 @@
 // ============================================
-// ULTIMATE SPORTS AI - MODERN UI
-// Mobile-First Design with Professional Navigation
+// ULTIMATE SPORTS AI - CLEAN APP
+// Production-ready frontend connecting to Railway backend
 // ============================================
 
-// Core Systems
-import { modernNav } from './navigation.js';
+console.log('🚀 Ultimate Sports AI v4.0 - Clean Build');
 
-// Analytics & Data
-import { analyticsDashboard } from './analytics-dashboard.js';
-import { betAnalyticsUI } from './bet-analytics-ui.js';
+// ============================================
+// CONFIGURATION
+// ============================================
 
-// Social & Community
-import { socialSystem } from './social-system.js';
-import { socialUI } from './social-ui.js';
-import { bettingPoolsSystem } from './betting-pools-system.js';
-import { bettingPoolsUI } from './betting-pools-ui.js';
-import { poolChatSystem } from './pool-chat-system.js';
-import { poolChatUI } from './pool-chat-ui.js';
-
-// Notifications
-import { notificationSystem } from './notification-system.js';
-import { notificationUI } from './notification-ui.js';
-import { pushNotificationSystem } from './push-notification-system.js';
-import { notificationSettingsUI } from './notification-settings-ui.js';
-
-// Live Scores & Games
-import { liveScoreSystem } from './live-score-system.js';
-import { liveScoreUI } from './live-score-ui.js';
-import { liveGamesFeed } from './live-games-feed.js';
-import { liveMatchNotifications } from './live-match-notifications.js';
-import { liveMatchNotificationsUI } from './live-match-notifications-ui.js';
-import { liveMatchDataIntegration } from './live-match-data-integration.js';
-import { liveMatchAutoSubscribe } from './live-match-auto-subscribe.js';
-
-// AI Coaching
-import { aiCoachingDashboard } from './ai-coaching-dashboard.js';
-import { aiCoachingDashboardUI } from './ai-coaching-dashboard-ui.js';
-import { aiPredictionDisplay } from './ai-prediction-display.js';
-
-// Achievements & Challenges
-import { achievementsSystem } from './achievements-system.js';
-import { achievementsUI } from './achievements-ui.js';
-import { challengesSystem } from './challenges-system.js';
-import { challengesUI } from './challenges-ui.js';
-
-// Shop System
-import { shopManager } from './shop-system.js';
-import { shopUI } from './shop-ui.js';
-
-// Coin History
-import { coinHistoryManager, trackChallengeCoins } from './coin-history.js';
-
-// Daily Streak System
-import { dailyStreakManager } from './daily-streak-system.js';
-import { dailyStreakUI } from './daily-streak-ui.js';
-
-// Referral System
-import { referralManager } from './referral-system.js';
-import { referralUI } from './referral-ui.js';
-
-// Lucky Wheel System
-import * as luckyWheelSystem from './lucky-wheel-system.js';
-import * as luckyWheelUI from './lucky-wheel-ui.js';
-
-// Activity Feed System
-import { activityFeedSystem } from './activity-feed-system.js';
-import { activityFeedUI } from './activity-feed-ui.js';
-
-// Parlay Builder System
-import { parlayBuilder } from './parlay-builder-engine.js';
-import { parlayBuilderUI } from './parlay-builder-ui.js';
-
-// Arbitrage Detector System
-import { arbitrageDetector } from './arbitrage-detector-engine.js';
-import { arbitrageDetectorUI } from './arbitrage-detector-ui.js';
-
-// Injury Tracker System
-import { injuryTracker } from './injury-tracker-engine.js';
-import { injuryTrackerUI } from './injury-tracker-ui.js';
-
-// Live Odds Comparison System
-import { liveOddsComparison } from './live-odds-comparison-engine.js';
-
-// Payment & Subscriptions
-import { paypalPaymentSystem } from './paypal-payment-system.js';
-import { paypalPaymentUI } from './paypal-payment-ui.js';
-import { subscriptionNotificationCenter } from './subscription-notification-center.js';
+const CONFIG = {
+    API_BASE_URL: 'https://ultimate-sports-ai-production.up.railway.app',
+    WS_URL: 'wss://ultimate-sports-ai-production.up.railway.app',
+    PAYPAL_CLIENT_ID: 'YOUR_PAYPAL_CLIENT_ID', // Set in Railway env
+    VERSION: '4.0.0'
+};
 
 // ============================================
 // STATE MANAGEMENT
 // ============================================
 
-const state = {
-    user: null, // Loaded from backend auth
-    pickSlip: {
-        picks: [],
-        pickType: 'parlay',
-        virtualUnits: 0
-    },
-    settings: {
-        soundEnabled: true,
-        theme: 'dark',
-        notifications: true
-    },
-    leaderboard: [], // Loaded from backend
-    achievements: [], // Loaded from backend
-    dailyRewards: null // Loaded from backend
-};
+class AppState {
+    constructor() {
+        this.user = null;
+        this.isAuthenticated = false;
+        this.currentPage = 'home';
+        this.listeners = [];
+    }
 
-// Mock data for games (FALLBACK ONLY - use live API data when available)
-// These are only used if backend/API is unavailable
-const mockGames = [
-    {
-        id: 1,
-        league: 'NBA',
-        homeTeam: 'Lakers',
-        awayTeam: 'Warriors',
-        startTime: '7:30 PM ET',
-        status: 'live',
-        score: { home: 54, away: 50 },
-        odds: {
-            homeML: -150,
-            awayML: +130,
-            homeSpread: -3.5,
-            awaySpread: +3.5,
-            over: -110,
-            under: -110,
-            total: 225.5
-        },
-        aiPick: {
-            pick: 'home',
-            confidence: 78
+    setUser(user) {
+        this.user = user;
+        this.isAuthenticated = !!user;
+        this.notify();
+    }
+
+    clearUser() {
+        this.user = null;
+        this.isAuthenticated = false;
+        localStorage.removeItem('auth_token');
+        this.notify();
+    }
+
+    subscribe(listener) {
+        this.listeners.push(listener);
+        return () => {
+            this.listeners = this.listeners.filter(l => l !== listener);
+        };
+    }
+
+    notify() {
+        this.listeners.forEach(listener => listener(this));
+    }
+}
+
+const appState = new AppState();
+
+// ============================================
+// API SERVICE
+// ============================================
+
+class APIService {
+    constructor() {
+        this.baseURL = CONFIG.API_BASE_URL;
+    }
+
+    getHeaders() {
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
+        const token = localStorage.getItem('auth_token');
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
         }
-    },
-    {
-        id: 2,
-        league: 'NBA',
-        homeTeam: 'Celtics',
-        awayTeam: 'Heat',
-        startTime: '8:00 PM ET',
-        status: 'upcoming',
-        odds: {
-            homeML: -180,
-            awayML: +155,
-            homeSpread: -4.5,
-            awaySpread: +4.5,
-            over: -110,
-            under: -110,
-            total: 218.5
-        },
-        aiPick: {
-            pick: 'away',
-            confidence: 65
-        }
-    },
-    {
-        id: 3,
-        league: 'NFL',
-        homeTeam: 'Chiefs',
-        awayTeam: 'Bills',
-        startTime: '8:15 PM ET',
-        status: 'upcoming',
-        odds: {
-            homeML: -200,
-            awayML: +170,
-            homeSpread: -5.5,
-            awaySpread: +5.5,
-            over: -115,
-            under: -105,
-            total: 47.5
-        },
-        aiPick: {
-            pick: 'home',
-            confidence: 82
+
+        return headers;
+    }
+
+    async request(endpoint, options = {}) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+            const response = await fetch(`${this.baseURL}${endpoint}`, {
+                ...options,
+                headers: this.getHeaders(),
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Request failed');
+            }
+
+            return data;
+        } catch (error) {
+            console.error('API Error:', error);
+            throw error;
         }
     }
-];
 
-// Mock leaderboard data
-const mockLeaderboard = [
-    { rank: 1, username: 'BettingKing', avatar: '👑', points: 45680, winRate: 0.72 },
-    { rank: 2, username: 'SportsMaster', avatar: '🏆', points: 42150, winRate: 0.69 },
-    { rank: 3, username: 'PredictPro', avatar: '💎', points: 38920, winRate: 0.67 },
-    { rank: 4, username: 'AceAnalyst', avatar: '⚡', points: 35100, winRate: 0.65 },
-    { rank: 5, username: state.user.username, avatar: state.user.avatar, points: state.user.points, winRate: state.user.stats.winRate, isCurrentUser: true },
-    { rank: 6, username: 'OddsMaker', avatar: '🎯', points: 28750, winRate: 0.63 },
-    { rank: 7, username: 'ChampPlayer', avatar: '🔥', points: 25600, winRate: 0.61 },
-    { rank: 8, username: 'BetBeast', avatar: '🦁', points: 23400, winRate: 0.59 },
-    { rank: 9, username: 'WinWizard', avatar: '🧙', points: 21100, winRate: 0.58 },
-    { rank: 10, username: 'LuckyShot', avatar: '🎲', points: 19850, winRate: 0.56 }
-];
+    // Auth endpoints
+    async signup(email, password, name) {
+        return this.request('/api/auth/signup', {
+            method: 'POST',
+            body: JSON.stringify({ email, password, name })
+        });
+    }
+
+    async login(email, password) {
+        return this.request('/api/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({ email, password })
+        });
+    }
+
+    async getCurrentUser() {
+        return this.request('/api/auth/me');
+    }
+
+    async logout() {
+        return this.request('/api/auth/logout', {
+            method: 'POST'
+        });
+    }
+
+    // OAuth endpoints
+    getOAuthURL(provider) {
+        return `${this.baseURL}/api/auth/${provider}`;
+    }
+
+    // Live scores
+    async getLiveScores() {
+        return this.request('/api/scores/live');
+    }
+
+    // AI Coaches
+    async getAIPredictions(gameId) {
+        return this.request(`/api/ai/predictions/${gameId}`);
+    }
+
+    // User analytics
+    async getUserAnalytics() {
+        return this.request('/api/analytics/user');
+    }
+
+    // Subscription
+    async createSubscription(tier) {
+        return this.request('/api/payments/subscribe', {
+            method: 'POST',
+            body: JSON.stringify({ tier })
+        });
+    }
+
+    async cancelSubscription() {
+        return this.request('/api/payments/cancel', {
+            method: 'POST'
+        });
+    }
+}
+
+const api = new APIService();
 
 // ============================================
-// INITIALIZATION
+// AUTH MANAGER
 // ============================================
 
-class SportAIApp {
+class AuthManager {
     constructor() {
-        this.navigation = modernNav;
+        this.init();
+    }
+
+    async init() {
+        const token = localStorage.getItem('auth_token');
+        if (token) {
+            try {
+                const user = await api.getCurrentUser();
+                appState.setUser(user);
+                console.log('✅ User authenticated:', user.email);
+            } catch (error) {
+                console.error('⚠️ Backend unavailable or auth check failed:', error);
+                // Don't logout - just stay as guest
+                console.log('ℹ️ Starting as guest user - backend may be offline');
+            }
+        } else {
+            console.log('ℹ️ No auth token found - starting as guest');
+        }
+    }
+
+    async signup(email, password, name) {
+        try {
+            const response = await api.signup(email, password, name);
+            localStorage.setItem('auth_token', response.token);
+            appState.setUser(response.user);
+            showToast('Account created successfully!', 'success');
+            return true;
+        } catch (error) {
+            showToast(error.message || 'Signup failed', 'error');
+            return false;
+        }
+    }
+
+    async login(email, password) {
+        try {
+            const response = await api.login(email, password);
+            localStorage.setItem('auth_token', response.token);
+            appState.setUser(response.user);
+            showToast('Welcome back!', 'success');
+            return true;
+        } catch (error) {
+            showToast(error.message || 'Login failed', 'error');
+            return false;
+        }
+    }
+
+    logout() {
+        appState.clearUser();
+        showToast('Logged out successfully', 'success');
+        navigation.navigateTo('home');
+    }
+
+    async handleOAuthCallback() {
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        
+        if (token) {
+            localStorage.setItem('auth_token', token);
+            window.history.replaceState({}, '', window.location.pathname);
+            await this.init();
+            showToast('Logged in successfully!', 'success');
+        }
+    }
+}
+
+const authManager = new AuthManager();
+
+// ============================================
+// NAVIGATION
+// ============================================
+
+class Navigation {
+    constructor() {
+        this.currentPage = 'home';
         this.init();
     }
 
     init() {
-        // Wait for DOM to be ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.setup());
-        } else {
-            this.setup();
-        }
-    }
+        // Drawer toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const drawer = document.getElementById('drawer-nav');
+        const overlay = document.getElementById('drawer-overlay');
 
-    setup() {
-        console.log('🚀 SportAIApp setup() called');
-        console.log('📱 Navigation system:', this.navigation);
-        
-        // Handle PayPal return from payment
-        this.handlePayPalReturn();
-        
-        // Initialize authentication system
-        authUI.init();
-        
-        // Sync state with authenticated user
-        if (authSystem.isLoggedIn()) {
-            const user = authSystem.getUser();
-            Object.assign(state.user, user);
-        }
-
-        // Setup event listeners
-        console.log('⚙️ Setting up event listeners...');
-        this.setupEventListeners();
-        
-        // Setup auth listeners
-        this.setupAuthListeners();
-
-        // Load initial data
-        this.updateUI();
-        this.loadHomePage();
-        
-        // Initialize notification system
-        this.setupNotificationSystem();
-        
-        // Initialize achievements system
-        this.setupAchievementsSystem();
-        
-        // Initialize challenges system
-        this.setupChallengesSystem();
-        
-        // Initialize daily streak system
-        this.setupDailyStreakSystem();
-        
-        // Initialize referral system
-        this.setupReferralSystem();
-        
-        // Initialize payment system
-        this.setupPaymentSystem();
-        
-        // Initialize lucky wheel system
-        this.setupLuckyWheelSystem();
-        
-        // Initialize activity feed system
-        this.setupActivityFeedSystem();
-        
-        // Initialize community chat
-        this.setupCommunityChatSystem();
-        
-        // Initialize user profile system
-        this.setupUserProfileSystem();
-        
-        // Make systems accessible globally for testing
-        // Check if we're in development mode (localhost or explicit flag)
-        const isDevelopment = window.location.hostname === 'localhost' || 
-                            window.location.hostname === '127.0.0.1' ||
-                            window.location.hostname.includes('playground-gateway');
-        
-        if (isDevelopment) {
-            window.analyticsDashboard = analyticsDashboard;
-            window.socialSystem = socialSystem;
-            window.socialUI = socialUI;
-            window.notificationSystem = notificationSystem;
-            window.notificationUI = notificationUI;
-            window.liveScoreSystem = liveScoreSystem;
-            window.liveScoreUI = liveScoreUI;
-            window.aiCoachingDashboard = aiCoachingDashboard;
-            window.aiCoachingDashboardUI = aiCoachingDashboardUI;
-            window.modernNav = modernNav;
-            window.aiIntelligenceV2 = aiIntelligenceV2;
-            window.liveOddsMatrix = liveOddsMatrix;
-            window.liveOddsMatrixUI = liveOddsMatrixUI;
-        }
-        
-        // Performance monitoring
-        if (performance && performance.mark) {
-            performance.mark('app-ready');
-        }
-    }
-
-    setupAchievementsSystem() {
-        // Check for achievements on app load
-        achievementsSystem.checkAchievements(state.user.stats);
-        
-        // Listen for achievement unlocks
-        achievementsSystem.on('achievement_unlocked', (achievement) => {
-            // Show unlock notification
-            achievementsUI.showUnlockNotification(achievement);
-            
-            // Add XP to user
-            state.user.xp += achievement.xpReward;
-            
-            // Show in-app notification
-            notificationSystem.showNotification({
-                title: '🏆 Achievement Unlocked!',
-                body: `${achievement.name} (+${achievement.xpReward} XP)`,
-                icon: achievement.icon,
-                category: 'achievement',
-                priority: 'high',
-                autoClose: 7000
-            });
-            
-            this.updateUI();
-        });
-    }
-
-    setupChallengesSystem() {
-        // Listen for challenge completion
-        challengesSystem.on('challenge_completed', (challenge) => {
-            notificationSystem.showNotification({
-                title: '🎯 Challenge Completed!',
-                body: `${challenge.name} - Claim your rewards!`,
-                icon: challenge.icon,
-                category: 'challenge',
-                priority: 'high',
-                autoClose: 7000
-            });
+        menuBtn?.addEventListener('click', () => {
+            drawer.classList.toggle('active');
+            overlay.classList.toggle('active');
         });
 
-        // Listen for challenge progress
-        challengesSystem.on('challenge_progress', (challenge) => {
-            // Optional: subtle notification for progress updates
-            // Can be disabled to avoid spam
+        overlay?.addEventListener('click', () => {
+            drawer.classList.remove('active');
+            overlay.classList.remove('active');
         });
 
-        // Listen for challenge refresh
-        challengesSystem.on('daily_challenges_refreshed', () => {
-            notificationSystem.showNotification({
-                title: '☀️ New Daily Challenges!',
-                body: 'Fresh challenges are now available',
-                category: 'system',
-                priority: 'normal',
-                autoClose: 5000
-            });
-        });
-
-        challengesSystem.on('weekly_challenges_refreshed', () => {
-            notificationSystem.showNotification({
-                title: '📅 New Weekly Challenges!',
-                body: 'A new week of challenges awaits',
-                category: 'system',
-                priority: 'normal',
-                autoClose: 5000
-            });
-        });
-
-        // Listen for rewards claimed
-        challengesSystem.on('reward_claimed', (challenge) => {
-            const user = authSystem.getUser();
-            if (!user) return;
-            
-            let xpGained = challenge.reward.xp;
-            
-            // Add XP with shop boost multiplier if active
-            xpGained = shopManager.applyXPBoost(xpGained);
-            user.xp = (user.xp || 0) + xpGained;
-            state.user.xp += xpGained;
-            
-            // Add coins with shop boost multiplier if active
-            if (challenge.reward.currency) {
-                let coinsGained = challenge.reward.currency;
-                const originalCoins = coinsGained;
-                coinsGained = shopManager.applyCoinsBoost(coinsGained);
-                user.coins = (user.coins || 0) + coinsGained;
-                state.user.virtualBudget += challenge.reward.currency;
+        // Bottom nav buttons
+        document.querySelectorAll('.bottom-nav-item[data-page]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const page = btn.dataset.page;
+                this.navigateTo(page);
                 
-                // Track coin earning in history
-                trackChallengeCoins(coinsGained, challenge.name || 'Daily Challenge');
-            }
-            
-            // Save updated user data
-            authSystem.currentUser = user;
-            authSystem.saveSession();
-            this.updateUI();
-
-            // Trigger referral completion check
-            window.dispatchEvent(new CustomEvent('challengeCompleted', {
-                detail: { challenge }
-            }));
-        });
-    }
-
-    setupDailyStreakSystem() {
-        // Initialize daily streak system
-        dailyStreakManager.init();
-        dailyStreakUI.init();
-        
-        // Make globally accessible
-        window.coinHistoryManager = coinHistoryManager;
-        
-        // Listen for streak claimed events
-        window.addEventListener('dailyStreakClaimed', (event) => {
-            const { streakDay, coins, milestone } = event.detail;
-            
-            // Update UI
-            this.updateUI();
-            
-            // Check for achievements related to streaks
-            const user = authSystem.getUser();
-            if (user && user.streakData) {
-                achievementsSystem.checkAchievements({
-                    ...state.user.stats,
-                    loginStreak: user.streakData.currentStreak,
-                    longestStreak: user.streakData.longestStreak
-                });
-            }
-        });
-    }
-
-    setupReferralSystem() {
-        // Initialize referral system
-        referralManager.init();
-        referralUI.init();
-        
-        // Listen for referral events
-        window.addEventListener('referralApplied', (event) => {
-            const { code, bonus } = event.detail;
-            console.log(`✅ Referral code ${code} applied, earned ${bonus} coins`);
-            this.updateUI();
+                // Update active state
+                document.querySelectorAll('.bottom-nav-item').forEach(b => 
+                    b.classList.remove('active')
+                );
+                btn.classList.add('active');
+            });
         });
 
-        window.addEventListener('referralCompleted', (event) => {
-            const { bonus, milestoneBonus, totalReferrals } = event.detail;
-            console.log(`🎉 Referral completed! Earned ${bonus + milestoneBonus} coins. Total: ${totalReferrals}`);
-            this.updateUI();
-        });
-
-        // Add referral button to nav if it doesn't exist
-        // This will be handled by navigation system
-    }
-    
-    setupPaymentSystem() {
-        // Initialize payment system
-        console.log('💳 Initializing payment system...');
-        
-        // Add upgrade button to navigation
-        setTimeout(() => {
-            const navActions = document.querySelector('.app-bar-actions');
-            if (navActions) {
-                // Create upgrade button
-                const upgradeBtn = document.createElement('button');
-                upgradeBtn.id = 'payment-upgrade-btn';
-                upgradeBtn.className = 'icon-button payment-upgrade-btn';
-                upgradeBtn.setAttribute('aria-label', 'Upgrade Plan');
-                upgradeBtn.setAttribute('title', 'Upgrade to Pro or VIP');
-                upgradeBtn.innerHTML = `
-                    <i class="fas fa-crown"></i>
-                    <span class="upgrade-badge">Upgrade</span>
-                `;
+        // Drawer menu buttons
+        document.querySelectorAll('.menu-item[data-page]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const page = btn.dataset.page;
+                this.navigateTo(page);
                 
-                // Add click handler to show pricing modal
-                upgradeBtn.addEventListener('click', () => {
-                    console.log('Opening pricing modal...');
-                    // PayPal UI will handle the upgrade via event delegation
-                });
+                // Update active state
+                document.querySelectorAll('.menu-item').forEach(b => 
+                    b.classList.remove('active')
+                );
+                btn.classList.add('active');
                 
-                // Insert before notifications button if it exists
-                const notifBtn = document.getElementById('notifications-btn');
-                if (notifBtn) {
-                    navActions.insertBefore(upgradeBtn, notifBtn);
-                } else {
-                    navActions.appendChild(upgradeBtn);
-                }
-                
-                console.log('✅ Upgrade button added to navigation');
-            }
-        }, 500);
-        
-        // PayPal system handles checkout verification automatically
-        
-        // Listen for subscription updates
-        window.addEventListener('subscriptionUpdated', (event) => {
-            const { tier, status } = event.detail;
-            console.log(`💳 Subscription updated: ${tier} - ${status}`);
-            
-            // Update user state
-            if (state.user) {
-                state.user.subscription = tier.toUpperCase();
-                this.updateUI();
-            }
-            
-            // Show notification
-            notificationSystem.showNotification({
-                title: '🎉 Subscription Updated!',
-                body: `You are now on the ${tier.toUpperCase()} plan`,
-                icon: '👑',
-                category: 'subscription',
-                priority: 'high',
-                autoClose: 7000
-            });
-        });
-    }
-    
-    setupLuckyWheelSystem() {
-        // Initialize lucky wheel system
-        luckyWheelSystem.initLuckyWheelSystem();
-        luckyWheelUI.initLuckyWheelUI();
-        
-        // Listen for wheel events
-        window.addEventListener('wheelSpinComplete', (event) => {
-            const { prize, spinType } = event.detail;
-            console.log(`🎡 Wheel spin completed! Prize: ${prize.label} (${spinType})`);
-            this.updateUI();
-        });
-        
-        window.addEventListener('wheelMilestone', (event) => {
-            const { count, reward } = event.detail;
-            console.log(`🎉 Lucky Wheel milestone! ${count} spins completed, earned ${reward} coins`);
-        });
-        
-        window.addEventListener('bonusSpinsAdded', (event) => {
-            const { amount, source } = event.detail;
-            console.log(`🎰 Received ${amount} bonus spin(s) from ${source}`);
-        });
-    }
-
-    setupActivityFeedSystem() {
-        // Activity feed is auto-initialized on import
-        // Listen for feed events
-        activityFeedSystem.on('pick_liked', (data) => {
-            console.log('Pick liked:', data);
-        });
-        
-        activityFeedSystem.on('comment_added', (data) => {
-            console.log('Comment added:', data);
-        });
-        
-        activityFeedSystem.on('pick_copied', (data) => {
-            console.log('Pick copied:', data);
-            // Could add to user's pick slip
-        });
-    }
-
-    setupCommunityChatSystem() {
-        // Initialize community chat system
-        console.log('💬 Initializing community chat...');
-        
-        // Add chat button to header
-        const chatBtn = document.getElementById('community-chat-btn');
-        if (chatBtn) {
-            chatBtn.addEventListener('click', () => {
-                communityChatUI.showModal();
-            });
-        }
-        
-        // Listen for chat events
-        communityChatSystem.on('message_sent', ({ channelId, message }) => {
-            console.log('Message sent:', message);
-            
-            // Show notification for sent message
-            notificationSystem.showNotification({
-                title: '✅ Message Sent',
-                body: `Your message was sent to ${channelId}`,
-                icon: '💬',
-                category: 'chat',
-                priority: 'low',
-                autoClose: 2000
-            });
-        });
-        
-        communityChatSystem.on('message_received', ({ message }) => {
-            // Only show notification if not in chat modal
-            if (!communityChatUI.modalOpen) {
-                const user = authSystem.getUser();
-                if (message.username !== user?.username) {
-                    notificationSystem.showNotification({
-                        title: `💬 ${message.username}`,
-                        body: message.content.substring(0, 50) + (message.content.length > 50 ? '...' : ''),
-                        icon: message.avatar,
-                        category: 'chat',
-                        priority: 'normal',
-                        autoClose: 5000
-                    });
-                }
-            }
-        });
-        
-        communityChatSystem.on('connected', () => {
-            console.log('✅ Community chat connected');
-        });
-        
-        communityChatSystem.on('disconnected', () => {
-            console.log('⚠️ Community chat disconnected');
-        });
-        
-        // Make globally accessible
-        window.communityChatSystem = communityChatSystem;
-        window.communityChatUI = communityChatUI;
-        
-        console.log('✅ Community chat ready!');
-    }
-
-    setupUserProfileSystem() {
-        console.log('👤 Initializing user profile system...');
-        
-        // Profile button click handler
-        const profileBtn = document.getElementById('profile-btn');
-        if (profileBtn) {
-            profileBtn.addEventListener('click', () => {
-                if (authSystem.isAuthenticated) {
-                    userProfileUI.open();
-                } else {
-                    authUI.showLoginModal();
-                }
-            });
-        }
-        
-        // Listen for profile updates
-        userProfileSystem.on('profileLoaded', (profile) => {
-            console.log('👤 Profile loaded:', profile.username);
-        });
-        
-        userProfileSystem.on('statsUpdated', (stats) => {
-            // Update UI elements with latest stats
-            const winRateStat = document.getElementById('user-win-rate');
-            const profitStat = document.getElementById('user-profit');
-            const streakStat = document.getElementById('user-streak');
-            
-            if (winRateStat) winRateStat.textContent = `${stats.accuracy}%`;
-            if (profitStat) profitStat.textContent = `${stats.totalProfit >= 0 ? '+' : ''}$${Math.abs(stats.totalProfit).toFixed(0)}`;
-            if (streakStat) streakStat.textContent = `${stats.currentStreak > 0 ? '+' : ''}${stats.currentStreak}`;
-        });
-        
-        userProfileSystem.on('levelUp', (level) => {
-            notificationSystem.showNotification({
-                title: '🎊 Level Up!',
-                body: `You reached level ${level}!`,
-                icon: '⬆️',
-                category: 'achievement',
-                priority: 'high',
-                autoClose: 7000
-            });
-        });
-        
-        userProfileSystem.on('achievementsEarned', (achievements) => {
-            achievements.forEach(achievement => {
-                console.log('🏆 Achievement earned:', achievement.name);
-            });
-        });
-        
-        // Make globally accessible
-        window.userProfileSystem = userProfileSystem;
-        window.userProfileUI = userProfileUI;
-        
-        console.log('✅ User profile system ready!');
-    }
-
-    setupNotificationSystem() {
-        // Initialize notification UI
-        notificationUI.initializeHeaderBadge();
-        
-        // Listen to notification events and update badge
-        notificationSystem.on('notification_added', () => {
-            notificationUI.updateBadgeCount();
-        });
-        
-        notificationSystem.on('notification_read', () => {
-            notificationUI.updateBadgeCount();
-        });
-        
-        notificationSystem.on('all_notifications_read', () => {
-            notificationUI.updateBadgeCount();
-        });
-        
-        // Integrate with social system
-        socialSystem.on('challenge_created', (challenge) => {
-            if (challenge.opponent.username === 'You') {
-                notificationSystem.notifyChallenge(challenge);
-            }
-        });
-        
-        socialSystem.on('friend_request_sent', () => {
-            notificationSystem.showNotification({
-                title: '✅ Friend Request Sent',
-                body: 'Your friend request has been sent!',
-                icon: '👥',
-                category: 'system',
-                priority: 'normal'
-            });
-        });
-        
-        // Subscription upgrades will show notifications
-        authSystem.on('subscription_upgraded', (data) => {
-            notificationSystem.showNotification({
-                title: '🎉 Subscription Upgraded',
-                body: `Welcome to ${data.tier.toUpperCase()} tier!`,
-                icon: '👑',
-                category: 'system',
-                priority: 'high'
-            });
-        });
-    }
-
-    setupDynamicPages() {
-        // Listen for navigation to dynamic pages
-        if (this.navigationManager) {
-            const originalNavigate = this.navigationManager.navigateTo.bind(this.navigationManager);
-            this.navigationManager.navigateTo = (pageId) => {
-                originalNavigate(pageId);
-                
-                // Initialize page-specific content
-                if (pageId === 'analytics') {
-                    analyticsDashboard.init();
-                } else if (pageId === 'line-movement') {
-                    lineMovementUI.init();
-                } else if (pageId === 'social') {
-                    socialUI.init();
-                }
-            };
-        }
-    }
-
-    setupAuthListeners() {
-        // Update app state when user logs in
-        authSystem.on('login', (user) => {
-            Object.assign(state.user, user);
-            this.updateUI();
-            this.loadHomePage();
-        });
-
-        // Clear state when user logs out
-        authSystem.on('logout', () => {
-            // Reset to default state
-            Object.assign(state.user, {
-                username: 'Guest',
-                avatar: '👤',
-                level: 1,
-                xp: 0,
-                xpToNext: 1000,
-                virtualBudget: 1000,
-                points: 0,
-                subscription: 'FREE',
-                stats: {
-                    totalPicks: 0,
-                    wins: 0,
-                    losses: 0,
-                    winRate: 0,
-                    bestStreak: 0,
-                    currentStreak: 0,
-                    accuracy: 0,
-                    loginStreak: 0,
-                    challengesJoined: 0,
-                    challengesWon: 0,
-                    aiConversations: 0,
-                    perfectWeeks: 0
-                }
-            });
-            this.updateUI();
-        });
-
-        // Update when profile changes
-        authSystem.on('profile_updated', (user) => {
-            Object.assign(state.user, user);
-            this.updateUI();
-        });
-    }
-
-
-
-    updateUI() {
-        // Update drawer profile
-        this.navigation.updateDrawerProfile(state.user);
-        
-        // Update notification badge
-        const notifCount = document.getElementById('notification-count');
-        if (notifCount) {
-            const unreadCount = notificationSystem?.unreadCount || 3;
-            notifCount.textContent = unreadCount;
-        }
-        
-        // Update home page stats
-        const winRateEl = document.getElementById('home-win-rate');
-        const picksTrackedEl = document.getElementById('home-picks-tracked');
-        const winStreakEl = document.getElementById('home-win-streak');
-        
-        if (winRateEl) winRateEl.textContent = `${Math.round((state.user.stats?.winRate || 0.68) * 100)}%`;
-        if (picksTrackedEl) picksTrackedEl.textContent = state.user.stats?.totalPicks || 142;
-        if (winStreakEl) winStreakEl.textContent = state.user.stats?.currentStreak || 7;
-    }
-
-    setupEventListeners() {
-        // Profile button - check auth first
-        const profileBtn = document.getElementById('profile-btn');
-        if (profileBtn) {
-            profileBtn.addEventListener('click', () => {
-                if (authSystem.isAuthenticated) {
-                    this.navigation.navigateTo('profile');
-                } else {
-                    authUI.showLoginModal();
-                }
-            });
-        }
-
-        // Settings button in drawer
-        const settingsMenuBtn = document.getElementById('settings-menu-btn');
-        if (settingsMenuBtn) {
-            settingsMenuBtn.addEventListener('click', () => this.showSettings());
-        }
-
-        // Help button
-        const helpMenuBtn = document.getElementById('help-menu-btn');
-        if (helpMenuBtn) {
-            helpMenuBtn.addEventListener('click', () => this.showHelp());
-        }
-
-        // Upgrade button
-        const upgradeBtn = document.querySelector('.upgrade-button');
-        if (upgradeBtn) {
-            upgradeBtn.addEventListener('click', () => {
-                // Show subscription upgrade options
-                this.navigation.navigateTo('profile');
-            });
-        }
-
-        // Friends button
-        const friendsMenuBtn = document.getElementById('friends-menu-btn');
-        if (friendsMenuBtn) {
-            friendsMenuBtn.addEventListener('click', () => {
-                // Show friends modal
-                if (window.friendSystemUI) {
-                    window.friendSystemUI.showModal();
-                }
-            });
-        }
-
-        // Chat button in menu
-        const chatMenuBtn = document.getElementById('chat-menu-btn');
-        if (chatMenuBtn) {
-            chatMenuBtn.addEventListener('click', () => {
-                this.navigation.closeDrawer();
-                communityChatUI.showModal();
-            });
-        }
-
-        // Listen for page changes
-        window.addEventListener('pagechange', (e) => {
-            const page = e.detail.page;
-            
-            // Navigate to the page first (show/hide pages)
-            this.navigation.navigateTo(page);
-            
-            // Load page-specific content
-            if (page === 'live-games') {
-                this.loadLiveGamesPage();
-            } else if (page === 'meeting-room') {
-                this.loadMeetingRoom();
-            } else if (page === 'analytics') {
-                analyticsDashboard.init();
-            } else if (page === 'line-movement') {
-                lineMovementUI.init();
-            } else if (page === 'bet-history') {
-                betAnalyticsUI.renderAnalyticsPage('bet-history-page');
-            } else if (page === 'social') {
-                activityFeedUI.renderFeedPage();
-            } else if (page === 'analysis-rooms') {
-                collaborativeAnalysisUI.renderRoomBrowser();
-            } else if (page === 'coaching') {
-                const coachingContainer = document.getElementById('coaching-page');
-                if (coachingContainer) {
-                    SkeletonLoader.show(coachingContainer, 'coach-card', 3);
-                    setTimeout(() => {
-                        aiCoachingDashboardUI.render('coaching-page');
-                    }, 100);
-                }
-            } else if (page === 'parlay-builder') {
-                parlayBuilderUI.render();
-            } else if (page === 'arbitrage') {
-                arbitrageDetectorUI.show();
-            } else if (page === 'injuries') {
-                injuryTrackerUI.show();
-            } else if (page === 'odds-comparison') {
-                liveOddsComparisonUI.render('odds-comparison-page');
-            } else if (page === 'leaderboard') {
-                this.loadLeaderboardPage();
-            } else if (page === 'profile') {
-                this.loadProfilePage();
-            } else if (page === 'rewards') {
-                this.loadRewardsPage();
-            } else if (page === 'shop') {
-                this.loadShopPage();
-            }
-        });
-
-        // Listen for bet slip restored event
-        window.addEventListener('betSlipRestored', (e) => {
-            const { pickCount, wagerAmount } = e.detail;
-            const wagerText = wagerAmount > 0 ? ` with $${wagerAmount} wager` : '';
-            
-            notificationSystem.showNotification({
-                title: '📋 Bet Slip Restored',
-                body: `${pickCount} pick${pickCount !== 1 ? 's' : ''} restored${wagerText}`,
-                icon: '✅',
-                category: 'system',
-                priority: 'normal',
-                autoClose: 5000
+                // Close drawer
+                drawer?.classList.remove('active');
+                overlay?.classList.remove('active');
             });
         });
 
-        // Listen for bet slip shared event (from URL)
-        window.addEventListener('betSlipShared', (e) => {
-            const { pickCount, wagerAmount } = e.detail;
-            const wagerText = wagerAmount > 0 ? ` with $${wagerAmount} wager` : '';
-            
-            notificationSystem.showNotification({
-                title: '🔗 Bet Slip Loaded',
-                body: `${pickCount} pick${pickCount !== 1 ? 's' : ''} loaded from shared link${wagerText}`,
-                icon: '🎯',
-                category: 'system',
-                priority: 'high',
-                autoClose: 5000
-            });
-        });
-
-        // Listen for bet placed event
-        window.addEventListener('betPlaced', (e) => {
-            const { bet } = e.detail;
-            
-            notificationSystem.showNotification({
-                title: '🎯 Bet Placed Successfully',
-                body: `${bet.picks.length} pick${bet.picks.length !== 1 ? 's' : ''} | $${bet.wager} wagered`,
-                icon: '✅',
-                category: 'betting',
-                priority: 'high',
-                autoClose: 7000
-            });
-        });
-
-        // Listen for template loaded event
-        window.addEventListener('templateLoaded', (e) => {
-            const { templateName, pickCount, wagerAmount } = e.detail;
-            const wagerText = wagerAmount > 0 ? ` | $${wagerAmount} wager` : '';
-            
-            notificationSystem.showNotification({
-                title: '📋 Template Loaded',
-                body: `"${templateName}" - ${pickCount} picks${wagerText}`,
-                icon: '✨',
-                category: 'system',
-                priority: 'normal',
-                autoClose: 4000
-            });
-        });
-    }
-
-
-
-    loadHomePage() {
-        this.renderLiveGames();
-        this.renderHotPicks();
-        this.renderRecentActivity();
-    }
-
-
-
-    async loadLiveGamesPage() {
-        const container = document.getElementById('live-games-page');
-        if (!container) return;
-
-        // Show skeleton while loading
-        SkeletonLoader.show(container, 'game-card', 5);
-        
-        // Add slight delay to allow skeleton to show
-        setTimeout(() => {
-            // Render the Live Games Feed
-            liveGamesFeed.render(container);
-            SkeletonLoader.hide(container);
-        }, 100);
-    }
-
-    async loadMeetingRoom() {
-        const container = document.getElementById('meeting-room-page');
-        if (!container) return;
-
-        // Render the Improved Meeting Room with working AI
-        meetingRoomImproved.render(container);
-    }
-
-    loadLeaderboardPage() {
-        const container = document.getElementById('leaderboard-page');
-        if (!container) return;
-
-        // Show skeleton while building page
-        SkeletonLoader.show(container, 'leaderboard-item', 8);
-        
-        setTimeout(() => {
-            container.innerHTML = `
-            <div class="page-content">
-                <!-- Educational Disclaimer -->
-                <div class="educational-disclaimer educational-disclaimer--inline">
-                    <i class="fas fa-trophy disclaimer-icon"></i>
-                    <div class="disclaimer-text">
-                        <strong>Community Competition</strong>
-                        <p>Compete for badges, XP, and bragging rights. No money prizes - pure skill showcase.</p>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <div class="section-header">
-                        <h2 class="section-title">
-                            <i class="fas fa-medal"></i>
-                            Top Players
-                        </h2>
-                        <div class="period-selector">
-                            <button class="period-btn active" data-period="weekly">Weekly</button>
-                            <button class="period-btn" data-period="monthly">Monthly</button>
-                            <button class="period-btn" data-period="all-time">All Time</button>
-                        </div>
-                    </div>
-                    <div id="leaderboard-list"></div>
-                </div>
-            </div>
-        `;
-
-            this.loadLeaderboard('weekly');
-
-            // Period selector
-            document.querySelectorAll('.period-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    this.loadLeaderboard(e.target.dataset.period);
-                });
-            });
-        }, 200);
-    }
-
-    loadProfilePage() {
-        const container = document.getElementById('profile-page');
-        if (!container) return;
-
-        // Show skeleton while loading
-        SkeletonLoader.show(container, 'profile', 1);
-        
-        setTimeout(() => {
-            const user = state.user;
-            const authUser = authSystem.getUser();
-            const stats = coinHistoryManager.getStatistics();
-
-            container.innerHTML = `
-            <div class="page-content">
-                <div class="profile-header">
-                    <div class="profile-avatar">
-                        ${user.avatar}
-                    </div>
-                    <h2>${user.username}</h2>
-                    <p class="profile-tier">${user.subscription} Member</p>
-                    <p class="profile-level">Level ${user.level}</p>
-                </div>
-
-                <div class="profile-stats">
-                    <div class="profile-stat">
-                        <span class="stat-value">${user.stats.winRate ? Math.round(user.stats.winRate * 100) : 0}%</span>
-                        <span class="stat-label">Win Rate</span>
-                    </div>
-                    <div class="profile-stat">
-                        <span class="stat-value">${user.stats.totalPicks || 0}</span>
-                        <span class="stat-label">Picks Tracked</span>
-                    </div>
-                    <div class="profile-stat">
-                        <span class="stat-value">${user.winStreak || 0}</span>
-                        <span class="stat-label">Win Streak</span>
-                    </div>
-                </div>
-
-                <div id="profile-streak-container"></div>
-
-                <div id="profile-referral-container"></div>
-
-                <div class="content-section">
-                    <h3>💰 Coin Balance</h3>
-                    <div class="coin-balance-card">
-                        <div class="coin-balance-main">
-                            <div class="coin-icon-large">💰</div>
-                            <div class="coin-balance-info">
-                                <div class="coin-amount">${(authUser?.coins || 0).toLocaleString()}</div>
-                                <div class="coin-label">Total Coins</div>
-                            </div>
-                        </div>
-                        <div class="coin-stats-grid">
-                            <div class="coin-stat">
-                                <div class="coin-stat-value">${stats.totalEarned.toLocaleString()}</div>
-                                <div class="coin-stat-label">Total Earned</div>
-                            </div>
-                            <div class="coin-stat">
-                                <div class="coin-stat-value">${stats.totalSpent.toLocaleString()}</div>
-                                <div class="coin-stat-label">Total Spent</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <div class="section-header-with-action">
-                        <h3>📜 Coin History</h3>
-                        <div class="coin-filter-tabs">
-                            <button class="coin-filter-tab active" data-filter="all">All</button>
-                            <button class="coin-filter-tab" data-filter="earn">Earned</button>
-                            <button class="coin-filter-tab" data-filter="spend">Spent</button>
-                        </div>
-                    </div>
-                    <div id="coin-history-list"></div>
-                </div>
-
-                <div class="content-section">
-                    <h3>Recent Achievements</h3>
-                    <div id="profile-badges"></div>
-                </div>
-
-                <div class="content-section">
-                    <h3>Subscription</h3>
-                    <div class="subscription-card">
-                        <div class="subscription-info">
-                            <h4>${user.subscription} Tier</h4>
-                            <p>${user.subscription === 'FREE' ? 'Limited features' : 'Full access to all features'}</p>
-                        </div>
-                        ${user.subscription === 'FREE' ? `
-                            <button class="btn-primary" id="upgrade-subscription-btn">
-                                <i class="fas fa-arrow-up"></i> Upgrade to PRO
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <button class="btn-secondary" id="logout-btn">
-                        <i class="fas fa-sign-out-alt"></i> Sign Out
-                    </button>
-                </div>
-            </div>
-        `;
-
-        // Render compact badges
-        achievementsUI.renderCompactBadges('profile-badges', 6);
-
-        // Render streak card
-        const streakContainer = document.getElementById('profile-streak-container');
-        if (streakContainer && dailyStreakUI) {
-            dailyStreakUI.renderStreakCard(streakContainer);
-        }
-
-        // Render referral widget
-        const referralContainer = document.getElementById('profile-referral-container');
-        if (referralContainer && referralUI) {
-            referralUI.renderWidget(referralContainer);
-        }
-
-        // Render coin history
-        this.renderCoinHistory('all');
-
-        // Coin filter tabs
-        const filterTabs = document.querySelectorAll('.coin-filter-tab');
-        filterTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                filterTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                this.renderCoinHistory(tab.dataset.filter);
+        // Quick action cards
+        document.querySelectorAll('.quick-action-card[data-page]').forEach(card => {
+            card.addEventListener('click', () => {
+                this.navigateTo(card.dataset.page);
             });
         });
 
         // Logout button
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
-                authSystem.logout();
-                this.navigation.navigateTo('home');
-                this.showToast('👋 Logged out successfully');
-            });
-        }
+        document.getElementById('logout-btn')?.addEventListener('click', () => {
+            authManager.logout();
+            drawer?.classList.remove('active');
+            overlay?.classList.remove('active');
+        });
 
-            // Upgrade button
-            const upgradeBtn = document.getElementById('upgrade-subscription-btn');
-            if (upgradeBtn) {
-                upgradeBtn.addEventListener('click', () => {
-                    this.showToast('💎 Subscription upgrade coming soon!');
-                });
-            }
-        }, 150);
+        console.log('✅ Navigation initialized');
     }
 
-    renderCoinHistory(filter = 'all') {
-        const container = document.getElementById('coin-history-list');
-        if (!container) return;
+    navigateTo(page) {
+        console.log(`📍 Navigate to: ${page}`);
 
-        let history = coinHistoryManager.getHistory(20); // Show last 20 transactions
-
-        // Filter based on selection
-        if (filter === 'earn') {
-            history = history.filter(t => t.type === 'earn');
-        } else if (filter === 'spend') {
-            history = history.filter(t => t.type === 'spend');
+        // Check if user needs to be authenticated
+        if (!appState.isAuthenticated && page !== 'home') {
+            this.showAuthPage();
+            return;
         }
 
-        if (history.length === 0) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(p => 
+            p.classList.remove('active')
+        );
+
+        // Show target page
+        const targetPage = document.getElementById(`${page}-page`);
+        if (targetPage) {
+            targetPage.classList.add('active');
+            this.currentPage = page;
+            window.scrollTo(0, 0);
+
+            // Load page-specific data
+            this.loadPageData(page);
+        } else {
+            console.error(`❌ Page not found: ${page}`);
+        }
+    }
+
+    showAuthPage() {
+        document.querySelectorAll('.page').forEach(p => 
+            p.classList.remove('active')
+        );
+        document.getElementById('auth-page')?.classList.add('active');
+    }
+
+    async loadPageData(page) {
+        switch(page) {
+            case 'live-scores':
+                await liveScoresModule.load();
+                break;
+            case 'ai-coaches':
+                await aiCoachesModule.load();
+                break;
+            case 'analytics':
+                await analyticsModule.load();
+                break;
+            case 'profile':
+                await profileModule.load();
+                break;
+        }
+    }
+}
+
+const navigation = new Navigation();
+
+// ============================================
+// AUTH UI
+// ============================================
+
+class AuthUI {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        // Toggle between login and signup
+        document.getElementById('show-signup')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('signup-form').style.display = 'block';
+        });
+
+        document.getElementById('show-login')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('signup-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+        });
+
+        // Login form
+        document.getElementById('login-form-element')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            const success = await authManager.login(email, password);
+            if (success) {
+                navigation.navigateTo('home');
+            }
+        });
+
+        // Signup form
+        document.getElementById('signup-form-element')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            const success = await authManager.signup(email, password, name);
+            if (success) {
+                navigation.navigateTo('home');
+            }
+        });
+
+        // OAuth buttons
+        const setupOAuthButton = (buttonId, provider) => {
+            document.getElementById(buttonId)?.addEventListener('click', () => {
+                window.location.href = api.getOAuthURL(provider);
+            });
+        };
+
+        setupOAuthButton('google-login-btn', 'google');
+        setupOAuthButton('google-signup-btn', 'google');
+        setupOAuthButton('apple-login-btn', 'apple');
+        setupOAuthButton('apple-signup-btn', 'apple');
+
+        console.log('✅ Auth UI initialized');
+    }
+}
+
+const authUI = new AuthUI();
+
+// ============================================
+// LIVE SCORES MODULE
+// ============================================
+
+const liveScoresModule = {
+    async load() {
+        const container = document.getElementById('live-scores-container');
+        if (!container) return;
+
+        try {
+            container.innerHTML = '<p class="loading-text">Loading live scores...</p>';
+            const scores = await api.getLiveScores();
+            this.render(scores, container);
+        } catch (error) {
             container.innerHTML = `
-                <div class="coin-history-empty">
-                    <div class="empty-icon">📊</div>
-                    <p>No transactions yet</p>
-                    <p class="empty-subtitle">Complete challenges to earn coins!</p>
+                <div style="text-align: center; padding: 40px;">
+                    <p style="color: var(--text-secondary);">Unable to load live scores</p>
+                    <button class="btn btn-secondary" onclick="liveScoresModule.load()">Retry</button>
+                </div>
+            `;
+        }
+    },
+
+    render(scores, container) {
+        if (!scores || scores.length === 0) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <i class="fas fa-calendar-times" style="font-size: 48px; color: var(--text-muted); margin-bottom: 16px;"></i>
+                    <p style="color: var(--text-secondary);">No live games right now</p>
                 </div>
             `;
             return;
         }
 
+        container.innerHTML = scores.map(game => `
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <span style="color: var(--text-secondary); font-size: 12px; font-weight: 600;">${game.league}</span>
+                    <span class="badge badge-live">LIVE</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 4px;">${game.homeTeam}</div>
+                        <div style="font-weight: 600; color: var(--text-secondary);">${game.awayTeam}</div>
+                    </div>
+                    <div style="text-align: center; padding: 0 24px;">
+                        <div style="font-size: 24px; font-weight: 700;">${game.homeScore}</div>
+                        <div style="font-size: 24px; font-weight: 700; color: var(--text-secondary);">${game.awayScore}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-secondary); font-size: 12px;">
+                    ${game.status}
+                </div>
+            </div>
+        `).join('');
+    }
+};
+
+// ============================================
+// AI COACHES MODULE
+// ============================================
+
+const aiCoachesModule = {
+    async load() {
+        const container = document.getElementById('ai-coaches-container');
+        if (!container) return;
+
         container.innerHTML = `
-            <div class="coin-history-items">
-                ${history.map(transaction => {
-                    const formatted = coinHistoryManager.formatTransaction(transaction);
-                    const isEarn = transaction.type === 'earn';
-                    
-                    return `
-                        <div class="coin-history-item ${isEarn ? 'earn' : 'spend'}">
-                            <div class="coin-history-icon">${formatted.icon}</div>
-                            <div class="coin-history-info">
-                                <div class="coin-history-description">${formatted.description}</div>
-                                <div class="coin-history-time">${formatted.timeAgo}</div>
-                            </div>
-                            <div class="coin-history-amount ${isEarn ? 'positive' : 'negative'}">
-                                ${formatted.displayAmount}
-                            </div>
-                        </div>
-                    `;
-                }).join('')}
+            <div style="text-align: center; padding: 40px;">
+                <i class="fas fa-robot" style="font-size: 64px; color: var(--primary); margin-bottom: 24px;"></i>
+                <h2 style="margin-bottom: 16px;">AI Coaches Coming Soon</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Get expert AI-powered predictions and insights from our advanced coaching system.
+                </p>
+                <button class="btn btn-primary" onclick="navigation.navigateTo('subscription')">
+                    <i class="fas fa-crown"></i> Upgrade to Access
+                </button>
             </div>
         `;
     }
+};
 
-    loadRewardsPage() {
-        const container = document.getElementById('rewards-page');
+// ============================================
+// ANALYTICS MODULE
+// ============================================
+
+const analyticsModule = {
+    async load() {
+        const container = document.getElementById('analytics-container');
         if (!container) return;
 
-        // Render challenges first, then achievements
+        try {
+            container.innerHTML = '<p class="loading-text">Loading analytics...</p>';
+            const analytics = await api.getUserAnalytics();
+            this.render(analytics, container);
+        } catch (error) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <p style="color: var(--text-secondary);">Start making picks to see your analytics</p>
+                </div>
+            `;
+        }
+    },
+
+    render(analytics, container) {
         container.innerHTML = `
-            <div class="page-content">
-                <div id="challenges-section"></div>
-                <div style="height: 3rem;"></div>
-                <div id="achievements-section"></div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-info">
+                        <h4>${analytics.totalPicks || 0}</h4>
+                        <p>Total Picks</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                    <div class="stat-info">
+                        <h4>${analytics.winRate || 0}%</h4>
+                        <p>Win Rate</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-fire"></i></div>
+                    <div class="stat-info">
+                        <h4>${analytics.streak || 0}</h4>
+                        <p>Current Streak</p>
+                    </div>
+                </div>
             </div>
         `;
-
-        // Render challenges
-        challengesUI.renderChallengesSection('challenges-section');
-        
-        // Render achievements
-        achievementsUI.renderAchievementsPage('achievements-section', state.user.stats);
     }
+};
 
-    loadShopPage() {
-        const container = document.getElementById('shop-page');
+// ============================================
+// PROFILE MODULE
+// ============================================
+
+const profileModule = {
+    async load() {
+        const container = document.getElementById('profile-container');
         if (!container) return;
 
-        // Render the shop
-        shopUI.renderShop(container);
-    }
-
-    renderLiveGames() {
-        // Use the new live score system with real-time updates
-        liveScoreUI.renderLiveGames('home-live-games');
-        
-        // Also subscribe to global score updates for notifications
-        liveScoreSystem.subscribeAll((data) => {
-            if (data.type === 'score_update' && data.homePoints + data.awayPoints >= 6) {
-                // Show notification for big scores (touchdowns, etc)
-                const game = data.game;
-                const scoringTeam = data.scoringTeam === 'home' ? game.homeTeam.name : game.awayTeam.name;
-                const points = data.scoringTeam === 'home' ? data.homePoints : data.awayPoints;
-                
-                notificationSystem.showNotification({
-                    title: `🎯 ${scoringTeam} Scores!`,
-                    body: `+${points} points • ${game.awayTeam.shortName} ${game.awayTeam.score} - ${game.homeTeam.score} ${game.homeTeam.shortName}`,
-                    icon: game.homeTeam.logo,
-                    category: 'live_game',
-                    priority: 'normal',
-                    autoClose: 5000
-                });
-            }
-        });
-    }
-
-    renderHotPicks() {
-        const container = document.getElementById('home-hot-picks');
-        if (!container) return;
-
-        const topPicks = mockGames
-            .sort((a, b) => b.aiPick.confidence - a.aiPick.confidence)
-            .slice(0, 3);
-
-        container.innerHTML = topPicks.map(game => `
-            <div class="hot-pick-card" style="
-                background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
-                border: 2px solid var(--accent-secondary);
-                border-radius: 16px;
-                padding: 1.5rem;
-                margin-bottom: 1rem;
-                position: relative;
-            ">
-                <div style="
-                    position: absolute;
-                    top: 10px;
-                    right: 10px;
-                    background: var(--gradient-secondary);
-                    color: white;
-                    padding: 0.25rem 0.75rem;
-                    border-radius: 12px;
-                    font-size: 0.75rem;
-                    font-weight: 700;
-                ">🔥 ${game.aiPick.confidence}% AI</div>
-                
-                <h4>${game.awayTeam} @ ${game.homeTeam}</h4>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">${game.league} • ${game.startTime}</p>
-                
-                <div style="
-                    display: flex;
-                    justify-content: space-between;
-                    padding: 1rem;
-                    background: var(--bg-primary);
-                    border-radius: 8px;
-                ">
-                    <div style="text-align: center;">
-                        <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.25rem;">Home</div>
-                        <div style="font-size: 1.25rem; font-weight: 700;">${game.odds.homeML > 0 ? '+' : ''}${game.odds.homeML}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.25rem;">Away</div>
-                        <div style="font-size: 1.25rem; font-weight: 700;">${game.odds.awayML > 0 ? '+' : ''}${game.odds.awayML}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.25rem;">O/U</div>
-                        <div style="font-size: 1.25rem; font-weight: 700;">${game.odds.total}</div>
-                    </div>
-                </div>
-                
-                <div style="
-                    margin-top: 1rem;
-                    padding: 0.75rem;
-                    background: rgba(16, 185, 129, 0.1);
-                    border-radius: 8px;
-                    border: 1px solid var(--accent-primary);
-                ">
-                    <strong style="color: var(--accent-primary);">AI Pick:</strong>
-                    <span style="margin-left: 0.5rem;">${game.aiPick.pick === 'home' ? game.homeTeam : game.awayTeam} to win</span>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    renderRecentActivity() {
-        const container = document.getElementById('home-recent-activity');
-        if (!container) return;
-
-        const activities = [
-            { icon: '🏆', title: 'Won $150', subtitle: '5 minutes ago', color: 'var(--success)' },
-            { icon: '🎯', title: 'Completed Challenge', subtitle: '1 hour ago', color: 'var(--info)' },
-            { icon: '🔥', title: '7-Day Streak!', subtitle: '2 hours ago', color: 'var(--warning)' },
-        ];
-
-        container.innerHTML = activities.map(activity => `
-            <div class="activity-item">
-                <div class="activity-icon" style="background: ${activity.color}20; color: ${activity.color}">
-                    ${activity.icon}
-                </div>
-                <div class="activity-content">
-                    <div class="activity-title">${activity.title}</div>
-                    <div class="activity-subtitle">${activity.subtitle}</div>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    loadLeaderboard(period = 'weekly') {
-        const container = document.getElementById('leaderboard-list');
-        if (!container) return;
-
-        container.innerHTML = mockLeaderboard.map(player => `
-            <div class="leaderboard-item" style="
-                display: flex;
-                align-items: center;
-                gap: 1.5rem;
-                padding: 1rem 1.5rem;
-                background: ${player.isCurrentUser ? 'rgba(16, 185, 129, 0.1)' : 'var(--bg-tertiary)'};
-                border: ${player.isCurrentUser ? '2px solid var(--accent-primary)' : '1px solid var(--border-color)'};
-                border-radius: 12px;
-                margin-bottom: 1rem;
-                transition: var(--transition-fast);
-            ">
-                <div style="
-                    font-size: 1.5rem;
-                    font-weight: 800;
-                    min-width: 50px;
-                    text-align: center;
-                    color: ${player.rank <= 3 ? (player.rank === 1 ? '#FFD700' : player.rank === 2 ? '#C0C0C0' : '#CD7F32') : 'var(--text-primary)'};
-                ">
-                    ${player.rank <= 3 ? (player.rank === 1 ? '🥇' : player.rank === 2 ? '🥈' : '🥉') : `#${player.rank}`}
-                </div>
-                
-                <div style="
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 50%;
-                    background: var(--gradient-primary);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 1.75rem;
-                ">
-                    ${player.avatar}
-                </div>
-                
-                <div style="flex: 1;">
-                    <h4 style="margin-bottom: 0.25rem;">${player.username}</h4>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Win Rate: ${(player.winRate * 100).toFixed(1)}%</p>
-                </div>
-                
-                <div style="text-align: right;">
-                    <div style="
-                        font-size: 1.5rem;
-                        font-weight: 700;
-                        color: var(--accent-secondary);
-                    ">${player.points.toLocaleString()}</div>
-                    <div style="color: var(--text-secondary); font-size: 0.85rem;">points</div>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    // Track user actions for achievements & challenges
-    trackPickPlaced() {
-        state.user.stats.totalPicks++;
-        
-        // Update challenges
-        challengesSystem.updateProgress('pick_placed', 1);
-        
-        // Check for new achievements
-        achievementsSystem.checkAchievements(state.user.stats);
-        
-        this.updateUI();
-    }
-
-    trackPickWon() {
-        state.user.stats.wins++;
-        state.user.stats.currentStreak++;
-        state.user.stats.winRate = state.user.stats.wins / state.user.stats.totalPicks;
-        state.user.stats.accuracy = Math.round(state.user.stats.winRate * 100);
-        
-        // Update best streak
-        if (state.user.stats.currentStreak > state.user.stats.bestStreak) {
-            state.user.stats.bestStreak = state.user.stats.currentStreak;
+        if (!appState.user) {
+            container.innerHTML = '<p class="loading-text">Please log in to view your profile</p>';
+            return;
         }
-        
-        // Update challenges with metadata
-        challengesSystem.updateProgress('pick_won', 1, {
-            currentStreak: state.user.stats.currentStreak,
-            winRate: state.user.stats.winRate,
-            totalPicks: state.user.stats.totalPicks
-        });
-        
-        // Check for new achievements
-        achievementsSystem.checkAchievements(state.user.stats);
-        
-        this.updateUI();
+
+        container.innerHTML = `
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; text-align: center; max-width: 500px; margin: 0 auto;">
+                <div style="font-size: 64px; color: var(--primary); margin-bottom: 16px;">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h2 style="margin-bottom: 8px;">${appState.user.name || 'User'}</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">${appState.user.email}</p>
+                <div style="padding: 16px; background: var(--bg-tertiary); border-radius: 8px; margin-bottom: 24px;">
+                    <span style="font-weight: 600; color: var(--primary);">${appState.user.subscription_tier || 'FREE'} TIER</span>
+                </div>
+                <button class="btn btn-secondary btn-block" onclick="authManager.logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        `;
+    }
+};
+
+// ============================================
+// UI UPDATES
+// ============================================
+
+function updateUI() {
+    const user = appState.user;
+    const isAuthenticated = appState.isAuthenticated;
+
+    // Update user display
+    const displayName = document.getElementById('user-display-name');
+    const tierBadge = document.getElementById('user-tier-badge');
+
+    if (displayName) {
+        displayName.textContent = user?.name || 'Guest User';
     }
 
-    trackPickLost() {
-        state.user.stats.losses++;
-        state.user.stats.currentStreak = 0;
-        state.user.stats.winRate = state.user.stats.wins / state.user.stats.totalPicks;
-        state.user.stats.accuracy = Math.round(state.user.stats.winRate * 100);
-        
-        // Update challenges with metadata
-        challengesSystem.updateProgress('pick_lost', 1, {
-            winRate: state.user.stats.winRate,
-            totalPicks: state.user.stats.totalPicks
-        });
-        
-        this.updateUI();
+    if (tierBadge) {
+        tierBadge.textContent = user?.subscription_tier || 'FREE TIER';
     }
 
-    trackChallengeJoined() {
-        state.user.stats.challengesJoined++;
-        challengesSystem.updateProgress('challenge_joined', 1);
-        achievementsSystem.checkAchievements(state.user.stats);
-    }
-
-    trackChallengeWon() {
-        state.user.stats.challengesWon++;
-        achievementsSystem.checkAchievements(state.user.stats);
-    }
-
-    trackAIConversation() {
-        state.user.stats.aiConversations++;
-        challengesSystem.updateProgress('ai_conversation', 1);
-        achievementsSystem.checkAchievements(state.user.stats);
-    }
-
-    trackMeetingRoomSession() {
-        challengesSystem.updateProgress('meeting_room_session', 1);
-    }
-
-    trackGameViewed() {
-        challengesSystem.updateProgress('game_viewed', 1);
-    }
-
-    showSettings() {
-        this.showToast('⚙️ Settings panel coming soon!');
-    }
-
-    showHelp() {
-        this.showToast('❓ Help & FAQ coming soon!');
-    }
-
-    showToast(message, type = 'info') {
-        const container = document.getElementById('toast-container');
-        if (!container) return;
-
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.textContent = message;
-        
-        container.appendChild(toast);
-
-        setTimeout(() => {
-            toast.style.animation = 'slideOut 0.3s ease';
-            setTimeout(() => {
-                container.removeChild(toast);
-            }, 300);
-        }, 3000);
-    }
-
-    // ============================================
-    // PAYPAL RETURN HANDLER
-    // ============================================
-    handlePayPalReturn() {
-        // Check for PayPal return parameters in URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const subscriptionSuccess = urlParams.get('subscription_success');
-        const tier = urlParams.get('tier');
-        
-        if (subscriptionSuccess === 'true' && tier) {
-            console.log('✅ PayPal payment completed for tier:', tier);
-            
-            // Activate the subscription
-            if (window.PayPalService && window.PayPalService.activateSubscription) {
-                window.PayPalService.activateSubscription(tier);
-            }
-            
-            // Clean up URL
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
+    // Update stats on home page
+    if (user?.stats) {
+        document.getElementById('total-picks').textContent = user.stats.totalPicks || 0;
+        document.getElementById('win-rate').textContent = `${user.stats.winRate || 0}%`;
+        document.getElementById('current-streak').textContent = user.stats.streak || 0;
     }
 }
 
+// Subscribe to state changes
+appState.subscribe(updateUI);
+
 // ============================================
-// PUSH NOTIFICATIONS SETUP
+// TOAST NOTIFICATIONS
 // ============================================
 
-function setupPushNotifications() {
-    const pushNotifyBtn = document.getElementById('push-notification-settings-btn');
-    
-    if (pushNotifyBtn) {
-        pushNotifyBtn.addEventListener('click', () => {
-            notificationSettingsUI.showModal();
-        });
-    }
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
 
-    // Betting Pools button
-    const poolsBtn = document.getElementById('betting-pools-btn');
-    if (poolsBtn) {
-        poolsBtn.addEventListener('click', () => {
-            bettingPoolsUI.showModal();
-        });
-    }
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}" style="color: var(--${type === 'success' ? 'success' : 'danger'});"></i>
+            <span>${message}</span>
+        </div>
+    `;
 
-    // Listen for notification clicks to navigate
-    pushNotificationSystem.on('notification:clicked', (data) => {
-        if (data.action === 'view_game' && data.gameId) {
-            // Navigate to game details (future enhancement)
-        }
-    });
+    container.appendChild(toast);
 
-    // Auto-request permission after 10 seconds if not set
     setTimeout(() => {
-        const hasPermission = pushNotificationSystem.hasPermission();
-        const hasPrompted = localStorage.getItem('notification_prompted');
-        
-        if (!hasPermission && !hasPrompted) {
-            // Show a subtle prompt
-            pushNotificationSystem.sendNotification({
-                title: '🔔 Enable Live Score Alerts?',
-                body: 'Get real-time updates for games, scores, and big plays',
-                tag: 'enable-prompt',
-                icon: '🏀'
-            });
-            
-            localStorage.setItem('notification_prompted', 'true');
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Make showToast globally available
+window.showToast = showToast;
+
+// ============================================
+// SUBSCRIPTION HANDLERS
+// ============================================
+
+document.getElementById('subscribe-pro-btn')?.addEventListener('click', async () => {
+    if (!appState.isAuthenticated) {
+        navigation.showAuthPage();
+        showToast('Please log in to subscribe', 'error');
+        return;
+    }
+
+    try {
+        showToast('Redirecting to checkout...', 'info');
+        const response = await api.createSubscription('PRO');
+        if (response.checkoutUrl) {
+            window.location.href = response.checkoutUrl;
         }
-    }, 10000);
-}
-
-// ============================================
-// UPGRADE BUTTON HANDLER
-// ============================================
-
-function setupUpgradeButton() {
-    window.addEventListener('upgrade-clicked', () => {
-        // Navigate to profile page which has subscription options
-        modernNav.navigateTo('profile');
-    });
-}
-
-// ============================================
-// START THE APP
-// ============================================
-
-// Add loading indicator
-document.addEventListener('DOMContentLoaded', () => {
-    const appContainer = document.getElementById('app');
-    if (appContainer) {
-        appContainer.style.opacity = '0';
-        appContainer.style.transition = 'opacity 0.3s ease';
-        
-        // Fade in after initialization
-        setTimeout(() => {
-            appContainer.style.opacity = '1';
-        }, 100);
+    } catch (error) {
+        showToast('Failed to create subscription', 'error');
     }
 });
 
-// Initialize app with error boundary
-console.log('🎬 Starting Ultimate Sports AI...');
-console.log('📦 All modules loaded');
-try {
-    console.log('🏗️ Creating SportAIApp instance...');
-    new SportAIApp();
-    setupUpgradeButton();
-    console.log('✅ Ultimate Sports AI initialized successfully');
-} catch (error) {
-    console.error('❌ Failed to initialize app:', error);
-    console.error('Error stack:', error.stack);
-    
-    // Show user-friendly error
-    const appContainer = document.getElementById('app');
-    if (appContainer) {
-        appContainer.innerHTML = `
-            <div style="
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                min-height: 100vh;
-                padding: 2rem;
-                text-align: center;
-                background: var(--bg-primary);
-                color: var(--text-primary);
-            ">
-                <div style="font-size: 4rem; margin-bottom: 1rem;">⚠️</div>
-                <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem;">App Initialization Error</h1>
-                <p style="color: var(--text-secondary); margin-bottom: 2rem;">
-                    Something went wrong while loading the app.
-                </p>
-                <button onclick="window.location.reload()" style="
-                    padding: 1rem 2rem;
-                    background: var(--primary);
-                    color: white;
-                    border: none;
-                    border-radius: 0.5rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                ">
-                    Reload App
-                </button>
-                <p style="
-                    margin-top: 2rem;
-                    font-size: 0.875rem;
-                    color: var(--text-muted);
-                    font-family: monospace;
-                ">
-                    ${error.message}
-                </p>
-            </div>
-        `;
+document.getElementById('subscribe-vip-btn')?.addEventListener('click', async () => {
+    if (!appState.isAuthenticated) {
+        navigation.showAuthPage();
+        showToast('Please log in to subscribe', 'error');
+        return;
     }
+
+    try {
+        showToast('Redirecting to checkout...', 'info');
+        const response = await api.createSubscription('VIP');
+        if (response.checkoutUrl) {
+            window.location.href = response.checkoutUrl;
+        }
+    } catch (error) {
+        showToast('Failed to create subscription', 'error');
+    }
+});
+
+// ============================================
+// APP INITIALIZATION
+// ============================================
+
+async function initApp() {
+    console.log('⚙️ Initializing Ultimate Sports AI...');
+
+    try {
+        // Check for OAuth callback
+        await authManager.handleOAuthCallback();
+    } catch (error) {
+        console.error('OAuth callback error:', error);
+    }
+
+    // Hide loader after short delay - ALWAYS hide
+    setTimeout(() => {
+        const loader = document.getElementById('app-loader');
+        if (loader) {
+            console.log('✅ Removing loader');
+            loader.classList.add('hidden');
+            setTimeout(() => {
+                if (loader && loader.parentElement) {
+                    loader.remove();
+                }
+            }, 500);
+        }
+    }, 500); // Reduced from 800 to 500ms
+
+    // Initial UI update
+    updateUI();
+
+    console.log('✅ App initialized successfully');
 }
 
-// Initialize push notifications
-setTimeout(() => {
-    setupPushNotifications();
-    
-    // Make SkeletonLoader globally accessible
-    window.SkeletonLoader = SkeletonLoader;
-    
-    // Make systems globally accessible for development/testing
-    const isDevelopment = window.location.hostname === 'localhost' || 
-                        window.location.hostname === '127.0.0.1' ||
-                        window.location.hostname.includes('playground-gateway');
-    
-    if (isDevelopment) {
-        window.pushNotificationSystem = pushNotificationSystem;
-        window.notificationSettingsUI = notificationSettingsUI;
-        window.bettingPoolsSystem = bettingPoolsSystem;
-        window.bettingPoolsUI = bettingPoolsUI;
-        window.poolChatSystem = poolChatSystem;
-        window.poolChatUI = poolChatUI;
-        window.aiCoachingDashboard = aiCoachingDashboard;
-        window.aiCoachingDashboardUI = aiCoachingDashboardUI;
-        window.aiPredictionDisplay = aiPredictionDisplay;
-        window.achievementsSystem = achievementsSystem;
-        window.achievementsUI = achievementsUI;
-        window.challengesSystem = challengesSystem;
-        window.challengesUI = challengesUI;
-        window.collaborativeAnalysis = collaborativeAnalysis;
-        window.collaborativeAnalysisUI = collaborativeAnalysisUI;
-        window.aiIntelligenceV2 = aiIntelligenceV2;
-        window.meetingRoomImproved = meetingRoomImproved;
-        window.liveOddsComparison = liveOddsComparison;
-        window.liveOddsComparisonUI = liveOddsComparisonUI;
-        window.friendSystem = friendSystem;
-        window.friendSystemUI = friendSystemUI;
-        window.communityChatSystem = communityChatSystem;
-        window.communityChatUI = communityChatUI;
-        
-        console.log('🏆 Achievements & Challenges Ready!');
-        console.log('🤝 Collaborative Analysis Ready!');
-        console.log('🤖 AI Intelligence Engine Ready!');
-        console.log('💬 Community Chat Ready!');
-        console.log('Test commands:');
-        console.log('  - challengesSystem.getDailyChallenges()');
-        console.log('  - aiIntelligence.getAllCoaches()');
-        console.log('  - aiIntelligence.analyzeGame(game, "quantum")');
-        console.log('  - communityChatUI.showModal() // Open chat');
-    }
-}, 1000);
+// Start app when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
+
+// Export for debugging
+window.app = {
+    state: appState,
+    api,
+    auth: authManager,
+    navigation,
+    config: CONFIG
+};
+
+console.log('💚 Ultimate Sports AI ready! Access app state via window.app');
