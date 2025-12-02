@@ -103,10 +103,10 @@ class APIService {
     }
 
     // Auth endpoints
-    async signup(email, password, name) {
-        return this.request('/api/auth/signup', {
+    async signup(email, password, username) {
+        return this.request('/api/auth/register', {
             method: 'POST',
-            body: JSON.stringify({ email, password, name })
+            body: JSON.stringify({ email, password, username })
         });
     }
 

@@ -261,8 +261,8 @@
                         <h2>Create Account</h2>
                         <form id="signup-form-element">
                             <div class="form-group">
-                                <label for="signup-name">Full Name</label>
-                                <input type="text" id="signup-name" placeholder="John Doe" required>
+                                <label for="signup-username">Username</label>
+                                <input type="text" id="signup-username" placeholder="johndoe123" required>
                             </div>
                             <div class="form-group">
                                 <label for="signup-email">Email</label>
@@ -335,7 +335,119 @@
                     <p class="page-subtitle">Manage your account</p>
                 </div>
                 <div id="profile-container" class="content-container">
-                    <p class="loading-text">Loading profile...</p>
+                    <!-- Profile View (Initially Hidden) -->
+                    <div id="profile-view" style="display: none;">
+                        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; max-width: 600px; margin: 0 auto;">
+                            <div style="text-align: center; margin-bottom: 32px;">
+                                <div style="font-size: 80px; color: var(--primary); margin-bottom: 16px;">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <h2 id="profile-name" style="margin: 0 0 8px;">User Name</h2>
+                                <p id="profile-email" style="color: var(--text-secondary); margin: 0 0 16px;">user@email.com</p>
+                                <div style="padding: 12px; background: var(--bg-tertiary); border-radius: 8px; display: inline-block;">
+                                    <span style="font-weight: 600; color: var(--primary);">
+                                        <i class="fas fa-crown"></i> 
+                                        <span id="profile-tier">FREE TIER</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Profile Info -->
+                            <div style="border-top: 1px solid var(--border-color); padding-top: 24px; margin-bottom: 24px;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                                    <div>
+                                        <p style="color: var(--text-secondary); font-size: 12px; text-transform: uppercase; margin: 0 0 8px; font-weight: 600;">Member Since</p>
+                                        <p id="profile-created" style="font-size: 16px; font-weight: 600; margin: 0;">-</p>
+                                    </div>
+                                    <div>
+                                        <p style="color: var(--text-secondary); font-size: 12px; text-transform: uppercase; margin: 0 0 8px; font-weight: 600;">Account Status</p>
+                                        <p style="font-size: 16px; font-weight: 600; margin: 0; color: var(--success);">
+                                            <i class="fas fa-check-circle"></i> Active
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <button id="edit-profile-btn" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-edit"></i> Edit Profile
+                                </button>
+                                <button id="change-password-btn" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-lock"></i> Change Password
+                                </button>
+                                <button id="profile-logout-btn" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Profile Form (Initially Hidden) -->
+                    <div id="profile-edit" style="display: none;">
+                        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; max-width: 600px; margin: 0 auto;">
+                            <h2 style="margin: 0 0 24px; text-align: center;">Edit Profile</h2>
+                            <form id="edit-profile-form">
+                                <div class="form-group">
+                                    <label for="edit-name">Full Name</label>
+                                    <input type="text" id="edit-name" placeholder="John Doe" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="edit-email">Email</label>
+                                    <input type="email" id="edit-email" placeholder="john@example.com" required>
+                                </div>
+                                <div style="display: flex; gap: 12px;">
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        <i class="fas fa-save"></i> Save Changes
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-block" id="cancel-edit-btn">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Change Password Form (Initially Hidden) -->
+                    <div id="profile-password" style="display: none;">
+                        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; max-width: 600px; margin: 0 auto;">
+                            <h2 style="margin: 0 0 24px; text-align: center;">Change Password</h2>
+                            <form id="change-password-form">
+                                <div class="form-group">
+                                    <label for="current-password">Current Password</label>
+                                    <input type="password" id="current-password" placeholder="••••••••" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-password">New Password</label>
+                                    <input type="password" id="new-password" placeholder="••••••••" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-password">Confirm Password</label>
+                                    <input type="password" id="confirm-password" placeholder="••••••••" required>
+                                </div>
+                                <div style="display: flex; gap: 12px;">
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        <i class="fas fa-lock"></i> Update Password
+                                    </button>
+                                    <button type="button" class="btn btn-secondary btn-block" id="cancel-password-btn">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Not Logged In Message (Initially Hidden) -->
+                    <div id="profile-not-logged-in" style="display: none; text-align: center; padding: 60px 24px;">
+                        <div style="font-size: 64px; color: var(--text-muted); margin-bottom: 24px;">
+                            <i class="fas fa-lock-open"></i>
+                        </div>
+                        <h2 style="margin-bottom: 12px;">Not Logged In</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 32px;">Sign in to view your profile</p>
+                        <button class="btn btn-primary" onclick="navigation.navigateTo('auth')">
+                            Sign In
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -427,5 +539,11 @@
 
     <!-- Main App Script -->
     <script type="module" src="app.js"></script>
+    
+    <!-- Auth Module (Form Validation & UX) -->
+    <script src="auth.js"></script>
+    
+    <!-- Profile Module (Profile Management) -->
+    <script src="profile.js"></script>
 </body>
 </html>
