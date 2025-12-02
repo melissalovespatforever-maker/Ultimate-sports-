@@ -191,12 +191,13 @@ class AuthManager {
                 appState.setUser(user);
                 console.log('✅ User authenticated:', user.email);
             } catch (error) {
-                console.error('⚠️ Backend unavailable or auth check failed:', error);
-                // Don't logout - just stay as guest
-                console.log('ℹ️ Starting as guest user - backend may be offline');
+                console.error('⚠️ Auth check failed:', error);
+                // Clear invalid token
+                localStorage.removeItem('auth_token');
+                console.log('ℹ️ Starting as guest user');
             }
         } else {
-            console.log('ℹ️ No auth token found - starting as guest');
+            console.log('ℹ️ No auth token - starting as guest user (full access to app)');
         }
     }
 
@@ -318,9 +319,20 @@ class Navigation {
             });
         });
 
-        // Logout button
+        // Logout/Sign In button (dynamic based on auth state)
         document.getElementById('logout-btn')?.addEventListener('click', () => {
-            authManager.logout();
+            if (appState.isAuthenticated) {
+                authManager.logout();
+            } else {
+                this.navigateTo('auth');
+            }
+            drawer?.classList.remove('active');
+            overlay?.classList.remove('active');
+        });
+
+        // Upgrade button in drawer
+        document.getElementById('upgrade-btn')?.addEventListener('click', () => {
+            this.navigateTo('subscription');
             drawer?.classList.remove('active');
             overlay?.classList.remove('active');
         });
@@ -331,11 +343,8 @@ class Navigation {
     navigateTo(page) {
         console.log(`📍 Navigate to: ${page}`);
 
-        // Check if user needs to be authenticated
-        if (!appState.isAuthenticated && page !== 'home') {
-            this.showAuthPage();
-            return;
-        }
+        // Allow access to all pages - no auth required
+        // Premium features will show upgrade prompts instead
 
         // Hide all pages
         document.querySelectorAll('.page').forEach(p => 
@@ -393,6 +402,11 @@ class AuthUI {
     }
 
     init() {
+        // Continue as Guest button
+        document.getElementById('continue-as-guest-btn')?.addEventListener('click', () => {
+            navigation.navigateTo('home');
+        });
+
         // OAuth buttons
         const setupOAuthButton = (buttonId, provider) => {
             document.getElementById(buttonId)?.addEventListener('click', () => {
@@ -405,67 +419,44 @@ class AuthUI {
         setupOAuthButton('apple-login-btn', 'apple');
         setupOAuthButton('apple-signup-btn', 'apple');
 
-        console.log('✅ Auth UI (OAuth) initialized');
+        console.log('✅ Auth UI (OAuth + Guest) initialized');
     }
 }
 
 const authUI = new AuthUI();
 
 // ============================================
-// LIVE SCORES MODULE
+// LIVE SCORES MODULE (loads external live-scores.js)
 // ============================================
 
 const liveScoresModule = {
     async load() {
-        const container = document.getElementById('live-scores-container');
-        if (!container) return;
-
-        try {
-            container.innerHTML = '<p class="loading-text">Loading live scores...</p>';
-            const scores = await api.getLiveScores();
-            this.render(scores, container);
-        } catch (error) {
-            container.innerHTML = `
-                <div style="text-align: center; padding: 40px;">
-                    <p style="color: var(--text-secondary);">Unable to load live scores</p>
-                    <button class="btn btn-secondary" onclick="liveScoresModule.load()">Retry</button>
-                </div>
-            `;
+        // Use the external LiveScoresManager if available
+        if (typeof liveScoresManager !== 'undefined') {
+            await liveScoresManager.load();
+        } else {
+            // Fallback if module not loaded
+            console.warn('⚠️ Live scores manager not loaded, using fallback');
+            this.loadFallback();
         }
     },
 
-    render(scores, container) {
-        if (!scores || scores.length === 0) {
-            container.innerHTML = `
-                <div style="text-align: center; padding: 40px;">
-                    <i class="fas fa-calendar-times" style="font-size: 48px; color: var(--text-muted); margin-bottom: 16px;"></i>
-                    <p style="color: var(--text-secondary);">No live games right now</p>
-                </div>
-            `;
-            return;
-        }
+    loadFallback() {
+        const container = document.getElementById('live-scores-container');
+        if (!container) return;
 
-        container.innerHTML = scores.map(game => `
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; margin-bottom: 16px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <span style="color: var(--text-secondary); font-size: 12px; font-weight: 600;">${game.league}</span>
-                    <span class="badge badge-live">LIVE</span>
-                </div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="flex: 1;">
-                        <div style="font-weight: 600; margin-bottom: 4px;">${game.homeTeam}</div>
-                        <div style="font-weight: 600; color: var(--text-secondary);">${game.awayTeam}</div>
-                    </div>
-                    <div style="text-align: center; padding: 0 24px;">
-                        <div style="font-size: 24px; font-weight: 700;">${game.homeScore}</div>
-                        <div style="font-size: 24px; font-weight: 700; color: var(--text-secondary);">${game.awayScore}</div>
-                    </div>
-                </div>
-                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-secondary); font-size: 12px;">
-                    ${game.status}
-                </div>
+        container.innerHTML = `
+            <div style="text-align: center; padding: 60px 24px;">
+                <div style="font-size: 64px; margin-bottom: 24px;">⚽🏀🏈</div>
+                <h2 style="margin-bottom: 12px;">Live Scores</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                    Real-time scores from ESPN loading...
+                </p>
+                <p style="color: var(--text-muted); font-size: 14px;">
+                    Make sure live-scores.js is loaded in index.html
+                </p>
             </div>
-        `).join('');
+        `;
     }
 };
 
@@ -587,13 +578,27 @@ function updateUI() {
     // Update user display
     const displayName = document.getElementById('user-display-name');
     const tierBadge = document.getElementById('user-tier-badge');
+    const logoutBtn = document.getElementById('logout-btn');
 
     if (displayName) {
-        displayName.textContent = user?.name || 'Guest User';
+        displayName.textContent = user?.name || user?.username || 'Guest User';
     }
 
     if (tierBadge) {
-        tierBadge.textContent = user?.subscription_tier || 'FREE TIER';
+        tierBadge.textContent = user?.subscription_tier || user?.subscription || 'FREE TIER';
+    }
+
+    // Show/hide logout button based on auth state
+    if (logoutBtn) {
+        if (isAuthenticated) {
+            logoutBtn.style.display = 'flex';
+            logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i><span>Logout</span>';
+        } else {
+            logoutBtn.style.display = 'flex';
+            logoutBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>Sign In</span>';
+            // Update click handler for guest users
+            logoutBtn.onclick = () => navigation.navigateTo('auth');
+        }
     }
 
     // Update stats on home page
